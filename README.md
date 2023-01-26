@@ -9,7 +9,7 @@ This repository contains teaching materials from [hbctraining](https://github.co
 
 ## Description
 
-This repository has teaching materials for an Introduction to RNA-sequencing data analysis. This workshop focuses on teaching basic computational skills to enable the effective use of an high-performance computing environment to implement an RNA-seq data analysis workflow. In addition to running the RNA-seq workflow from FASTQ files to count data using Salmon, the workshop covers best practice guidelines for RNA-seq experimental design and data organization/management.
+This repository has teaching materials for an Introduction to RNA-sequencing data analysis. This workshop focuses on teaching basic computational skills to enable the effective use of an high-performance computing environment to implement an RNA-seq data analysis workflow. In addition to running the RNA-seq workflow from FASTQ files to count data using HISAT2 and Salmon, the workshop covers best practice guidelines for RNA-seq experimental design and data organization/management.
 
 ## Learning Objectives
 
