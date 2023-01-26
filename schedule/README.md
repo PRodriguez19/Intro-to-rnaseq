@@ -4,7 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins | [Introduction to RNA-seq](../lessons/01_intro-to-RNAseq.md) | 
+| ~40 mins | [Introduction to RNA-seq](../lessons/01_intro-to-RNAseq.md) | 
 | ~30 mins| [Final Project Overview](../lectures/) | 
 
 ### Before the next class:
