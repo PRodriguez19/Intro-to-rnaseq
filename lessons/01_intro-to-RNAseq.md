@@ -1,4 +1,10 @@
 ---
+Week: "3" 
+Lesson: "Shell script"
+Date: "Thursday, February 2, 2023"
+---
+
+---
 title: "Intro to RNA-seq"
 author: "Mary Piper, Meeta Mistry, Radhika Khetani"
 date: "Monday, February 25, 2019"
