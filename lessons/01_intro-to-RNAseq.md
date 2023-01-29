@@ -1,24 +1,15 @@
 ---
-Week: "3" 
-Lesson: "Shell script"
-Date: "Thursday, February 2, 2023"
+Week: "4" 
+Lesson: "Intro to RNA-Seq"
+Date: "Tuesday, February 7, 2023"
 ---
 
----
-title: "Intro to RNA-seq"
-author: "Mary Piper, Meeta Mistry, Radhika Khetani"
-date: "Monday, February 25, 2019"
----
-
-Approximate time: 90 minutes
-
-## Learning Objectives:
+# Learning Objectives:
 
 * Describe applications of RNA sequencing
 * Describe the process of RNA-seq library preparation
-* Describe the Illumina sequencing method
 
-## Introduction to RNA-seq
+# Introduction to RNA-seq
 
 RNA-seq is an exciting experimental technique that is utilized to explore and/or quantify gene expression within or between conditions. 
 
@@ -45,12 +36,12 @@ To be translated into proteins, the RNA must undergo processing to generate the 
 
 **While mRNA transcripts have a polyA tail, many of the non-coding RNA transcripts do not as the post-transcriptional processing is different for these transcripts.**
 
-### Transcriptomics
+## Transcriptomics
 
 The transcriptome is defined as a collection of all the transcript readouts present in a cell. RNA-seq data can be used to explore and/or quantify the transcriptome of an organism, which can be utilized for the following types of experiments:
 
 - **Differential Gene Expression**: *quantitative* evaluation and comparison of transcript levels (bulk and single-cell)
-- **Experession profiling** of small cell populations (single cell)
+- **Expression profiling** of small cell populations (single cell)
 - **Transcriptome assembly**: building the profile of transcribed regions of the genome, a *qualitative* evaluation. 
 - Can be used to **help build better gene models**, and verify them using the assembly
 - **Metatranscriptomics** or community transcriptome analysis
@@ -100,9 +91,9 @@ When starting an RNA-seq experiment, for every sample the RNA needs to be isolat
  *Image credit: [Martin J.A. and Wang Z., Nat. Rev. Genet. (2011) 12:671–682](https://www.nature.com/articles/nrg3068)*
 
 
-## Illumina Sequencing
+# Illumina Sequencing
 
-### Single-end versus Paired-end
+## Single-end versus Paired-end
 
 After preparation of the libraries, sequencing can be performed to generate the nucleotide sequences of the ends of the fragments, which are called **reads**. You will have the choice of sequencing a single end of the cDNA fragments (single-end reads) or both ends of the fragments (paired-end reads).
 
@@ -116,7 +107,7 @@ After preparation of the libraries, sequencing can be performed to generate the 
 
 Generally single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. Be aware that paired-end reads are generally 2x more expensive.
 
-### Different sequencing platforms
+## Different sequencing platforms
 
 There are a variety of Illumina platforms to choose from to sequence the cDNA libraries.
 
@@ -135,11 +126,11 @@ Differences in platform can alter the length of reads generated, the quality of 
 
  *Image credit: Adapted from [Illumina](www.illumina.com)*
  
-### Sequencing-by-synthesis 
+## Sequencing-by-synthesis 
 
 Illumina sequencing technology uses a sequencing-by-synthesis approach which is described in more detail below. 
 
-#### Cluster Generation
+### Cluster Generation
 
 The DNA fragments in the cDNA library are denatured and applied to the glass flow cell. These denatured fragments bind to the complementary oligos that are already covalently bound to the flow cell lanes, resulting in attachment. Once the fragments have attached, a phase called **cluster generation begins**. 
 
@@ -165,7 +156,7 @@ The process above is repeated many times to clonally amplify all unique fragment
 > **NOTE:** Keep in mind, this is happening for millions of fragments in parallel on the flow cell.
 
 
-#### Sequencing by synthesis (& image acquisition)
+### Sequencing by synthesis (& image acquisition)
 
 After cluster generation, fluorescently-tagged nucleotides are incorporated one at a time (cyclically) and fluorescence images are captured to identify which nucleotide gets incorporated into each cluster in each cycle.  
 
@@ -179,7 +170,7 @@ After cluster generation, fluorescently-tagged nucleotides are incorporated one 
 <img src="../img/sbs_image.png" width="500">
 </p>
 
-#### Base Calling
+### Base Calling
 
 Illumina has a proprietary software that goes through all the images captured in the previous stage and generates text files with sequence information about each cluster based on the levels of fluorescence observed. In addition to calling the bases, this software assigns a probablity score to indicate how certain it was about the calling something an "A", a "T", a "G" or a "C". 
 
@@ -199,9 +190,9 @@ The number of cycles (length of the reads) will depend on sequencing platform us
 > **NOTE**. If you want to explore sequencing by synthesis in more depth, we recommend this really nice animation [available on Illumina's YouTube channel](https://www.youtube.com/watch?v=fCd6B5HRaZ8).
 
 
-### Multiplexing
+## Multiplexing
 
-Depending on the Illumina platform (MiSeq, HiSeq, NextSeq), the number of lanes per flow cell, and the number of reads that can be obtained per lane varies widely. **You will need to decide on how many reads you would like per sample** (i.e. the sequencning depth) and then based on the platform you choose calculate how many total lanes you will require for your set of samples. We will talk more about considerations when making this decision in the next lesson on [Experimental Considerations](02_experimental_planning_considerations.md)
+Depending on the Illumina platform (MiSeq, HiSeq, NextSeq), the number of lanes per flow cell, and the number of reads that can be obtained per lane varies widely. **You will need to decide on how many reads you would like per sample** (i.e. the sequencning depth) and then based on the platform you choose calculate how many total lanes you will require for your set of samples. 
 
 
 Typically, charges for sequencing are per lane of the flow cell and you will be able to run multiple samples per lane. Illumina has therefore devised a nice multiplexing method which allows libraries from several samples to be pooled and sequenced simultaneously in the same lane of a flow cell. This method requires **the addition of indices** (within the Illumina adapter) or special barcodes (outside the Illumina adapter) as described in the schematic below.
