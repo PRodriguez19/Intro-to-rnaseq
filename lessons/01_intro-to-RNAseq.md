@@ -238,7 +238,7 @@ Your experiment has three different treatment groups, A, B, and C. Due to the le
 Another consideration is whether to generate strand-preserving libraries as libraries can be either stranded or unstranded. The implication of **stranded** libraries is that one could distinguish whether the reads are derived from the forward or reverse-endoded transcripts. 
 
 <p align="center">
- <img src="../img/strandedness.png" width="450">
+ <img src="../img/strandedness.png" width="800">
 </p>
 
 > Red = positive strand and Blue = negative strand 
