@@ -1,12 +1,10 @@
 ---
-title: "Experimental design considerations"
-author: "Mary Piper, Meeta Mistry, Radhika Khetani"
-date: "Thursday, June 20, 2019"
+Week: "4" 
+Lesson: "Experimental design considerations"
+Date: "Thursday, February 9, 2023"
 ---
 
-Approximate time: 50 minutes
-
-## Learning Objectives:
+# Learning Objectives:
 
 * Describe the importance of replicates for RNA-seq differential expression experiments
 * Explain the relationship between the number of biological replicates, sequencing depth and the differentially expressed genes identified
@@ -14,12 +12,12 @@ Approximate time: 50 minutes
 
 ## Experimental planning considerations
 
-Understanding the steps in the experimental process of RNA extraction and preparation of RNA-Seq libraries is helpful for designing an RNA-Seq experiment, but there are special considerations that should be highlighted that can greatly affect the quality of a differential expression analysis. 
+Understanding the steps in the experimental process of RNA extraction and preparation of RNA-Seq libraries is helpful for designing an RNA-Seq experiment and selecting a dataset to analyze. There are many considerations that should be highlighted which can greatly affect the quality of a differential expression analysis. 
 
 These important considerations include:
 
 1. Number and type of **replicates**
-2. Avoiding **confounding**
+2. Avoiding **confounding** variables
 3. Addressing **batch effects**
 
 We will go over each of these considerations in detail, discussing best practice and optimal design.
@@ -194,5 +192,7 @@ Your experiment has three different treatment groups, A, B, and C. Due to the le
   | sample11 | C | M | 3 |
   | sample12 | C | M | 4 |
 
-***    
-*This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.*
+***   
+## Citation 
+*This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.*  
+*Authors: Mary Piper, Meeta Mistry, Radhika Khetani*
