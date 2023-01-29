@@ -1,9 +1,5 @@
 # Introduction to RNA-seq 
 
-| Audience | Computational skills required | Duration |
-:----------|:----------|:----------|
-| UVM students | None | 4 weeks |
-
 ## Teaching Materials 
 This repository contains teaching materials from [hbctraining](https://github.com/hbctraining) but has been modified to support students enrolled in MMG232: Advanced Bioinformatics at the University of Vermont. The full citation for this work is provided below. 
 
