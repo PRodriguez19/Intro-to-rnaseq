@@ -4,7 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture4-MMG232.pdf) |
+| ~40 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture4-MMG232.pdf) |
 | ~20 mins| [Final Project Overview](../lectures/GuidelinesforFinalProject.pdf) | 
 
 ***
@@ -13,8 +13,8 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Accessing Public Data from GEO]| 
-| ~30 mins| [Submit a job using Slurm]| 
+| ~30 mins| [Accessing Public Data from GEO](../lessons/02_accessing_public_experimental_data.md)| 
+| ~30 mins| [Submit a job using Slurm](../lessons/02_job_submission_slurm.md)| 
 
 ***
 

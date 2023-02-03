@@ -73,11 +73,24 @@ So yes, technically - you can skip the processing steps and just proceed with us
 - It assumes you completely understand the bioinformatic pipeline used and that it is still acceptable to current standards 
 - You will be missing out on the experience to process the dataset yourself and troubleshoot as you go. This experience is very valuable for *bioinformaticians-in-training* and gives you a space to troubleshoot with someone. Don't waste it because this may be the only time you will have to work with someone through data processing. 
 
-> **NOTE:** The "Series Matrix" metadata file is a bit congested, and it may be easier accessing the metadata from the SRA instead as discussed later.
+> **NOTE:** The "Series Matrix" metadata file is a bit congested, and it may be easier accessing the metadata from the Sequence Read Archive(SRA) instead as discussed later.
 
 <img src="../img/mov10_download.png" width="600">
 
-# Downloading multiple SRRs
+# Downloading data from SRA 
+
+The Sequence Read Archive (SRA) is an archive for high throughput sequencing data, publically accessible, for the purpose of enhancing reproducibility in the scientific community.
+
+There are four hierarchical levels of SRA entities and their accessions:  
+
+1. **STUDY** with accessions in the form of SRP, ERP, or DRP  
+2. **SAMPLE** with accessions in the form of SRS, ERS, or DRS  
+3. **EXPERIMENT** with accessions in the form of SRX, ERX, or DRX  
+4. **RUN** with accessions in the form of SRR, ERR, or DRR
+
+The minimum publishable unit in the SRA, is an EXPERIMENT (SRX)
+
+<img src="../img/sra_structure_infograph.png" width="600">
 
 Since most studies include multiple samples and a high number of replicates, it is useful to know how to download all the sequencing runs from all samples in a study, without having to hunt down and type in individual SRR numbers one by one. Using the study accession number as previously shown, we can navigate to the summary page for the study. 
 
@@ -85,30 +98,50 @@ Since most studies include multiple samples and a high number of replicates, it 
 
 Towards the bottom of the page you will find a link for "SRA" under the heading "Relations".
 
-<img src="../img/sra_relations.png" width="600">
+<img src="../img/relations.png" width="600">
 
 Clicking on this link takes you to a page that lists all the biological samples for the study - each with a link to their specific runs and files. If we were only interested in one sample, we could follow the relevant link and find its runs. But generally we want the files for all samples and their replicates, and to find this in one comprehensive list, we use the **run selector**. Navigate to the bottom of the page and click "send to" and click the radio button for "run selector", and then press "go".
 
-<img src="../img/send_to_run_selector.png" width="600">
+<img src="../img/selector.png" width="600">
+
 
 ## Run selector
-You'll notice that the run selector has aggregated all the information for the study samples, including a table of metadata at the top, giving information on: **LibraryLayout** (whether the reads were sequenced using single or paired end sequencing), **Platform** (which sequencing technology was used) and other useful information that should be noted for downstream analysis.
+You'll notice that the run selector has aggregated all the information for the study samples, including a table of metadata at the top, giving information on: 
++ LibraryLayout - whether the reads were sequenced using single or paired end sequencing
++ Platform - which sequencing technology was used 
++ Organism 
++ Instrument 
++ Cell type/ tissue type
+... and other useful information that should be noted for downstream analysis.
 
-<img src="../img/run_table.png" width="600">
+<img src="../img/table.png" width="600">
 
-Below this there is also a summary line detailing the total number of runs in the study, and the option to download the RunInfoTable or Accession List, in text format. The RunInfoTable is a very useful text summary of all metadata for all runs in the study, and the Accession List is a list of all the SRR accession numbers for the study.
+Below this there is also a summary line detailing the total number of runs in the study. Let's pause here. Notice that every sample (ex. GSM1220262, GSM1220263, etc.) has two Run accession numbers associated with it. 
+
+<img src="../img/samples-found.png" width="600">
+
+Another way to view this:   
+<img src="../img/samplename_run.png" width="600">
+
+To fully understand what this means, we need to go back to the GEO page for this [sample](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1220262) and then navigate to the SRA page. Notice that these samples were submitted for sequencing twice. Therefore, for a single sample, there will be double the amount of sequencing files to process. 
+
+Next, let's download the RunInfoTable and Accession List in text format. The RunInfoTable is a very useful text summary of all metadata for all runs in the study, and the Accession List is a list of all the SRR accession numbers for the study.
 
 Also on this page is a listing of each run and the corresponding sample it came from, as well as its associated metadata. This table is useful in that each row is "clickable", which allows you to select a subset of runs that you may be interested in. You'll notice that clicking a subset of runs spawns a new download option - a RunInfoTable & Accession List that is only relevant to your chosen subset.
 
 Download the Accession list for the data you are interested in to your desktop. Then create a replicate of the Accession List on the VACC - call this file list_of_SRRs.txt
 
 ```bash
-mkdir GSE51443
+mkdir GSE50499
 
 cd /GSE51443  
 
 nano list_of_SRRs.txt   # paste into this new file and save
 ```
+
+## Download SRA-toolkit 
+
+## Set up bash-profile 
 
 ## Citation 
 
