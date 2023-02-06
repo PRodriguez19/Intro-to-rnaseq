@@ -131,17 +131,133 @@ Also on this page is a listing of each run and the corresponding sample it came 
 
 Download the Accession list for the data you are interested in to your desktop. Then create a replicate of the Accession List on the VACC - call this file list_of_SRRs.txt
 
-```bash
-mkdir GSE50499
-
-cd /GSE51443  
-
-nano list_of_SRRs.txt   # paste into this new file and save
-```
-
 ## Download SRA-toolkit 
 
-## Set up bash-profile 
+We will be installing SRA tookit using the instructions found (here)[https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit]. 
+1. Fetch the tar file for Ubuntu 
+
+```bash
+wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+```
+
+2. Extract the contents: 
+
+```bash
+tar -vxzf sratoolkit.tar.gz
+```
+
+3. Add the PATH to environment variable 
+
+```bash
+export PATH=$PATH:$PWD/sratoolkit.3.0.0-mac64/bin
+```
+
+4. Verify the binaries will be found by the shell:
+
+```bash
+which fastq-dump
+```
+
+The result should produce an output similar to:
+
+```
+/Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
+```
+5. Test that the toolkit if functional
+
+```
+fastq-dump --stdout -X 2 SRR390728
+```
+
+Within a few seconds, the command should produce this exact output: 
+
+```
+Read 2 spots for SRR390728
+Written 2 spots for SRR390728
+@SRR390728.1 1 length=72
+CATTCTTCACGTAGTTCTCGAGCCTTGGTTTTCAGCGATGGAGAATGACTTTGACAAGCTGAGAGAAGNTNC
++SRR390728.1 1 length=72
+;;;;;;;;;;;;;;;;;;;;;;;;;;;9;;665142;;;;;;;;;;;;;;;;;;;;;;;;;;;;;96&&&&(
+@SRR390728.2 2 length=72
+AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
++SRR390728.2 2 length=72
+;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262
+```
+
+## Using SRA-toolkit to download multiple SRR files 
+Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel, the people at Harvard wrote a two scripts to do this for you. The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
+
+```bash
+nano sra_fqdump.sh
+```
+```bash
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --mem=50G
+#SBATCH --time=30:00:00
+#SBATCH --job-name=fastq 
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+
+#while there are lines in the list of SRRs file
+while read p
+do
+#call the bash script that does the fastq dump, passing it the SRR number next $
+sbatch inner_script.sh $p
+done <list_of_SRRs.txt
+```
+The script that is called inside the loop (inner_script.sh) is the one that takes the given SRR number and runs fastq-dump on it:
+
+```bash
+nano inner_script.sh
+```
+
+```bash
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --mem=50G
+#SBATCH --time=30:00:00
+#SBATCH --job-name=fastq
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+
+#for single end reads only
+fastq-dump --gzip $1
+```
+
+In this way (by calling a script within a script) we will start a new job for each SRR download, and in this way download all the files at once in parallel -- much quicker than if we had to wait for each one to run sequentially. To run the main script:
+
+```bash
+sbatch sra_fqdump.sh
+```
+
+#Paired end files
+An important thing to note before you start the download of your files, is the **LibraryLayout** information (found in the RunInfoTable) - ie: whether your data is single or paired end. Unlike the standard format for paired end data, where we normally find two fastq files labelled as sample1_001.fastq and sample1_002.fastq, SRR files can be very misleading in that even paired end reads are found in one single file, with sequence pairs concatenated alongside each other. Because of this format, paired files need to be split at the download step. SRA toolkit has an option for this called "--split-files". By using this, one single SRR file will download as SRRxxx_1.fastq and SRRxxx_2.fastq.
+
+Furthermore, there is a very helpful improvement on this function called "--split-3" which splits your SRR into 3 files: one for read 1, one for read 2, and one for any orphan reads (ie: reads that aren't present in both files). This is important for downstream analysis, as some aligners require your paired reads to be in sync (ie: present in each file at the same line number) and orphan reads can throw this order off. Change the inner_script.sh as follows if your reads are paired end:
+
+```bash
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --mem=50G
+#SBATCH --time=30:00:00
+#SBATCH --job-name=fastq
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+
+#splits paired read sra files into two normal fastq files plus a third for any orphaned reads, to keep paired files in sync
+fastq-dump --split-3  $1
+```
+
+#Bypassing storage issues
+Another important consideration when downloading large datasets to the server, is the maximum storage limit in your location. If you are downloading files to your home directory, the maximum allowed storage is 100GB. This can be a problem when downloading tens or hundreds of fastq files, as SRA-toolkit does not download the fastq files directly but writes an intermediate (equally large) cache file first, which is not removed. Because of this, you may run into storage errors very quickly, and will notice your files not downloading completely, and storage errors writing to your run.e error file. If this is the case, the scratch space on O2 (/n/scratch2) is a location with much greater storage (12TB limit), and a better place to run large downloads. 
+
 
 ## Citation 
 
