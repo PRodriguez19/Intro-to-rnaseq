@@ -14,14 +14,6 @@ This repository has teaching materials for an Introduction to RNA-sequencing dat
 
 ## To begin: Click on Class schedule 
 * [Class schedule](schedule/) 
-
-## Installation Requirements
-
-***All:***
-
-* [FileZilla Client](https://filezilla-project.org/download.php?type=client) (make sure you get ‘FileZilla Client')
-
-
 ---
 
 ### Citation
