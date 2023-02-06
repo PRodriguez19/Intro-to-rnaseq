@@ -69,8 +69,6 @@
 | ~30 mins| [Troubleshooting Data Analysis]| 
 
 *** 
-We will treat March 6th - 10th as a course catch up week 
-
 ## Tuesday, March 7th  
 **No class**
 
@@ -81,7 +79,7 @@ Course catch-up
 
 ### Homework Assignment 9: Alignment stats (150 points) - DUE MARCH 10th  
 
-## Primary article research summary  
+### Primary article research summary  
 Due: March 31st   
 Worth 10% of your final grade in course 
 
