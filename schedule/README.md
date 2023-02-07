@@ -4,7 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~5 mins| [General Overview Unit 2| 
+| ~5 mins| General Overview Unit 2| 
 | ~20 mins| [Final Project Overview](../lectures/GuidelinesforFinalProject.pdf) | 
 | ~40 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture4-MMG232.pdf) |
 
@@ -42,7 +42,7 @@
 | ~30 mins| [Obtaining a Reference Genome or Transcriptiome]| 
 | ~30 mins| [Alignment: HiSAT2]| 
 
-### Homework Assignment 7: Selection of NGS dataset (100 points)
+### Homework Assignment 7: Selection of NGS dataset (80 points)
 ***
 
 ## Thursday, February 23rd 
@@ -77,7 +77,8 @@
 ## Thursday, March 9th  
 Course catch-up 
 
-### Homework Assignment 9: Alignment stats (150 points) - DUE MARCH 10th  
+### Homework Assignment 9: Alignment stats & Interpretation (150 points) - due March 10th  
+- Sometime before you leave Spring Break 
 
 ### Primary article research summary  
 Due: March 31st   
