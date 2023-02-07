@@ -24,23 +24,23 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------|
-| ~20 mins| [Conda Install]| 
-| ~40 mins| [Data Management]| 
+| ~20 mins| [Conda Install] | 
+| ~40 mins| [Data Management] | 
 
 ***
 ## Thursday, February 16th 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [FASTQC]| 
-| ~30 mins| [Trimmomatic]| 
+| ~30 mins| [FASTQC] | 
+| ~30 mins| [Trimmomatic] | 
 
 ***
 
 ## Tuesday, February 21st 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Obtaining a Reference Genome or Transcriptiome]| 
-| ~30 mins| [Alignment: HiSAT2]| 
+| ~30 mins| [Obtaining a Reference Genome or Transcriptiome] | 
+| ~30 mins| [Alignment: HiSAT2] | 
 
 ### Homework Assignment 7: Selection of NGS dataset (80 points)
 ***
@@ -48,15 +48,15 @@
 ## Thursday, February 23rd 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Alignment: STAR]| 
-| ~30 mins| [Alignment Stats & Interpretation]| 
+| ~30 mins| [Alignment: STAR] | 
+| ~30 mins| [Alignment Stats & Interpretation] | 
 
 ***
 
 ## Tuesday, February 28th  
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins | [BAM to count]| 
+| ~30 mins | [BAM to count] | 
 | ~30 mins | [BAM to BIGWIG] | 
 
 ### Homework Assignment 8: FASTQC & Interpretation (100 points)
@@ -65,8 +65,8 @@
 ## Thursday, March 2nd 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Integrative Genome Browser (IGV)]| 
-| ~30 mins| [Troubleshooting Data Analysis]| 
+| ~30 mins| [Integrative Genome Browser (IGV)] | 
+| ~30 mins| [Troubleshooting Data Analysis] | 
 
 *** 
 ## Tuesday, March 7th  
