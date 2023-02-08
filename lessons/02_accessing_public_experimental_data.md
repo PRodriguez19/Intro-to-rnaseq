@@ -283,7 +283,13 @@ fastq-dump <inputfile>
 ```
 
 ## Using SRA-toolkit to download multiple SRR files 
-Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel. Lucky for us, the people at Harvard wrote a two scripts to do this for us. The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
+Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel. Lucky for us, the people at Harvard wrote a two scripts to do this for us. These scripts are located here: 
+ 
+```
+cp -r /gpfs1/cl/mmg232/course_materials/download_from_SRA .
+```
+
+The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
 
 ```bash
 nano sra_fqdump.sh
