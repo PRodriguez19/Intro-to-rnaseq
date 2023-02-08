@@ -135,9 +135,9 @@ Download the Accession list for the data you are interested in to your desktop. 
 
 We will be installing SRA tookit using the instructions found [here](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit). 
 
-1. Make a directory in your VACC account and call is `software` 
+1. Make a directory in your VACC account and call is `software`   
 
-2. Next, you will retrieving the program package sratoolkit using the wget command. Be sure to download this package WITHIN your software directory. 
+2. Next, you will retrieving the program package sratoolkit using the wget command. Be sure to download this package WITHIN your software directory.   
 
 ```
 wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
@@ -147,7 +147,7 @@ The result should produce an output similar to:
 
 
 
-3. The contents within this file need to be extracted. Notice the .tar.gz extension. This TAR is used to package files together for distribution or backup purposes. 
+3. The contents within this file need to be extracted. Notice the .tar.gz extension. This TAR is used to package files together for distribution or backup purposes.   
 
 ```bash
 tar -vxzf sratoolkit.tar.gz
@@ -156,7 +156,7 @@ The result should produce an output similar to:
 <img src="../img/tar-sratools.png" width="600">
 
 
-4. Add the PATH to environment variable. This is a multi-part step. 
+4. Add the PATH to environment variable. This is a multi-part step.   
 
 ```
 nano .bash_profile
@@ -175,7 +175,7 @@ To make sure your changes take place now perform the following:
 source .bash_profile
 ```
 
-5. Verify the binaries will be found by the shell:
+5. Verify the binaries will be found by the shell:  
 
 ```bash
 which fastq-dump
@@ -186,7 +186,7 @@ The result should produce an output similar to:
 ```
 /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
 ```
-6. Test that the toolkit if functional
+6. Test that the toolkit if functional  
 
 ```
 fastq-dump --stdout -X 2 SRR390728
