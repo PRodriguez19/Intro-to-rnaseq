@@ -142,22 +142,35 @@ We will be installing SRA tookit using the instructions found [here](https://git
 ```
 wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
 ```
-<img src="../img/wget-sratools.png" width="600">
+The result should produce an output similar to:  
+<img src="../img/wget-sratools.png" width="600">  
+
+
 
 3. The contents within this file need to be extracted. Notice the .tar.gz extension. This TAR is used to package files together for distribution or backup purposes. 
 
 ```bash
 tar -vxzf sratoolkit.tar.gz
 ```
+The result should produce an output similar to:  
 <img src="../img/tar-sratools.png" width="600">
 
 
-4. Add the PATH to environment variable. 
+4. Add the PATH to environment variable. This is a multi-part step. 
 
+```
+nano .bash_profile
+```
+Within your bash profile add the path to the `bin` folder for sratoolkit. Below is showing the entire PATH for MY account - yours will have YOUR user name. After you add the PATH, then save. 
 ```bash
 export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
 ```
 <img src="../img/bash-sratools.png" width="600">
+
+To make sure your changes take place now perform the following: 
+```
+source .bash_profile
+```
 
 5. Verify the binaries will be found by the shell:
 
@@ -170,7 +183,7 @@ The result should produce an output similar to:
 ```
 /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
 ```
-5. Test that the toolkit if functional
+6. Test that the toolkit if functional
 
 ```
 fastq-dump --stdout -X 2 SRR390728
