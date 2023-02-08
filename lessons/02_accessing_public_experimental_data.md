@@ -135,11 +135,11 @@ Download the Accession list for the data you are interested in to your desktop. 
 
 We will be installing SRA tookit using the instructions found [here](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit). 
 
-1. Make a directory and call is software 
+1. Make a directory in your VACC account and call is `software` 
 
 2. Next, you will retrieving the program package sratoolkit using the wget command. Be sure to download this package WITHIN your software directory. 
 
-```bash
+```
 wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
 ```
 <img src="../img/wget-sratools.png" width="600">
