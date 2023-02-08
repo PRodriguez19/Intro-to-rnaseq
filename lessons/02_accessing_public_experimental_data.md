@@ -139,9 +139,9 @@ We will be installing SRA tookit using the instructions found [here](https://git
 
 2. Next, you will retrieving the program package sratoolkit using the wget command. Be sure to download this package WITHIN your software directory.   
 
-```
-wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
-```
+    ```
+    wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+    ```
 The result should produce an output similar to:  
 <img src="../img/wget-sratools.png" width="600">  
 
@@ -149,63 +149,64 @@ The result should produce an output similar to:
 
 3. The contents within this file need to be extracted. Notice the .tar.gz extension. This TAR is used to package files together for distribution or backup purposes.   
 
-```bash
-tar -vxzf sratoolkit.tar.gz
-```
+    ```bash
+    tar -vxzf sratoolkit.tar.gz
+    ```
 The result should produce an output similar to:  
 <img src="../img/tar-sratools.png" width="600">
 
 
 4. Add the PATH to environment variable. This is a multi-part step.   
 
-```
-nano .bash_profile
-```
+    ```
+    nano .bash_profile
+    ```
+
 Within your bash profile add the path to the `bin` folder for `sratoolkit.3.0.1-ubuntu64`. Below is showing the entire PATH for MY account - yours will have YOUR user name. After you add the PATH, then save. 
 
-```bash
-export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
-```
+    ```bash
+    export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
+    ```
 
 <img src="../img/bash-sratools.png" width="600">
 
 To make sure your changes take place now perform the following: 
 
-```
-source .bash_profile
-```
+    ```
+    source .bash_profile
+    ```
 
 5. Verify the binaries will be found by the shell:  
 
-```bash
-which fastq-dump
-```
+    ```bash
+    which fastq-dump
+    ```
 
 The result should produce an output similar to:
 
-```
-/Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
-```
+    ```
+    /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
+    ```
 6. Test that the toolkit if functional  
 
-```
-fastq-dump --stdout -X 2 SRR390728
-```
+    ```
+    fastq-dump --stdout -X 2 SRR390728
+    ```
 
 Within a few seconds, the command should produce this exact output: 
 
-```
-Read 2 spots for SRR390728
-Written 2 spots for SRR390728
-@SRR390728.1 1 length=72
-CATTCTTCACGTAGTTCTCGAGCCTTGGTTTTCAGCGATGGAGAATGACTTTGACAAGCTGAGAGAAGNTNC
-+SRR390728.1 1 length=72
-;;;;;;;;;;;;;;;;;;;;;;;;;;;9;;665142;;;;;;;;;;;;;;;;;;;;;;;;;;;;;96&&&&(
-@SRR390728.2 2 length=72
-AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
-+SRR390728.2 2 length=72
-;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262
-```
+    ```
+    Read 2 spots for SRR390728
+    Written 2 spots for SRR390728
+    @SRR390728.1 1 length=72
+    CATTCTTCACGTAGTTCTCGAGCCTTGGTTTTCAGCGATGGAGAATGACTTTGACAAGCTGAGAGAAGNTNC
+    +SRR390728.1 1 length=72
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;9;;665142;;;;;;;;;;;;;;;;;;;;;;;;;;;;;96&&&&(
+    @SRR390728.2 2 length=72
+    AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
+    +SRR390728.2 2 length=72
+    ;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262
+    ```
 
 ## Using SRA-toolkit to download multiple SRR files 
 Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel, the people at Harvard wrote a two scripts to do this for you. The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
