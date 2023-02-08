@@ -162,16 +162,16 @@ The result should produce an output similar to:
     nano .bash_profile
     ```
 
-Within your bash profile add the path to the `bin` folder for `sratoolkit.3.0.1-ubuntu64`. Below is showing the entire PATH for MY account - yours will have YOUR user name. After you add the PATH, then save.  
+Now that you have accessed your bash profile, add the path to the `bin` folder for `sratoolkit.3.0.1-ubuntu64`. Below is showing the entire PATH for **MY account** - yours will have **YOUR user name.** After you add the PATH, then save.  
 
     ```
     export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
     ```
 
-
+The result should produce an output similar to:  
 <img src="../img/bash-sratools.png" width="600">
 
-To make sure your changes take place now perform the following: 
+To make sure your changes take place, perform the following: 
 
     ```
     source .bash_profile
@@ -210,8 +210,80 @@ Within a few seconds, the command should produce this exact output:
     ;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262
     ```
 
+## Environment Variables
+
+Environment variables are, in short, variables that describe the environment in which programs run, and they are predefined for a given computer or cluster that you are on. You can reset them to customize the environment. 
+
+In this lesson, we are going to focus on two most commonly encountered environment variables: `$HOME` and `$PATH`.
+
+* `$HOME` defines the full path for the home directory of a given user.
+* `$PATH` defines a list of directories to search in when looking for a command/program to execute.
+
+Environment variables, in most systems, are called or denoted with a "$" before the variable name, just like a regular variable. Let's use the `echo` command to see what is stored in `$HOME`:
+
+```bash
+echo $HOME
+```
+
+You should see the path to your home directory. `$HOME` can be used instead of the `~` (if you want to type 4 more characters).
+
+
+`$HOME` is pretty straightforward, how about we take a look at what is stored in the `$PATH` variable:
+
+```bash
+echo $PATH
+
+/users/m/m/mmg232in/miniconda3/condabin:/gpfs1/arch/spack-0.14.2/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/var/cfengine/bin:/usr/lpp/mmfs/bin:/opt/env-switcher/bin:/users/m/m/mmg232in/.local/bin:/users/m/m/mmg232in/bin:/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin
+```
+This output is a lot more complex! Let's break it down. When you look closely at the output of `echo $PATH`, you should a list of full paths separated from each other by a ":". 
+
+Here is the list of paths in a more readable format:
+* `miniconda3/condabin`
+* `/local/sbin`
+* `/cfengine/bin`
+* `/env-switcher/bin`
+* `/usr/local/rvm/rubies/ruby-2.4.9/bin`
+* `sratoolkit.3.0.1-ubuntu64/bin`
+
+Each of these paths are referring to a directory, in this case a lot of them are named `bin`. 
+
+### What are all these paths? And what do they represent?
+
+These are the directories that the shell will look through (in the same order as they are listed) for any given command or executable file that you type on the command prompt.
+
+**The path `/usr/bin` is usually where executables for commonly used commands are stored.**
+
+> As pointed out earlier, a lot of the folders listed in the `$PATH` variable are called `bin`. This is because of a convention in Unix to call directories that contain all the commands (in ***binary*** format) **`bin`**.
+
+***
+
+#### Modifying Environment Variables
+
+You can modify the contents of the `$PATH` environment variable with the `export` command. 
+
+The `export` command:
+* Example `export PATH=$PATH:~/opt/bin` (**do not run this**)
+* The arguments or **input to `export` should always include `$PATH`**
+  * This specifies that you want to maintain the existing contents.
+  
+This is often used to add paths to a directory with commands you commonly want to use. 
+
+Let's say you often use the `fastq-dump`  
+
+Without setting up your environmental variable, every time you want to run this tool you will need to type the following:
+
+```bash 
+/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin/fastq-dump <inputfile>
+```
+
+However, if `/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin` is part of the `$PATH` variable you can instead just type:
+
+```bash
+fastq-dump <inputfile>
+```
+
 ## Using SRA-toolkit to download multiple SRR files 
-Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel, the people at Harvard wrote a two scripts to do this for you. The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
+Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel. Lucky for us, the people at Harvard wrote a two scripts to do this for us. The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
 
 ```bash
 nano sra_fqdump.sh
