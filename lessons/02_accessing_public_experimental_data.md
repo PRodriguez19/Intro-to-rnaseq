@@ -161,13 +161,16 @@ The result should produce an output similar to:
 ```
 nano .bash_profile
 ```
-Within your bash profile add the path to the `bin` folder for sratoolkit. Below is showing the entire PATH for MY account - yours will have YOUR user name. After you add the PATH, then save. 
+Within your bash profile add the path to the `bin` folder for `sratoolkit.3.0.1-ubuntu64`. Below is showing the entire PATH for MY account - yours will have YOUR user name. After you add the PATH, then save. 
+
 ```bash
 export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
 ```
+
 <img src="../img/bash-sratools.png" width="600">
 
 To make sure your changes take place now perform the following: 
+
 ```
 source .bash_profile
 ```
