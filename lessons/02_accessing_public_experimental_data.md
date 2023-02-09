@@ -189,7 +189,32 @@ The result should produce an output similar to:
     ```
     /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
     ```
-6. Test that the toolkit if functional  
+6. Configure sratoolkit. This is a multi-part step 
+
+    ```
+    cd ~
+    cd scratch/
+    mkdir tmp
+    ```
+Navigate back to sratoolkit.3.0.0-mac64/bin:
+
+    ```
+    vdb-config -i
+    ```
+Use Tab to navigate around 
+MAIN
+[X] Enable Remote Access
+
+hit return to move into `CACHE`
+CACHE
+
+location of user-repository - hit `o`. Navigate to the `tmp` directory hit Ok
+<img src="../img/config.png" width="600">
+
+Then save changes 
+<img src="../img/config2.png" width="600">
+
+7. Test that the toolkit if functional  
 
     ```
     fastq-dump --stdout -X 2 SRR390728
