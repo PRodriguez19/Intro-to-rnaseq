@@ -208,11 +208,11 @@ MAIN
 hit return to move into `CACHE`
 CACHE
 
-location of user-repository - hit `o`. Navigate to the `tmp` directory hit Ok
-<img src="../img/config.png" width="600">
+location of user-repository - hit `o`. Navigate to the `tmp` directory hit Ok  
+<img src="../img/config.png" width="600">  
 
-Then save changes 
-<img src="../img/config2.png" width="600">
+Then save changes   
+<img src="../img/config2.png" width="600">  
 
 7. Test that the toolkit if functional  
 
