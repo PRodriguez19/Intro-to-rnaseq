@@ -188,7 +188,8 @@ The result should produce an output similar to:
 
     ```
     /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
-    ```
+    ```  
+
 6. Configure sratoolkit. This is a multi-part step 
 
     ```
