@@ -206,9 +206,7 @@ Use Tab to navigate around
 MAIN
 [X] Enable Remote Access
 
-hit return to move into `CACHE`
-CACHE
-
+hit return to move into `CACHE` 
 location of user-repository - hit `o`. Navigate to the `tmp` directory hit Ok  
 <img src="../img/config.png" width="600">  
 
