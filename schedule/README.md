@@ -26,8 +26,9 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------|
-| ~20 mins| [Conda Install] | 
-| ~40 mins| [Data Management] | 
+| ~20 mins| [Recap from last week] | 
+| ~20 mins| [Conda Install](../lessons/03_InstallConda.md) | 
+| ~20 mins| [Data Management](../lessons/03_data_organization.md) | 
 
 ***
 ## Thursday, February 16th 
