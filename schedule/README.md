@@ -30,7 +30,7 @@
 | ~10 mins| [Conda Install](../lessons/03_InstallConda.md) | 
 | ~10 mins| [Data Management](../lessons/03_data_organization.md) | 
 
-For Homework Assignment #7
+For Homework Assignment #7   
 [HTS_GEO_submission_template](../materials/HTS_GEO_submission_template.xlsx)
 
 ***
