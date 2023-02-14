@@ -26,9 +26,12 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------|
-| ~20 mins| [Recap from last week] | 
-| ~20 mins| [Conda Install](../lessons/03_InstallConda.md) | 
-| ~20 mins| [Data Management](../lessons/03_data_organization.md) | 
+| ~40 mins| [Course Recap](../lectures/Lecture6-MMG232.pdf) | 
+| ~10 mins| [Conda Install](../lessons/03_InstallConda.md) | 
+| ~10 mins| [Data Management](../lessons/03_data_organization.md) | 
+
+For Homework Assignment #7
+[HTS_GEO_submission_template](../materials/HTS_GEO_submission_template.xlsx)
 
 ***
 ## Thursday, February 16th 
@@ -45,7 +48,7 @@
 | ~30 mins| [Obtaining a reference genome] | 
 | ~30 mins| [Alignment: HISAT2 ] | 
 
-### Homework Assignment 7: Selection of NGS dataset (80 points)
+
 ***
 
 ## Thursday, February 23rd 
@@ -54,6 +57,7 @@
 | ~30 mins| [Alignment: Stats & interpretation] | 
 | ~30 mins| [Alignment: STAR] | 
 
+### Homework Assignment 7: Selection of NGS dataset (~100 points)
 ***
 
 ## Tuesday, February 28th  
