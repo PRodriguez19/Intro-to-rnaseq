@@ -37,8 +37,8 @@ For Homework Assignment #7
 ## Thursday, February 16th 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [FASTQC ] | 
-| ~30 mins| [Trimmomatic ] | 
+| ~30 mins| [FASTQC](../lessons/04_running_fastqc.md) | 
+| ~30 mins| [Trimmomatic] | 
 
 ***
 
@@ -57,7 +57,7 @@ For Homework Assignment #7
 | ~30 mins| [Alignment: Stats & interpretation] | 
 | ~30 mins| [Alignment: STAR] | 
 
-### Homework Assignment 7: Selection of NGS dataset (~100 points)
+### Homework Assignment 7: Selection of NGS dataset (120 points)
 ***
 
 ## Tuesday, February 28th  
@@ -66,7 +66,6 @@ For Homework Assignment #7
 | ~30 mins| [BAM to count] | 
 | ~30 mins| [BAM to BIGWIG] |
 
-### Homework Assignment 8: FASTQC & Interpretation (100 points)
 ***
 
 ## Thursday, March 2nd 
@@ -74,6 +73,8 @@ For Homework Assignment #7
 |:-----------:|:----------| 
 | ~30 mins| [Integrative Genome Browser (IGV)] | 
 | ~30 mins| [Troubleshooting Data Analysis] |
+
+### Homework Assignment 8: FASTQC & Interpretation (100 points)
 
 *** 
 ## Tuesday, March 7th  
