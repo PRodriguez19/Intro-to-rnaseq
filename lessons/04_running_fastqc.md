@@ -9,16 +9,17 @@ Date: "Thrusday, February 16th, 2023"
 * Describe the contents and format of a FASTQ file
 * Create a quality report using FASTQC
 * Understand and use the environmental module system provided by the VACC 
-* Create and run a SLURM job submission script to automate quality assessment
+* Create and a script to automate FASTQC on multiple files 
  
 # Quality Control of FASTQ files
 
-
-The first step in the RNA-Seq workflow is to take the FASTQ files received from the sequencing facility and assess the quality of the sequence reads. 
+When working with high-throughput sequencing data, the raw reads you get off the sequencer will need to pass through a number of different tools in order to generate the final output. The first step in the RNA-Seq pipeline is to assess the quality of the sequence reads retrieved from the sequencing facility. 
 
 <p align="center">
 <img src="../img/rnaseq_salmon_workflow.png" width="400">
 </p>
+
+
 
 ## Unmapped read data (FASTQ)
 

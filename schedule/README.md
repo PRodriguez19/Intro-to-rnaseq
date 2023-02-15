@@ -27,7 +27,6 @@
 | Time |  Topic  |  
 |:-----------:|:----------|
 | ~40 mins| [Course Recap](../lectures/Lecture6-MMG232.pdf) | 
-| ~10 mins| [Conda Install](../lessons/03_InstallConda.md) | 
 | ~10 mins| [Data Management](../lessons/03_data_organization.md) | 
 
 For Homework Assignment #7   
@@ -38,8 +37,9 @@ For Homework Assignment #7
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~20 mins| [FASTQC](../lessons/04_running_fastqc.md) | 
-| ~30 mins| [Assess FASTQC outputs](../lessons/04_assessing_fastqc_output.md)| 
-| ~30 mins| [Trimmomatic] | 
+| ~20 mins| [Assess FASTQC outputs](../lessons/04_assessing_fastqc_output.md)| 
+| ~10 mins| [Conda Install](../lessons/03_InstallConda.md) | 
+| ~10 mins| MultiQC Report Generation | 
 
 ***
 
