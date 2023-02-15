@@ -38,8 +38,7 @@ For Homework Assignment #7
 |:-----------:|:----------| 
 | ~20 mins| [FASTQC](../lessons/04_running_fastqc.md) | 
 | ~20 mins| [Assess FASTQC outputs](../lessons/04_assessing_fastqc_output.md)| 
-| ~10 mins| [Conda Install](../lessons/03_InstallConda.md) | 
-| ~10 mins| MultiQC Report Generation | 
+| ~20 mins| [Conda Install](../lessons/03_InstallConda.md) | 
 
 ***
 
