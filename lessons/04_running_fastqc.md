@@ -102,7 +102,7 @@ Environmental Modules provide a convenient way for VACC users to load and unload
 Change directories to `raw_data`.
 
 ```bash
-$ cd ~/rnaseq/raw_data
+cd raw_data
 ```  
 
 Before we start using software, we have to load the module for each tool. 
@@ -110,92 +110,40 @@ Before we start using software, we have to load the module for each tool.
 If we check which modules we currently have loaded, we should not see FastQC.
 
 ```bash
-$ module list
+module list
 ```
 
-This is because the FastQC program is not in our $PATH (i.e. it's not in a directory that shell will automatically check to run commands/programs).
+Let's load fastqc 
 
 ```bash
-$ echo $PATH
-```
-
-To run the FastQC program, we first need to load the appropriate module, so it puts the program into our path. To find the FastQC module to load we need to search the versions available:
-
-```bash
-$ module spider fastqc
-```
-
-Once we know which version we want to use (0.11.3), we can load the FastQC module:
-
-```bash
-$ module load fastqc-0.11.7-gcc-7.3.0-vcaesw7
+module load fastqc-0.11.7-gcc-7.3.0-vcaesw7
 ```
 
 Once a module for a tool is loaded, you have essentially made it directly available to you like any other basic shell command.
 
 ```bash
-$ module list
-
-$ echo $PATH
+module list
 ```
 
 Now, let's create a directory to store the output of FastQC:
 
 ```bash
-$ mkdir ~/rnaseq/results/fastqc
+mkdir fastqc
 ```
 
 We will need to specify this directory in the command to run FastQC. How do we know which argument to use?
 
 ```bash
-$ fastqc --help
+fastqc --help
 ```
 
-> **NOTE:** From the help manual, we know that `-o` (or `--outdir`) will create all output files in the specified output directory. Note that another argument, `-t`, specifies the number of files which can be processed simultaneously. We will use `-t` argument later. You may explore other arguments as well based on your needs.
+> **NOTE:** From the help manual, we know that `-o` (or `--outdir`) will create all output files in the specified output directory.
 
 FastQC will accept multiple file names as input, so we can use the `*.fq` wildcard.
 
 ```bash
-$ fastqc -o ~/rnaseq/results/fastqc/ *.fq
+$ fastqc -o fastqc/ *.fq
 ```
-
-*Did you notice how each file was processed serially? How do we speed this up?*
-
-FastQC has the capability of splitting up a single process to run on multiple cores! To do this, we will need to specify an additional argument `-t` indicating number of cores. We will also need to exit the current interactive session, since we started this interactive session with only 1 core. We cannot have a tool to use more cores than requested on a compute node. 
-
-Exit the interactive session and start a new one with 6 cores:
-
-```bash
-$ exit  #exit the current interactive session (you will be back on a login node)
-
-$ srun --pty -c 6 -p interactive -t 0-3:00 --mem 2G --reservation=HBC1 /bin/bash  #start a new one with 6 cores (-c 6) and 2GB RAM (--mem 2G)
-```
-
-Once you are on the compute node, check what job(s) you have running and what resources you are using.
-
-```bash
-$ O2squeue
-```
-
-Now that we are in a new interactive session with the appropriate resources, we will need to load the module again for this new session.
-
-```bash
-$ module load fastqc/0.11.3  #reload the module for the new (6-core) interactive session
-```
-
-We will also move into the `raw_data` directory (remember we are on a new compute node now):
-
-```bash
-$ cd ~/rnaseq/raw_data
-```
-
-Run FastQC and use the multi-threading functionality of FastQC to run 6 jobs at once (with an additional argument `-t`).
-
-```bash
-$ fastqc -o ~/rnaseq/results/fastqc/ -t 6 *.fq  #note the extra parameter we specified for 6 threads
-```
-
-*Do you notice a difference? Is there anything in the ouput that suggests this is no longer running serially?*
 
 ---
 *This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.*
