@@ -212,7 +212,7 @@ fastqc -o ~/raw_fastq/fastqc/ -t 6 *.fq
 
 > **NOTE:** These are the same commands we used when running FASTQC in the interactive session. Since we are writing them in a script, the `tab` completion function will **not work**, so please make sure you don't have any typos when writing the script!
 
-Once done with your script, click `esc` to exit the INSERT mode. Then save and quit the script by typing `:wq`. You may double check your script by typing `less mov10_fastqc.run`. If everything looks good submit the job!
+Once everything looks good submit the job!
 
 ```bash
 $ sbatch fastqc.sh
