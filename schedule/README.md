@@ -25,7 +25,7 @@
 ## Tuesday, February 14th 
 
 | Time |  Topic  |  
-|:-----------:|:----------|
+|:-----------:|:----------| 
 | ~40 mins| [Course Recap](../lectures/Lecture6-MMG232.pdf) | 
 | ~10 mins| [Data Management](../lessons/03_data_organization.md) | 
 
@@ -34,8 +34,8 @@ For Homework Assignment #7
 
 ***
 ## Thursday, February 16th 
-| Time |  Topic  |
-|:-----------:|:---------------|
+| Time |  Topic  |  
+|:-----------:|:---------------| 
 | ~30 mins| [FASTQC lecture](../lectures/Lecture7-MMG232.pdf) |
 | ~10 mins| [FASTQC](../lessons/04_running_fastqc.md) |
 | ~10 mins| [Assess FASTQC](../lessons/04_assessing_fastqc_output.md) |
