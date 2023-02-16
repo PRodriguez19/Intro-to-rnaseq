@@ -13,7 +13,7 @@ Date: "Thrusday, February 16th, 2023"
 For each individual FASTQ file that is input to FastQC, there are **two output files that are generated**. 
    
 ```bash
-$ ls -lh ~/rnaseq/results/fastqc/
+ls -lh ~/rnaseq/results/fastqc/
 ```
 
 1. The first is **an HTML file** which is a self-contained document with various graphs embedded into it. Each of the graphs evaluate different quality aspects of our data, we will discuss in more detail in this lesson. 
@@ -21,6 +21,8 @@ $ ls -lh ~/rnaseq/results/fastqc/
 
 
 ## Viewing the HTML report
+1. Filezilla 
+2. RStudio via VACC-OOD 
 
 ## Interpreting the HTML report
 

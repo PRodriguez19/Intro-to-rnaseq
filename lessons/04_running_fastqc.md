@@ -79,7 +79,7 @@ FastQC does the following:
 # Run FastQC  
 
 ## Environmental Module System 
-We would like to run the FastQC tool on four files. However, if we were to run the following `fastqc` command now we would retrieve the following error:
+We would like to run the FastQC tool on fastq files in the raw_fastq directory. However, if we were to run the following `fastqc` command now we would retrieve the following error:
 
 ```
 fastqc --help
@@ -148,25 +148,22 @@ fastqc -o fastqc/ *.fq
 
 
 ### Performing quality assessment using job submission scripts
-So far in our FASTQC analysis, we have been directly submitting commands to VACC using an interactive session. However, there are many partitions available, than just the interactive partition. We can submit a command or series of commands to these partitions using job submission scripts. 
+So far in our FASTQC analysis, we have been directly submitting commands to VACC using an interactive session. However, we are only running fastqc on one chromosome not the entire genome. Other larger fastq files will take a lot longer to run through FASTQC. 
 
 Submission of the script using the `sbatch` command allows Slurm to run your job when its your turn. Let's create a job submission script to automate this process: 
 
 Our script will do the following:
 
-1. Change directories to where the FASTQ files are located
-2. Load the FastQC module
-3. Run FastQC on all of our FASTQ files
+1. Load the FastQC module
+2. Run FastQC on all of our FASTQ files
 
-Let's first change the directory to `~/rnaseq/scripts`, and create a script named `mov10_fastqc.run` using `nano`.
+Let's first create a script named `fastqc.sh` using `nano`.
 
 ```bash
-cd ~/rnaseq/scripts
-
-nano mov10_fastqc.run
+nano fastqc.sh
 ```
 
-Once in the vim editor, click `i` to enter INSERT mode. The first thing we need in our script is the **shebang line**:
+The first thing we need in our script is the **shebang line**:
 
 ```bash
 #!/bin/bash
@@ -198,17 +195,15 @@ Let's specify those options as follows:
 Now in the body of the script, we can include any commands we want to run. In this case, it will be the following:
 
 ```bash
-## Change directories to where the fastq files are located
-cd ~/raw_fastq
 
 ## make directory 
-mkdir fastqc 
+mkdir fastqc_script
 
 ## Load modules required for script commands
 module load fastqc-0.11.7-gcc-7.3.0-vcaesw7
 
 ## Run FASTQC
-fastqc -o ~/raw_fastq/fastqc/ -t 6 *.fq
+fastqc -o fastqc_script *.fq
 ```
 
 > **NOTE:** These are the same commands we used when running FASTQC in the interactive session. Since we are writing them in a script, the `tab` completion function will **not work**, so please make sure you don't have any typos when writing the script!
@@ -216,7 +211,7 @@ fastqc -o ~/raw_fastq/fastqc/ -t 6 *.fq
 Once everything looks good submit the job!
 
 ```bash
-$ sbatch fastqc.sh
+sbatch fastqc.sh
 ```
 
 You should immediately see a prompt saying `Submitted batch job JobID`. Your job is assigned with that unique identifier `JobID`. You can check on the status of your job with:
