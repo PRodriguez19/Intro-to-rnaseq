@@ -157,4 +157,4 @@ conda update conda
 
 Homework
 
-Before next class, create conda environments and/or install the following tools. - trimmomatic (can be base) - multiqc (can be base) - nanoplot (needs an env)
+Before next class, create conda environments and/or install the following tools. - trimmomatic (can be base) - multiqc (can be base)
