@@ -35,10 +35,10 @@ For Homework Assignment #7
 ***
 ## Thursday, February 16th 
 | Time |  Topic  |  
-|:-----------:|:----------| 
-| ~20 mins| [FASTQC](../lessons/04_running_fastqc.md) | 
-| ~20 mins| [Assess FASTQC outputs](../lessons/04_assessing_fastqc_output.md)| 
-| ~20 mins| [Conda Install](../lessons/03_InstallConda.md) | 
+|:-----------:|:----------|
+| ~30 mins| [FASTQC lecture](../lectures/Lecture7-MMG232.pdf) | 
+| ~10 mins| [FASTQC](../lessons/04_running_fastqc.md) | 
+| ~10 mins| [Assess FASTQC outputs](../lessons/04_assessing_fastqc_output.md) | 
 
 ***
 
