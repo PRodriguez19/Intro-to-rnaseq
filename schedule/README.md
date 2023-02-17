@@ -49,7 +49,7 @@ For Homework Assignment #7
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
-| ~30 mins| [Obtaining a reference genome] | 
+| ~30 mins| [Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md) | 
 | ~30 mins| [Alignment: HISAT2 ] | 
 
 ***
