@@ -94,8 +94,8 @@ Multiqc will provide an aggregate result from bioinformatic analyses across many
 
 The final output is an .html report that should look like this: 
 
-```
+
 <p align="center">
-<img src="../img/multiqc.png" width="600">
+<img src="../img/multiqc.png" width="800">
 </p>
 
