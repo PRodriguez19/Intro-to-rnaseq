@@ -48,9 +48,9 @@ For Homework Assignment #7
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
+| ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 | ~30 mins| [Obtaining a reference genome] | 
 | ~30 mins| [Alignment: HISAT2 ] | 
-
 
 ***
 
@@ -61,7 +61,7 @@ For Homework Assignment #7
 | ~30 mins| [Alignment: Stats & interpretation] | 
 | ~30 mins| [Alignment: STAR] | 
 
-### Homework Assignment 7: Selection of NGS dataset (120 points)
+### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
 
 ## Tuesday, February 28th  
@@ -80,7 +80,7 @@ For Homework Assignment #7
 | ~30 mins| [Integrative Genome Browser (IGV)] | 
 | ~30 mins| [Troubleshooting Data Analysis] |
 
-### Homework Assignment 8: FASTQC & Interpretation (100 points)
+### Homework Assignment 8 Due: FASTQC & Interpretation (100 points)
 
 *** 
 ## Tuesday, March 7th  
