@@ -36,16 +36,6 @@ For Homework Assignment #7
 ## Thursday, February 16th 
 
 | Time |  Topic  |  
-|:-----------:|:----------| 
-| ~5 mins| General Overview Unit 2| 
-| ~20 mins| [Final Project Overview](../lectures/GuidelinesforFinalProject.pdf) | 
-| ~40 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture4-MMG232.pdf) |
-
-
-
-
-
-| Time |  Topic  |  
 |:-----------:|:---------------| 
 | ~30 mins| [FASTQC lecture](../lectures/Lecture7-MMG232.pdf) |
 | ~10 mins| [FASTQC](../lessons/04_running_fastqc.md) |
@@ -55,6 +45,7 @@ For Homework Assignment #7
 ***
 
 ## Tuesday, February 21st 
+
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [Obtaining a reference genome] | 
@@ -64,6 +55,7 @@ For Homework Assignment #7
 ***
 
 ## Thursday, February 23rd 
+
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [Alignment: Stats & interpretation] | 
@@ -73,6 +65,7 @@ For Homework Assignment #7
 ***
 
 ## Tuesday, February 28th  
+
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [BAM to count] | 
@@ -81,6 +74,7 @@ For Homework Assignment #7
 ***
 
 ## Thursday, March 2nd 
+
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [Integrative Genome Browser (IGV)] | 
