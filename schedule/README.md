@@ -40,7 +40,6 @@ For Homework Assignment #7
 | ~30 mins| [FASTQC lecture](../lectures/Lecture7-MMG232.pdf) |
 | ~10 mins| [FASTQC](../lessons/04_running_fastqc.md) |
 | ~10 mins| [Assess FASTQC](../lessons/04_assessing_fastqc_output.md) |
-| ~10 mins| [Conda](../lessons/04_InstallConda.md) |
 
 ***
 
@@ -48,9 +47,10 @@ For Homework Assignment #7
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
+| ~10 mins| [lecture] |
 | ~30 mins| [Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md) | 
 | ~30 mins| [Alignment: HISAT2 ] | 
+| ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
 ***
 
