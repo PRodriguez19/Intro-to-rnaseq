@@ -48,6 +48,7 @@ For Homework Assignment #7
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [Mapping Lecture](../lectures/Lecture8-MMG232.pdf) |
+| ~10 mins| [Download fasta and index](../lessons/05_Download_fasta_and_index.md)
 | ~20 mins| [More BASH commands & intro to loops](../lessons/05_commands.md) |
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
