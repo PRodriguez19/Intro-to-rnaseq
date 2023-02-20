@@ -47,10 +47,12 @@ For Homework Assignment #7
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~10 mins| [lecture] |
-| ~30 mins| [Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md) | 
-| ~30 mins| [Alignment: HISAT2 ] | 
+| ~30 mins| [Mapping Lecture](../lectures/Lecture8-MMG232.pdf) |
+| ~20 mins| [Extra tools & loops intro] |
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
+
+Supplemental Reading: 
+[Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md) | 
 
 ***
 
@@ -58,8 +60,8 @@ For Homework Assignment #7
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Alignment: Stats & interpretation] | 
-| ~30 mins| [Alignment: STAR] | 
+| ~30 mins| [Alignment: HiSAT2 & STAR scripts] | 
+| ~30 mins| [Alignment: STATs & interpretation] | 
 
 ### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
