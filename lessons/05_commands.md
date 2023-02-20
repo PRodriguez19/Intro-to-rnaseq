@@ -217,8 +217,9 @@ gene_ID	genome	KO_ID	KO_annotation
 
 We can instead ask sed to match only full “words” like this:
 
+```
 sed 's/\<NA\>/<NA>/g' gene_annotations.tsv | head
-
+```
 > We need to surround our pattern with “<” and “>”, but we need to escape slash them so that it doesn’t treat them as the normal characters and look for them.
 
 On a MacOS it would look like below! 
@@ -304,21 +305,9 @@ done
 
 The “i” is over variable, and as such could be any letter, word, etc. that was meaningful, but is commonly represented by a single letter like this for ease
 
+Often the`in` portion will be a directory instead of single files (A, B, C). This will contain the   FASTQ files you want to work with. 
 
-
-For loops can also have multiple lines, performing multiple commands or actions:
-
-```bash
-for i in A B C
-do
-  echo $i
-  echo $i >> words.txt
-done
-```
-
-So now, not only are printing the output, but we are preserving it as a new file called words.txt
-
-We in portion of the list will often be a directory instead of single files, such as your set of reads you want to work with. Let’s look at a more complex loop now:
+So for example, a more complex for loop will look like this:
 
 ```bash
 for i in reads/*.fastq
@@ -331,9 +320,9 @@ do
 done
 ```
 
-This is an example of the beginning of a for loop that could be used to run alignment. Dissecting each line we see that:
+Dissecting each line we see that:
 
-    we’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
+    We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
     echo the names of each sample to make sure it’s correct
     perform the command itself. Now that the variable SAMPLE are the names without .fastq, we can use it for more than just the reads. 
 
