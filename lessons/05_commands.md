@@ -339,7 +339,7 @@ done
 
 Dissecting each line we see that:
 
-    We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
-    echo the names of each sample to make sure it’s correct
-    perform the command itself. Now that the variable SAMPLE are the names without .fastq, we can use it for more than just the reads. 
++ We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
++ echo the names of each sample to make sure it’s correct
++ then perform the command itself.  
 
