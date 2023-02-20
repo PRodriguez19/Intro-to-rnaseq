@@ -292,20 +292,36 @@ echo $var1
 
 ### For loops
 
-For loops are constructed with 4 basic words: - for -> set the loop variable name - in -> specify whatever it is we are looping over - do -> specify what we want to do with each item - done -> tell the computer we are done
+For loops are constructed with 4 basic words: 
+
+| Words |  What it does  |  
+|:-----------:|:----------|   
+|for | set the loop variable name| 
+|in | specify whatever it is we are looping over| 
+|do | specify what we want to do with each item | 
+|done | tell the computer we are done | 
+
+putting these together, for loop syntax is as follows: 
+
+```bash
+for VARIABLE in file1 file2 file3
+do
+  command1 on $VARIABLE
+  command2 
+done
+```
 
 A basic loop looks something like this when it’s written within a job script:
 
-```
+```bash
 for i in A B C
 do
   echo $i
 done
 ```
 
-The “i” is over variable, and as such could be any letter, word, etc. that was meaningful, but is commonly represented by a single letter like this for ease
-
-Often the`in` portion will be a directory instead of single files (A, B, C). This will contain the   FASTQ files you want to work with. 
+> The “i” is over variable, could be any letter, word, etc. that was meaningful, but is commonly represented by a single letter like this for ease. 
+> Often the`in` portion will be a directory instead of single files (A, B, C). This will contain the FASTQ files you want to work with. 
 
 So for example, a more complex for loop will look like this:
 
@@ -315,7 +331,8 @@ do
   SAMPLE=$(echo ${i} | sed "s/.fastq//") 
   echo ${SAMPLE}.fastq
   
-## alignment program (i.e. hisat2 or STAR) 
+## command for alignment (i.e. hisat2 or STAR) 
+## command for generation of SAM to BAM (samtools)
   
 done
 ```
