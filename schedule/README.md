@@ -51,8 +51,9 @@ For Homework Assignment #7
 | ~20 mins| [Extra BASH tools & loops intro] |
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
-Supplemental Reading: 
-[Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md) | 
+Supplemental Reading (*optional*):   
+[Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md)  
+[Trimmomatic Manual](../materials/TrimmomaticManual_V0.32.pdf) 
 
 ***
 
