@@ -1,139 +1,251 @@
+---
+Week: "6" 
+Lesson: "Bash continued & intro to loops"
+Date: "Tuesday, February 21, 2023"
+---
 
-Six Glorious Commands
+# More Bash Commands
 
-To continue advancing your Unix skills, we are going to learn some of the essentials of making more complicated commands. These are expanded here, but we are going to cover parts of Mike Lee’s “Six Glorious Commands”. Mike is a bioinformatician at NASA focused on microbial ecology, and if you haven’t seen the links on the resources page yet his website is a great resource!
+To continue advancing your UNIX skills, we are going to learn some of the essentials of making more complicated commands. These are expanded here, but we are going to cover parts of [Mike Lee’s “Six Glorious Commands”](https://astrobiomike.github.io/unix/six-glorious-commands). Mike is a bioinformatician at NASA focused on microbial ecology and if you have not seen the links on the resources page yet -- his website is a great resource!
 
-Let’s start by downloading the files used in his tutorial, which I have put in the Command Line folder titled “Files for Interactive portion of Command Line Day 3” on BlackBoard. This will be a zipped file that you can upload to your VACC account and unzip by:
+Let’s start by downloading the files used in his tutorial, which can be found in the shared drive: 
 
-unzip six_commands.zip 
+```
+cp -r /gpfs1/cl/mmg232/course_materials/six_commands.zip  .
+```
 
-Take a look at some of the files. All of the files ending in tsv or txt are tab-delimited, while files ending in csv are delimited by columns.
-Cut
+Take a look at some of the files. All of the files ending in .tsv or .txt are tab-delimited, while files ending in .csv are delimited by columns.
+
+## cut
 
 The cut command performs the action of “Print selected parts of lines from each FILE to standard output” according to it’s manual. In practice this makes it an easy way to manipulate columns in many file types. The basic requirements of the command are some file that we want to manipulate and which columns we want.
 
 Take a look at the gene_annotations.tsv file:
 
+```bash
 head gene_annotations.tsv
+```
 
 You should see four columns: gene_ID genome KO_ID KO_annotation
 
+```
+gene_ID	genome	KO_ID	KO_annotation
+1	CC9311	K02338	DPO3B; DNA polymerase III subunit beta [EC:2.7.7.7]
+2	CC9311	NA	NA
+3	CC9311	K01952	purL; phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]
+4	CC9311	K00764	purF; amidophosphoribosyltransferase [EC:2.4.2.14]
+5	CC9311	K02469	gyrA; DNA gyrase subunit A [EC:5.99.1.3]
+6	CC9311	NA	NA
+7	CC9311	K18979	queG; epoxyqueuosine reductase [EC:1.17.99.6]
+8	CC9311	NA	NA
+9	CC9311	NA	NA
+```
+
 Using cut, we can pull out just the gene_ID column and print it to the screen. Instead of naming the columns we refer to their numerical order in the file:
 
+```bash
 cut -f 1 gene_annotations.tsv
+```
 
-Cut
+We can also use redirectors to modify how this information is displayed on our screen. For example we can look at just a few lines of this column by piping (|) the output to head
 
-Like other commands, we can use redirectors to modify how this information is displayed on our screen. For example we can look at just a few lines of this column by piping the output to head
-
+```bash
 cut -f 1 gene_annotations.tsv | head
+```
 
 Or to a completely new file with >
 
+```bash
 cut -f 1 gene_annotations.tsv > gene_ID.txt
-
-Cut
+```
 
 You can also grab multiple columns at once, either by specifying all the individuals you want or supplying a range.
 
-Specific columns
-
+```bash
 cut -f 1,3 gene_annotations.tsv | head
+```
 
 Column Range
 
+```bash
 cut -f 1-3 gene_annotations.tsv | head
+```
 
-Cut on other file types
+### Using cut on other file types
 
 We can use cut on a wide variety of files, but if the delimiter is anything but a tab we need to specify this as an additional parameter like so:
 
+```bash
 cut -d "," -f 1-3 example_gene_annotations.csv | head
+```
 
-grep
+## grep
 
-We’ve already seen a little bit of grep in action, but this tool has a wide range of potential uses. grep itself stands for global regular expression, which behaves like ctrl/command+f to search for strings of characters within a file. By default, searching this way will return any line that contains even a portion of the string you supply to it.
+grep has a wide range of potential uses. Grep itself stands for *global regular expression*, which behaves like ctrl/command+f to search for strings of characters within a file. By default, searching this way will return any line that contains even a portion of the string you supply to it.
 
-So when we look for “re” within our list of colors
+So, lets look at the file colors.txt 
 
+```bash
+head colors.txt
+```
+
+Let's look for “re” within our list of colors using grep
+
+```bash
 grep re colors.txt
+```
 
 It will return both the lines “red” and “green”
 
-Or you can search for specific, full names like we did on Day 1.
-grep for annotation terms
+Or you can search for specific, full names like we did previously.
 
-Let’s say we’re interested in a specific annotation for the enzyme epoxyqueuosine reductase. There are two KO terms for this K09765 and K18979. Using grep we can quickly check for these in our data set:
+## paste
 
-grep K09765 gene_annotations.tsv
-
-grep K18979 gene_annotations.tsv
-
-Now imagine this was a very large data set, and these KO terms were really common. It wouldn’t be as user-friendly to just print all the lines to the screen, and instead we may want to just count the number of times they appear
-
-grep -c K18979 gene_annotations.tsv
-
-Can you make a command that would identify these rows, cut the gene_ID column, and then output this information into its own file called K18979_genes.txt?
-paste
-
-Just like it works on your local machine, paste combines columns horizontally (like cbind if you are familiar with R) with a given delimiter between them. The default is again tabs, but can be specified the same way as cut
+paste will combine columns horizontally (like cbind if you are familiar with R) with a given delimiter between them. The default delimiter is `tab`, but this can be specified 
 
 There are two files with names of colors in this directory: colors.txt and colores.txt in Spanish. If you wanted to combine these two lists, you can paste them together (remember this only prints it to the screen and won’t actually create the new file!)
 
+```bash
 paste colors.txt colores.txt 
+```
 
 Now you can see the colors in English and Spanish, side by side as separate columns
-paste
 
-The files genes_and_seqs.tsv and gene_annotations.tsv contain the the sequences and annotations for the genes respectively. This is fairly common in bioinformatics, as if you didn’t need both sets of information the combined file would be needlessly large or visually messy. But we can combine these to make a file that contains all of this information using paste
+```
+red	rojo
+orange	anaranjado
+yellow	amarillo
+green	verde
+blue	azul
+indigo	indigo
+violet	violeta
+```
 
+The files `genes_and_seqs.tsv` and `gene_annotations.tsv` contain the the sequences and annotations for these genes, respectively. 
+
+```
+head -n 3 genes_and_seqs.tsv
+
+gene_ID	AA_length	seq
+1	385	MKLVCSQAELNAALQLVSRAVASRPTHPVLANVLLTADAGTDRLSLTGFDLNLGIQTSLAASVDTSGAVTLPARLLGEIVSKLSSDSPVSLSSDAGADQVELTSSSGSYQMRGMPADDFPELPLVENGTALRVDPASLLKALRATLFASSGDEAKQLLTGVHLRFNQKRLEAASTDGHRLAMLTVEDALQAEISAEESEPDELAVTLPARSLREVERLMASWKGGDPVSLFCERGQVVVLAADQMVTSRTLEGTYPNYRQLIPDGFSRTIDLDRRAFISALERIAVLADQHNNVVRIATEPATGLVQISADAQDVGSGSESLPAEINGDAVQIAFNARYVLDGLKAMDCDRVRLSCNAPTTPAILTPANDDPGLTYLVMPVQIRT
+2	237	MAWMHPPVHRLLGWVSRPSALRTSRDVWRLDQCRGFDDQQVFVKGAPAEADQITLDRLPTLLDADLLNADGERVGIIADLAFLPASGQISHYLVARSDPRLPGTSRWRLLPDRIVDQQPGLVSSAIHELDDLPLARASVRQDFLQRSRHWREQLQQFGDRAGERLEGWLEEPPWDEPPAVSDVASSYSSTAAPTVDPLDDWDDGDWTDAPRVERGRSVRNDPTDRNDWPDHEEDPWV
+```
+
+```
+head -n 3 gene_annotations.tsv
+
+gene_ID	genome	KO_ID	KO_annotation
+1	CC9311	K02338	DPO3B; DNA polymerase III subunit beta [EC:2.7.7.7]
+2	CC9311	NA	NA
+```
+
+We can combine these to make a file that contains all of this information using paste: 
+
+```
 paste gene_annotations.tsv genes_and_seqs.tsv | head -n 1
+```
 
-However, you can see that the gene_ID column is in there twice since it was included in both files? Can you use cut to show a new file that only has the first gene_ID column?
-paste
+Notice that the gene_ID column is in there twice since it was included in both files. These can be cut out in the new file! 
 
-Finally, paste itself doesn’t do any checking of your work. All it wants to do it join your files together, but doesn’t care if the rows are out of order or mismatched in any way. We will get to this more in the R lectures, but try checking the manuals for sort and comm. You can use sort to make sure both columns are in the same order and then check the output using comm
-sed
 
-sed stands for stream editor and is how you can “search and replace”. This is a very useful component of loops that you will learn about later, but is also really helpful for correcting typos, updating gene names with new nomenclature, and much more. We can use it here to change every instance of UW179A to UW277 in the gene_annotations.tsv file, which happens to be at the end of the file:
+> Paste itself does not check your work. All it wants to do it join your files together, but it does not care if the rows are out of order or mismatched in any way. You can use `sort` to make sure both columns are in the same order and then check the output
 
+## sed
+
+sed stands for stream editor and is used as an “search and replace”. This is a very useful component of for loops and for correcting typos, updating gene names with new nomenclature, and much more. 
+
+We can use it here to change every instance of UW179A to UW277 in the gene_annotations.tsv file, which happens to be at the end of the file:
+
+```bash
 tail gene_annotations.tsv
+
+91	UW179A	NA	NA
+92	UW179A	NA	NA
+93	UW179A	NA	NA
+94	UW179A	K06181	rluE; 23S rRNA pseudouridine2457 synthase [EC:5.4.99.20]
+95	UW179A	NA	NA
+96	UW179A	K02518	infA; translation initiation factor IF-1
+97	UW179A	K00384	trxB; thioredoxin reductase (NADPH) [EC:1.8.1.9]
+98	UW179A	NA	NA
+99	UW179A	NA	NA
+100	UW179A	NA	NA
+```
 
 You can see the change by again redirecting the changes we make with sed to tail
 
+```bash
 sed 's/UW179A/UW277/' gene_annotations.tsv | tail
+```
+> Notice, that the syntax of sed is a bit different from things that we’ve seen so far and consists of 4 items that are separated by 3 forward slashes. The 1st item is a letter "s" stands for substitute; the 2nd is what we'd like to find and replace; the 3rd is what we'd like to replace it with, and the 4th is actually empty here but we will see how we can change this in a minute. 
 
-The syntax of sed is a bit different from things that we’ve seen so far and consists of 4 arguments surrounded by ``: - s -> stands for substitution, telling sed we are taking one string and changing it to another - the string we want to find - the string we want to replace - a forth spot that is empty here, but we will see in a minute how we can use this to change the behavior of how many times in a file we change things
 
-sed 's/UW179A/UW277/' gene_annotations.tsv | tail
+### Using sed globally
 
-Using sed globally
+In the previous example, the string we wanted to replace only occurs in the genome column (2nd column in file), but sometimes the string you want to search for occurs in multiple columns in a single line! 
 
-In the previous example, the string we wanted to replace only occurs in the genome column, but sometimes the string you want to search for occurs in multiple columns of a line known as occurrences.
+A really common change to make in the bioinformatics world is editing missing data or the occurrence of “NA”. Different programs will want missing data to be presented in various formats and it can be tedious to make these changes manually. 
 
-A really common change to make is the editing of missing data or “NA”. Different programs will want missing data to be presented in various formats and it can be tedious to make these changes manually. If we want to change “NA” to “” for a specific program and we tried to do that using sed like the previous example, it would only catch the first occurrence of each row.
+Let's first look at our file again
 
+```bash
+head gene_annotations.tsv
+```
+> Notice that NA appears in both KO_ID (3rd column) and the KO_annotation (4th) column 
+
+Using the same format as before, lets change the "NA" to "<NA>" 
+
+```bash
 sed 's/NA/<NA>/' gene_annotations.tsv | head
+```
+> Notice that this only changed the first occurrence of "NA" - 3rd column only! 
 
-To make changes to every time an “NA” appears, we need to tell sed that we want to apply the changes globally. This is where we use the forth slot, with a “g” for global
+To make changes for every time an “NA” appears, we need to tell sed that we want to apply the changes globally. This is where we use the forth slot comes into play, with a “g” for global
 
+```bash
 sed 's/NA/<NA>/g' gene_annotations.tsv | head
+```
 
 Does anyone notice the new problem we have created though?
-sed
 
-Since we were just searching for the string “NA”, we also changed any time it appeared in words like “DNA”. We can instead ask sed to match only full “words” instead like this:
+```
+gene_ID	genome	KO_ID	KO_annotation
+1	CC9311	K02338	DPO3B; D<NA> polymerase III subunit beta [EC:2.7.7.7]
+2	CC9311	<NA>	NA
+3	CC9311	K01952	purL; phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]
+```
+> Since we were just searching for the string “NA”, we also changed any time it appeared in words like “DNA”. 
+
+We can instead ask sed to match only full “words” like this:
 
 sed 's/\<NA\>/<NA>/g' gene_annotations.tsv | head
 
-This option is enabled by adding the characters “<” and “>” (remember when the links didn’t work on Day 1?), but because these are also part of the changes we want to make we add the "" so that the computer knows these aren’t normal characters that we want to search for!
+> We need to surround our pattern with “<” and “>”, but we need to escape slash them so that it doesn’t treat them as the normal characters and look for them.
 
-sed also works with wild cards like * and ?, so you can imagine ways to make really powerful searches this way! But like everything else in Unix you have to be careful how you apply these changes. Starting with simple | and head like we have here can be a great way to check your work before you make permanent changes to a file.
-awk
+On a MacOS it would look like below! 
+```
+sed "s/[[:<:]]NA[[:>:]]/<NA>/g" gene_annotations.tsv | head
+```
+
+## awk
 
 awk has even more uses than the other commands we just learned, but at its heart it is a command for filtering based on columns and making calculations from this information. We’re going to show a few uses with the blast_output.tsv file
 
+```bash
 head blast_output.tsv
+```
+
+```
+query   qlen    subject slen    pident  al_length
+Te_3773 505     3R_1113 505     100.0   505
+Te_3773 505     8R_1720 342     96.3    241
+Te_4114 726     3R_1358 1473    88.7    726
+Te_4114 726     8R_523  445     89.7    395
+Te_4114 726     8R_524  958     89.3    371
+Te_4133 1470    3R_1088 8618    96.8    1470
+Te_4133 1470    3R_1087 8642    100.0   200
+Te_4133 1470    8R_4656 1973    89.4    1470
+Te_4136 891     3R_1088 8618    97.6    891
+```
 
 We can see the 6 columns of a typical BLAST search: - query -> what we searched - qlen -> the length of the query - subject -> the reference sequence the query hit - slen -> the length of the subject - pident -> % identity of query to subject - al_length -> the length of the alignment or “overlap”
 
@@ -141,101 +253,87 @@ Oftentimes a BLAST search will give us a lot more hits than we actually want and
 
 You might be able to think of a really complicated way to combine grep, cut, and sed but we can do this all at once with a simple awk command:
 
+```bash
 awk ' $5 > 95 ' blast_output.tsv
+```
+> awk takes the column we want to search in ($5) and then the filter we want to apply (> 95), all wrapped in ’’ so that it is treated as a single statement.
 
-awk takes the column we want to search in ($5) and then the filter we want to apply (> 95), all wrapped in ’’ so that it is treated as a single statement.
-combining filters in awk
+### combining filters in awk
 
-Much like the other commands, we can apply serval filters at once. These happen with “and/or” type statments: - and = && - or = ||
+Much like the other commands, we can apply serval filters at once. These happen with “and/or” type statements. An "and" is specified with `&&` while "or" is specified with two pipes `||`. 
 
-So now we could filter on >95% identity and query seqeunces that are at least 1,000 base pairs
+So now we could filter on >95% identity (pident = column 5) and query seqeunces (qlen = column 2) that are at least 1,000 base pairs
 
+```bash 
 awk ' $5 > 95 && $2 > 1000 ' blast_output.tsv
+```
 
-tr
-
-Another useful command is tr which translates one character into another. It deals well with special characters, which occur a lot in genomics files but don’t play well with many GUI tools like Excel or when you need to read them into R packages. Conversely, even if you export things from Excel as a tab or comma separated file it may contain extra line breaks or special characters that will change how a Unix tools reads the files. Unix tools expect new lines to have \n, but Excel will sometimes use \r instead.
-
-Take a look at the file gene_annotations_excel_exported.tsv
-
-less gene_annotations_excel_exported.tsv
-
-Instead of having nice line breaks, we can see ^M popping up all over our file. If we tried to count the lines, it would tell us there were 0!
-
-wc -l gene_annotations_excel_exported.tsv
-
-We can fix this using tr and avoid the frustrating problem of trying to fix our file in Excel.
-
-Unlike the other commands we’ve seen, tr does not take an input file in a positional argument and needs it supplied via the redirector < (not to be confused with > that we’ve used so far). Can you think of a reason why it switches?
-tr
-
-Since we want to inform tr of input instead of output, we use < here
-
-tr "\r" "\n" < gene_annotations_excel_exported.tsv > gene_annotations_fixed.tsv
-
-If you head the new file you just made or count the lines, you should see the fix we made
-Introduction to Loops
+## Introduction to Loops
 
 While wild cards can be used to perform simple actions on large numbers of files at once, they are limited in utility for more complex commands. In these instances we can turn to loops, a function of programming languages that allow us to write out a command and perform it on all of the samples or files that we want. In addition to being a major time saver, this makes your code a lot easier to read and much more concise overall.
 
 There are many types of loops, but the kind we are going to cover is called a for loop. Before we get into creating our own we need to cover some of the key components.
-Variables
 
-The variable portion of a loop is the item that we are going to iterate over and will change with every “new” loop. This is typically each individual sample or file that the action is performed on. Outside of loops, you can set variables as shorthands, locations of specific files, or for many other reasons. In their simplest form they will look something like this:
+### Variables
 
+The variable portion of a loop is the item that we are going to iterate over and will change with every “new” loop. **This is typically each individual sample or file that the action is performed on.** In their simplest form they will look something like this:
+
+```
 var1=/long/path/to/DB
+```
+> In this case, a location to a specific database is now assigned to the variable var1.
 
-Setting this won’t print anything to your screen, but now the “value” (in this case a location to a specific database) is now assigned to the variable var1.
+As a reminder, if we want to make sure this assignment worked, we can use an `echo` command. This is a command that prints out whatever is provided to it, which can be really useful to test commands or report information back to yourself during a loop.
 
-If we want to make sure this assignment worked, we can use an echo command. This is a command that prints out whatever is provided to it, which can be really useful to test commands or report information back to yourself during a loop.
-
-For information stored in variables this needs to be preceded by a $ so the shell knows to evaluate what follows, rather than just treat it as generic characters.
-
+```
 echo $var1 
+```
 
-For loops
+### For loops
 
 For loops are constructed with 4 basic words: - for -> set the loop variable name - in -> specify whatever it is we are looping over - do -> specify what we want to do with each item - done -> tell the computer we are done
 
 A basic loop looks something like this when it’s written within a job script:
 
+```
 for i in A B C
 do
   echo $i
 done
-
-But if you wanted to run a loop right from the command prompt itself we need to “indent” the different lines like so:
-
-for i in A B C;do echo $i; done
+```
 
 The “i” is over variable, and as such could be any letter, word, etc. that was meaningful, but is commonly represented by a single letter like this for ease
-For loops
+
+
 
 For loops can also have multiple lines, performing multiple commands or actions:
 
+```bash
 for i in A B C
 do
   echo $i
   echo $i >> words.txt
 done
+```
 
 So now, not only are printing the output, but we are preserving it as a new file called words.txt
-For loops
 
 We in portion of the list will often be a directory instead of single files, such as your set of reads you want to work with. Let’s look at a more complex loop now:
 
+```bash
 for i in reads/*.fastq
 do
   SAMPLE=$(echo ${i} | sed "s/.fastq//") 
   echo ${SAMPLE}.fastq
   
-flye --nano-raw ${SAMPLE}.fastq --out-dir ${SAMPLE}_flye --plasmids --genome-size 2.5m --threads 16
+## alignment program (i.e. hisat2 or STAR) 
   
 done
+```
 
-This is an example of a for loop that could be used to run flye, a tool for genome assembly, on every file that ends in .fastq in the directory reads. Dissecting each line we see that:
+This is an example of the beginning of a for loop that could be used to run alignment. Dissecting each line we see that:
 
     we’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
     echo the names of each sample to make sure it’s correct
-    perform the command itself. Now that the variable SAMPLE are the names without .fastq, we can use it for more than just the reads. This let’s us use that same variable to create output folders that are sampleName_flye
+    perform the command itself. Now that the variable SAMPLE are the names without .fastq, we can use it for more than just the reads. 
 
