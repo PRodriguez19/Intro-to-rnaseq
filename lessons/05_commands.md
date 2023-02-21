@@ -11,7 +11,7 @@ To continue advancing your UNIX skills, we are going to learn some of the essent
 Let’s start by downloading the files used in his tutorial, which can be found in the shared drive: 
 
 ```
-cp -r /gpfs1/cl/mmg232/course_materials/six_commands.zip  .
+cp -r /gpfs1/cl/mmg232/course_materials/six_commands/ .
 ```
 
 Take a look at some of the files. All of the files ending in .tsv or .txt are tab-delimited, while files ending in .csv are delimited by columns.
