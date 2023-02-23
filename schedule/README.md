@@ -61,8 +61,8 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~20 mins| [More BASH commands](../lessons/05_commands.md) |
-| ~30 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
+| ~10 mins| [More BASH commands](../lessons/05_commands.md) |
+| ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
 
 ### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
