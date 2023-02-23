@@ -123,52 +123,75 @@ Dissecting each line we see that:
 
 4. The commands to be executed by script. Below the entire script hisat2_align.sh is given 
 
-```
-#!/bin/bash
-#SBATCH --partition=bluemoon
-#SBATCH --nodes=1
-#SBATCH --ntasks=2
-#SBATCH --mem=40G
-#SBATCH --time=24:00:00
-#SBATCH --job-name=align_CD8
-# %x=job-name %j=jobid
-#SBATCH --output=%x_%j.out
+        ```
+        #!/bin/bash
+        #SBATCH --partition=bluemoon
+        #SBATCH --nodes=1
+        #SBATCH --ntasks=2
+        #SBATCH --mem=10G
+        #SBATCH --time=3:00:00
+        #SBATCH --job-name=align_CD8
+        # %x=job-name %j=jobid
+        #SBATCH --output=%x_%j.out
 
-for i in *fastq.gz; do
-SAMPLE=$(echo ${i} | sed "s/.fastq.gz//")
-echo ${SAMPLE}.fastq.gz 
+        for i in *fastq.gz; do
+        SAMPLE=$(echo ${i} | sed "s/.fastq.gz//")
+        echo ${SAMPLE}.fastq.gz 
 
-DBDIR=/gpfs1/cl/mmg232/course_materials/hisat2_index
-GENOME="GRCm39"
-p=2
+        DBDIR=/gpfs1/cl/mmg232/course_materials/hisat2_index
+        GENOME="GRCm39"
+        p=2
 
-module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
-module load samtools-1.10-gcc-7.3.0-pdbkohx
+        module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
+        module load samtools-1.10-gcc-7.3.0-pdbkohx
 
-#align to GRCm39
-hisat2 \
-  -p ${p} \
-  -x ${DBDIR}/${GENOME} \
-  -U ${SAMPLE}.fastq.gz \
-  -S ${SAMPLE}.sam &> ${SAMPLE}.log
+        #align to GRCm39
+        hisat2 \
+          -p ${p} \
+          -x ${DBDIR}/${GENOME} \
+          -U ${SAMPLE}.fastq.gz \
+          -S ${SAMPLE}.sam &> ${SAMPLE}.log
 
-#create bam file
-samtools view ${SAMPLE}.sam \
-  --threads 2 \
-  -b \
-  -o ${SAMPLE}.bam \
+        #create bam file
+        samtools view ${SAMPLE}.sam \
+          --threads 2 \
+          -b \
+          -o ${SAMPLE}.bam \
   
-#remove sam files once bam file is created
-rm ${SAMPLE}.sam
+        #remove sam files once bam file is created
+        rm ${SAMPLE}.sam
 
-#output stats
-samtools flagstat ${SAMPLE}.bam > ${SAMPLE}.txt
+        #output stats
+        samtools flagstat ${SAMPLE}.bam > ${SAMPLE}.txt
 
-# sort the bam file based on coordinates
-samtools sort ${SAMPLE}.bam -o ${SAMPLE}_sorted.bam
+        # sort the bam file based on coordinates
+        samtools sort ${SAMPLE}.bam -o ${SAMPLE}_sorted.bam
 
-# index bam file
-samtools index ${SAMPLE}_sorted.bam
+        # index bam file
+        samtools index ${SAMPLE}_sorted.bam
 
-done &> hisat2.log
+        done &> hisat2.log
+        ```
+
+  After running the hisat2_align.sh script with the FASTQ provided, the outputs will look like this:
+
+        ```
+        align_CD8_7422840.out  SRR13423162.log             SRR13423165.fastq.gz
+        hisat2_align.sh        SRR13423162_sorted.bam      SRR13423165.log
+        hisat2.log             SRR13423162_sorted.bam.bai  SRR13423165_sorted.bam
+        SRR13423162.bam        SRR13423162.txt             SRR13423165_sorted.bam.bai
+        SRR13423162.fastq.gz   SRR13423165.bam             SRR13423165.txt
+        ```
+
+5. Run MUlTIQC 
+
+Activate conda first
+
+```
+conda activate multiqc
+```
+
+then run the command
+```
+multiqc .
 ```
