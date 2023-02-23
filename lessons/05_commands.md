@@ -1,7 +1,7 @@
 ---
 Week: "6" 
-Lesson: "Bash continued & intro to loops"
-Date: "Tuesday, February 21, 2023"
+Lesson: "Bash continued"
+Date: "Thursday, February 23, 2023"
 ---
 
 # More Bash Commands
@@ -269,77 +269,4 @@ So now we could filter on >95% identity (pident = column 5) and query seqeunces 
 awk ' $5 > 95 && $2 > 1000 ' blast_output.tsv
 ```
 
-## Introduction to Loops
-
-While wild cards can be used to perform simple actions on large numbers of files at once, they are limited in utility for more complex commands. In these instances we can turn to loops, a function of programming languages that allow us to write out a command and perform it on all of the samples or files that we want. In addition to being a major time saver, this makes your code a lot easier to read and much more concise overall.
-
-There are many types of loops, but the kind we are going to cover is called a for loop. Before we get into creating our own we need to cover some of the key components.
-
-### Variables
-
-The variable portion of a loop is the item that we are going to iterate over and will change with every “new” loop. **This is typically each individual sample or file that the action is performed on.** In their simplest form they will look something like this:
-
-```
-var1=/long/path/to/DB
-```
-> In this case, a location to a specific database is now assigned to the variable var1.
-
-As a reminder, if we want to make sure this assignment worked, we can use an `echo` command. This is a command that prints out whatever is provided to it, which can be really useful to test commands or report information back to yourself during a loop.
-
-```
-echo $var1 
-```
-
-### For loops
-
-For loops are constructed with 4 basic words: 
-
-| Words |  What it does  |  
-|:-----------:|:----------|   
-|for | set the loop variable name| 
-|in | specify whatever it is we are looping over| 
-|do | specify what we want to do with each item | 
-|done | tell the computer we are done | 
-
-putting these together, for loop syntax is as follows: 
-
-```bash
-for VARIABLE in file1 file2 file3
-do
-  command1 on $VARIABLE
-  command2 
-done
-```
-
-A basic loop looks something like this when it’s written within a job script:
-
-```bash
-for i in A B C
-do
-  echo $i
-done
-```
-
-> The “i” is over variable, could be any letter, word, etc. that was meaningful, but is commonly represented by a single letter like this for ease. 
-> Often the`in` portion will be a directory instead of single files (A, B, C). This will contain the FASTQ files you want to work with. 
-
-So for example, a more complex for loop will look like this:
-
-```bash
-for i in reads/*.fastq
-do
-  SAMPLE=$(echo ${i} | sed "s/.fastq//") 
-  echo ${SAMPLE}.fastq
-  
-## command for alignment (i.e. hisat2 or STAR) 
-## command for generation of SAM to BAM (samtools)
-  
-done
-```
-
-Dissecting each line we see that:
-
-+ We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
-+ echo the names of each sample to make sure it’s correct
-+ then perform the command itself.  
 

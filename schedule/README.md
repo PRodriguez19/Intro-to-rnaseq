@@ -49,7 +49,6 @@ For Homework Assignment #7
 |:-----------:|:----------| 
 | ~30 mins| [Mapping Lecture](../lectures/Lecture8-MMG232.pdf) |
 | ~10 mins| [Download fasta and index](../lessons/05_Download_fasta_and_index.md)
-| ~20 mins| [More BASH commands & intro to loops](../lessons/05_commands.md) |
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
 Supplemental Reading (*optional*):   
@@ -62,8 +61,8 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Alignment: HiSAT2 & STAR scripts] | 
-| ~30 mins| [Alignment: STATs & interpretation] | 
+| ~20 mins| [More BASH commands](../lessons/05_commands.md) |
+| ~30 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
 
 ### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
@@ -72,8 +71,9 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [BAM to count] | 
-| ~30 mins| [BAM to BIGWIG] |
+| ~20 mins| [HISAT2 stats & interpretation] | 
+| ~20 mins| [ChIP-Seq Lecture] |
+| ~30 mins| [Alignment: STAR & stats interpretation] | 
 
 ***
 
@@ -81,8 +81,9 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Integrative Genome Browser (IGV)] | 
-| ~30 mins| [Troubleshooting Data Analysis] |
+| ~20 mins| [BAM to count] | 
+| ~20 mins| [BAM to BIGWIG] |
+| ~20 mins| [BAM to narrowPeak/broadPeak] |
 
 ### Homework Assignment 8 Due: FASTQC & Interpretation (100 points)
 
@@ -93,7 +94,10 @@ Supplemental Reading (*optional*):
 ***
 
 ## Thursday, March 9th  
-Course catch-up 
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~30 mins| [Integrative Genome Browser (IGV)] | 
+| ~30 mins| [Troubleshooting Data Analysis] |
 
 ### Homework Assignment 9: Alignment stats & Interpretation (150 points) - due March 10th  
 - Sometime before you leave Spring Break 
