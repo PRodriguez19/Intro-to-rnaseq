@@ -18,7 +18,7 @@ Take a look at some of the files. All of the files ending in .tsv or .txt are ta
 
 ## cut
 
-The cut command performs the action of “Print selected parts of lines from each FILE to standard output” according to it’s manual. In practice this makes it an easy way to manipulate columns in many file types. The basic requirements of the command are some file that we want to manipulate and which columns we want.
+The cut command performs the action of “Print selected parts of lines from each FILE to standard output” according to it’s manual. In practice this makes it an easy way to manipulate columns in many different file types. The basic requirements of the command are some file that we want to manipulate and which columns we want.
 
 Take a look at the gene_annotations.tsv file:
 
