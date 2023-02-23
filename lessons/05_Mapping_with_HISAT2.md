@@ -4,7 +4,7 @@ Lesson: "Mapping with HISAT2"
 Date: "Thursday, February 23, 2023"
 ---
 
-# Mapping RNA-Seq reads to a genome using HISAT2 
+# Mapping with HISAT2 
 
 ## Learning Objectives 
 * Use the splice-aware mapper called HISAT2 to align RNA-Seq data 
@@ -88,25 +88,26 @@ Our script will be written in sections:
 
 1. Will provide the job submission parameters
 
-```
-#!/bin/bash
-#SBATCH --partition=bluemoon
-#SBATCH --nodes=1
-#SBATCH --ntasks=2
-#SBATCH --mem=40G
-#SBATCH --time=24:00:00
-#SBATCH --job-name=align_CD8
-# %x=job-name %j=jobid
-#SBATCH --output=%x_%j.out
-```
+        ```
+        #!/bin/bash
+        #SBATCH --partition=bluemoon
+        #SBATCH --nodes=1
+        #SBATCH --ntasks=2
+        #SBATCH --mem=40G
+        #SBATCH --time=24:00:00
+        #SBATCH --job-name=align_CD8
+        # %x=job-name %j=jobid
+        #SBATCH --output=%x_%j.out
+        ```
+
 2. Will allow us to run the script on all files, while maintaining the file name for each file output 
 
-```bash
-for i in reads/*.fastq
-do
-  SAMPLE=$(echo ${i} | sed "s/.fastq//") 
-  echo ${SAMPLE}.fastq
-```
+        ```bash
+        for i in reads/*.fastq
+        do
+          SAMPLE=$(echo ${i} | sed "s/.fastq//") 
+          echo ${SAMPLE}.fastq
+        ```
 
 Dissecting each line we see that:
 
@@ -115,10 +116,10 @@ Dissecting each line we see that:
 
 3. Load the modules required to run the commands 
 
-```
-module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
-module load samtools-1.10-gcc-7.3.0-pdbkohx
-```
+        ```
+        module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
+        module load samtools-1.10-gcc-7.3.0-pdbkohx
+        ```
 
 4. The commands to be executed by script. Below the entire script hisat2_align.sh is given 
 
