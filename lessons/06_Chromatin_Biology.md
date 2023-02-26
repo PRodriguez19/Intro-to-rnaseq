@@ -59,7 +59,7 @@ CUT&RUN is a native endonuclease-based method based on the binding of an antibod
  </details>
 
 <p align="center">
-<img src="../CUT&RUN/img/CR_protocol_schematic.png" width="700">
+<img src="../img/CR_protocol_schematic.png" width="700">
 </p>
 
 _Image source: ["AddGene Blog"](https://blog.addgene.org/cutrun-a-improved-method-for-studying-protein-dna-interactions)_
@@ -92,7 +92,7 @@ A popular approach used to identify open regions of the genome is the **A**ssay 
 * Amplify and sequence
 
 <p align="center">
-<img src="../ATAC-seq/img/atacseq_schematic.png" width="500">
+<img src="../img/atacseq_schematic.png" width="500">
 </p>
 
 _Image source: [Buenrostro et al., 2015](https://www.ncbi.nlm.nih.gov/pubmed/24097267)_
@@ -153,7 +153,7 @@ The schematic below illustrates the representative DNA fragments and the expecte
 In one assay, **ATAC-seq is able to simultaneously assess three different aspects of chromatin architecture** at high resolution. Therefore, in our data we will tend to see regions corresponding to the nucleosome-free regions (NFR) (< 100 bp) and mono-, di-, and tri-nucleosomes (~ 200, 400, 600 bp) respectively). 
 
 <p align="center">
-<img src="../ATAC-seq/img/chromatin_architecture.jpeg" width="500">
+<img src="../img/chromatin_architecture.jpeg" width="500">
 </p>
 
 _Image source: [Tsompana and Buck, 2014](https://pubmed.ncbi.nlm.nih.gov/25473421/)_
