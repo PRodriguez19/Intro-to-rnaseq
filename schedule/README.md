@@ -52,7 +52,6 @@ For Homework Assignment #7
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
 Supplemental Reading (*optional*):   
-[Obtaining a reference genome](../lessons/05_accessing_genome_reference_data.md)  
 [Trimmomatic Manual](../materials/TrimmomaticManual_V0.32.pdf) 
 
 ***
@@ -64,6 +63,8 @@ Supplemental Reading (*optional*):
 | ~10 mins| [More BASH commands](../lessons/05_commands.md) |
 | ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
 
+[Powerpoint Slides: Mapping with HISAT2](../lectures/Lecture9-MMG232.pdf)
+
 ### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
 
@@ -71,9 +72,8 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~20 mins| [HISAT2 stats & interpretation] | 
-| ~20 mins| [ChIP-Seq Lecture] |
-| ~30 mins| [Alignment: STAR & stats interpretation] | 
+| ~20 mins| [Learning the SAM/BAM format] |
+| ~40 mins| [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq] |
 
 ***
 
@@ -81,11 +81,8 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~20 mins| [BAM to count] | 
-| ~20 mins| [BAM to BIGWIG] |
-| ~20 mins| [BAM to narrowPeak/broadPeak] |
-
-### Homework Assignment 8 Due: FASTQC & Interpretation (100 points)
+| ~30 mins| [Overview of MULTIQC output] | 
+| ~30 mins| [STAR aligner: intro & script] |
 
 *** 
 ## Tuesday, March 7th  
@@ -97,13 +94,18 @@ Supplemental Reading (*optional*):
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [Integrative Genome Browser (IGV)] | 
-| ~30 mins| [Troubleshooting Data Analysis] |
+| ~30 mins| [BAM to count, bigwig, peaks] | 
 
-### Homework Assignment 9: Alignment stats & Interpretation (150 points) - due March 10th  
-- Sometime before you leave Spring Break 
+### Homework Assignment 8 Due March 10th: FASTQC & Interpretation (100 points)
+
+*** 
+**Due after Spring Break:**
+
+### Homework Assignment 9: Alignment stats & Interpretation (150 points) 
+Due: March 24th by 11:59PM 
 
 ### Primary article research summary  
-Due: March 31st   
+Due: April 7th by 11:59PM    
 Worth 10% of your final grade in course 
 
 *** 
