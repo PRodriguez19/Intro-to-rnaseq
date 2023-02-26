@@ -72,8 +72,8 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Learning the SAM/BAM format](../lessons/05_Learning_the_SAM_BAM_format.md) |
-| ~30 mins| [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq] |
+| ~30 mins| [Learning the SAM/BAM format](../lessons/06_Learning_the_SAM_BAM_format.md) |
+| ~30 mins| [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lessons/06_Chromatin_Biology.md) |
 
 ***
 
