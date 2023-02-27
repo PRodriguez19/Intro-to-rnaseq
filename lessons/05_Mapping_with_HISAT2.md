@@ -100,7 +100,7 @@ Our script will be written in sections:
         #SBATCH --output=%x_%j.out
         ```
 
-2. Will allow us to run the script on all files, while maintaining the file name for each file output 
+2. Next, this section will allow us to run the script on all files *while* maintaining the file name for each file output 
 
         ```bash
         for i in reads/*.fastq
@@ -109,10 +109,10 @@ Our script will be written in sections:
           echo ${SAMPLE}.fastq
         ```
 
-Dissecting each line we see that:
+    Dissecting each line we see that:
 
-+ We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
-+ echo the names of each sample to make sure it’s correct
+    + We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
+    + echo the names of each sample to make sure it’s correct
 
 3. Load the modules required to run the commands 
 
@@ -121,7 +121,7 @@ Dissecting each line we see that:
         module load samtools-1.10-gcc-7.3.0-pdbkohx
         ```
 
-4. The commands to be executed by script. Below the entire script hisat2_align.sh is given 
+4. Followed by the commands to be executed by script. Below the entire script hisat2_align.sh is provided:  
 
         ```
         #!/bin/bash
