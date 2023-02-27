@@ -78,6 +78,8 @@ Supplemental Reading (*optional*):
 Supplementary Reading:
 [Learning the SAM/BAM format](../lessons/06_Learning_the_SAM_BAM_format.md) |
 [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lessons/06_Chromatin_Biology.md) |
+
+Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232 
 ***
 
 ## Thursday, March 2nd 
