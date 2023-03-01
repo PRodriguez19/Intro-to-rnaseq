@@ -91,7 +91,7 @@ Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [MULTIQC output] | 
+| ~20 mins| [MULTIQC output] | 
 | ~30 mins| [STAR aligner] |
 
 Supplementary Reading:  
@@ -104,6 +104,7 @@ Supplementary Reading:
 ***
 
 ## Thursday, March 9th  
+
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~30 mins| [BAM to count, bigwig, peaks] | 
