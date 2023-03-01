@@ -41,6 +41,8 @@ For Homework Assignment #7
 | ~10 mins| [FASTQC](../lessons/04_running_fastqc.md) |
 | ~10 mins| [Assess FASTQC](../lessons/04_assessing_fastqc_output.md) |
 
+Supplemental Reading (*optional*):   
+[FASTQC Manual](../materials/FastQC_Manual.pdf) 
 ***
 
 ## Tuesday, February 21st 
@@ -65,6 +67,9 @@ Supplemental Reading (*optional*):
 
 [Powerpoint Slides: Mapping with HISAT2](../lectures/Lecture9-MMG232.pdf)
 
+Supplementary Reading:  
+[HISAT2 manual](http://daehwankimlab.github.io/hisat2/manual/)
+
 ### Homework Assignment 7 Due: Selection of NGS dataset (120 points)
 ***
 
@@ -75,9 +80,9 @@ Supplemental Reading (*optional*):
 | ~20 mins| [Learning the SAM/BAM format](../lectures/Lecture10-MMG232.pdf) |
 | ~40 mins| [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lectures/Lecture11-MMG232.pdf) |
 
-Supplementary Reading:
-[Learning the SAM/BAM format](../lessons/06_Learning_the_SAM_BAM_format.md) |
-[Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lessons/06_Chromatin_Biology.md) |
+Supplementary Reading:  
+[Learning the SAM/BAM format](../lessons/06_Learning_the_SAM_BAM_format.md)   
+[Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lessons/06_Chromatin_Biology.md) 
 
 Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232 
 ***
@@ -86,8 +91,11 @@ Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Overview of MULTIQC output] | 
-| ~30 mins| [STAR aligner: intro & script] |
+| ~30 mins| [MULTIQC output] | 
+| ~30 mins| [STAR aligner] |
+
+Supplementary Reading:  
+[STAR manual](../materials/STARmanual.pdf)
 
 *** 
 ## Tuesday, March 7th  
@@ -98,8 +106,8 @@ Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232
 ## Thursday, March 9th  
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Integrative Genome Browser (IGV)] | 
 | ~30 mins| [BAM to count, bigwig, peaks] | 
+| ~30 mins| [Integrative Genome Browser (IGV)] | 
 
 ### Homework Assignment 8 Due March 10th: FASTQC & Interpretation (100 points)
 
