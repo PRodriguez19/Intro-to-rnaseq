@@ -4,7 +4,7 @@ Lesson: "MULTIQC"
 Date: "Thursday, March 2, 2023"
 ---
 
-# MULTIQC
+# Multiqc - flipped classroom 
 
 ## Learning Objectives
 * Run the multiQC tool to gather QC metrics from multiple tools for all samples
@@ -26,19 +26,17 @@ There are several metrics you can evaluate in the RNA-seq workflow, these are di
 
 Today, you will be working on this exercise for the first 20 minutes of class. Your objective will be to: 
 
-1. Download the data. These data are in the form of a `.zip` file output from FASTQC. 
+1. Download the data. These data are in the form of a `.zip` file output from FASTQC. These files are located on the shared drive: 
 
-These files are located on the shared drive: 
-
-```
-/gpfs1/cl/mmg232/course_materials/multiqc_exercise
-```
+    ```
+    /gpfs1/cl/mmg232/course_materials/multiqc_exercise
+    ```
 
 2. Once downloaded, you will see three folders each containing `.zip` files from individual projects. Run Multiqc for each of these projects. 
 
-```
-Exercise1_GEO_data  Exercise2_Crypto_data  Exercise3_patient_data
-```
+    ```
+    Exercise1_GEO_data  Exercise2_Crypto_data  Exercise3_patient_data
+    ```
 
 3. View and interpret the multiqc results for each project using the metrics below. After the ~20 mins we will come back and discuss the results as a group. 
 
