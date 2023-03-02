@@ -57,33 +57,10 @@ Then the seeds are stitched together based on the best alignment for the read (s
 
 ### Set-up
 
-To get started with this lesson, start an interactive session with 6 cores:
+To get started, please download: 
 
 ```bash
-srun --pty -p interactive -t 0-12:00 -n 6 --mem 8G --reservation=HBC1 /bin/bash	
-```
-
-You should have a directory tree setup similar to that shown below. it is best practice to have all files you intend on using for your workflow present within the same directory. In our case, we have our original FASTQ files generated in the previous section. 
-
-```bash
-rnaseq
-	├── logs
-	├── meta
-	├── raw_data
-	│   ├── Irrel_kd_1.subset.fq
-	│   ├── Irrel_kd_2.subset.fq
-	│   ├── Irrel_kd_3.subset.fq
-	│   ├── Mov10_oe_1.subset.fq
-	│   ├── Mov10_oe_2.subset.fq
-	│   └── Mov10_oe_3.subset.fq
-	├── results
-	└── scripts
-```
-
-To use the STAR aligner, load the module: 
-
-```bash
-module load gcc/6.2.0 star/2.5.2b
+cp -r /gpfs1/cl/mmg232/course_materials/STAR_alignment . 
 ```
 
 Aligning reads using STAR is a two step process:   
@@ -91,21 +68,15 @@ Aligning reads using STAR is a two step process:
 1. Create a genome index 
 2. Map reads to the genome
 
-> A quick note on shared indexes for human and other commonly used model organisms. We have a designated directory at `/n/groups/shared_databases/` in which there are files that can be accessed by any user. These files contain, but are not limited to, genome indices for various tools, reference sequences, tool specific data, and data from public databases, such as NCBI and PDB. So when using a tool that requires a reference of sorts, it is worth taking a quick look here because chances are it's already been taken care of for you. 
->
->```bash
-> $ ls -l /n/groups/shared_databases/igenome/
->```
+The indexed genomes for mm10, hg38 for STAR aligner can be found here: 
+
+```
+/gpfs1/cl/mmg232/course_materials/genome_index/
+```
 
 ### Creating a genome index
 
-For this workshop we are using reads that originate from a small subsection of chromosome 1 (~300,000 reads) and so we are using only chr1 as the reference genome. 
-
-To store our genome indices, we will use the `/n/scratch2/` space with large temporary storage capacity. We need to create a directory for the indices within this space:
-
-```bash
-$ mkdir -p /n/scratch2/username/chr1_hg38_index
-```
+For today's lesson, we are using reads that originate from a small subsection of chromosome 1 (~300,000 reads) and so we are using only chr1 as the reference genome. 
 
 The basic options to **generate genome indices** using STAR are as follows:
 
@@ -116,57 +87,37 @@ The basic options to **generate genome indices** using STAR are as follows:
 * `--sjdbGTFfile`: /path/to/GTF_file
 * `--sjdbOverhang`: readlength -1
 
-> *NOTE:* In case of reads of varying length, the ideal value for `--sjdbOverhang` is max(ReadLength)-1. In most cases, the default value of 100 will work similarly to the ideal value.
-
 Now let's create a job submission script to generate the genome index:
 
 ```bash
-$ vim ~/rnaseq/scripts/genome_index.run
-```
-Within `vim` we now add our shebang line, the SLURM directives, and our STAR command. 
-
-```bash
 #!/bin/bash
+#BATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --mem=20G
+#SBATCH --time=30:00:00
+#SBATCH --job-name=star_index_chr1
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
 
-#SBATCH -p short 		# partition name
-#SBATCH -t 0-2:00 		# hours:minutes runlimit after which job will be killed
-#SBATCH -n 6 		# number of cores requested -- this needs to be greater than or equal to the number of cores you plan to use to run your job
-#SBATCH --mem 16G
-#SBATCH --job-name STAR_index 		# Job name
-#SBATCH -o %j.out			# File to which standard out will be written
-#SBATCH -e %j.err 		# File to which standard err will be written
+module load star-2.7.9a-gcc-7.3.0-eno6pnp
 
-cd /n/scratch2/username/
-
-module load gcc/6.2.0 star/2.5.2b
-
-STAR --runThreadN 6 \
+STAR --runThreadN 4 \
 --runMode genomeGenerate \
---genomeDir chr1_hg38_index \
---genomeFastaFiles /n/groups/hbctraining/intro_rnaseq_hpc/reference_data_ensembl38/Homo_sapiens.GRCh38.dna.chromosome.1.fa \
---sjdbGTFfile /n/groups/hbctraining/intro_rnaseq_hpc/reference_data_ensembl38/Homo_sapiens.GRCh38.92.gtf \
---sjdbOverhang 99
-```
-
-```bash
-$ sbatch ~/rnaseq/scripts/genome_index.run
+--genomeDir /gpfs1/cl/mmg232/course_materials/genome_index/star_index_chr1_hg19 \
+--genomeFastaFiles /gpfs1/cl/mmg232/course_materials/genome_index/star_index_chr1_hg19/chr1.fa \
+--sjdbGTFfile /gpfs1/cl/mmg232/course_materials/genome_index/star_index_chr1_hg19/chr1-hg19_genes.gtf \
+--sjdbOverhang 99 \
+--outFileNamePrefix chr1_hg19
 ```
 
 ### Aligning reads
 
-After you have the genome indices generated, you can perform the read alignment. We previously generated the genome indices for you in `/n/groups/hbctraining/intro_rnaseq_hpc/reference_data_ensembl38/ensembl38_STAR_index/` directory so that we don't get held up waiting on the generation of the indices.
+After the genome indices are generated, you can perform the read alignment. 
 
-Create an output directory for our alignment files:
+For now, we're going to work on two samples. We will use the first replicate in the Mov10 over-expression group, `Mov10_oe_1.subset.fq` and one replicate of the knock-down, `Irrel_kd_1.subset.fq`. 
 
-```bash
-$ cd ~/rnaseq/raw_data
-
-$ mkdir ../results/STAR
-```
-
-### STAR command in interactive bash
-
-For now, we're going to work on just one sample to set up our workflow. To start we will use the first replicate in the Mov10 over-expression group, `Mov10_oe_1.subset.fq`. Details on STAR and its functionality can be found in the [user manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf); we encourage you to peruse through to get familiar with all available options.
+More details on STAR and its functionality can be found in the [user manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf); I encourage you to peruse through to get familiar with all available options.
 
 The basic options for aligning reads to the genome using STAR are:
 
@@ -180,19 +131,37 @@ Listed below are additional parameters that we will use in our command:
 * `--outSAMtype`: output filetype (SAM default)
 * `--outSAMunmapped`: what to do with unmapped reads
 
-> **NOTE:** Default filtering is applied in which the maximum number of multiple alignments allowed for a read is set to 10. If a read exceeds this number there is no alignment output. To change the default you can use `--outFilterMultimapNmax`, but for this lesson we will leave it as default. Also, note that "**STAR’s default parameters are optimized for mammalian genomes.** Other species may require significant modifications of some alignment parameters; in particular, the maximum and minimum intron sizes have to be reduced for organisms with smaller introns" [[1](http://bioinformatics.oxfordjournals.org/content/early/2012/10/25/bioinformatics.bts635.full.pdf+html)].
+Some honorable mentions:
+* `--readFilesCommand zcat`: 
+* `--quantMode GeneCounts`:  
 
-We can access the software by simply using the STAR command followed by the basic parameters described above and any additional parameters. The full command is provided below for you to copy paste into your terminal. If you want to manually enter the command, it is advisable to first type out the full command in a text editor (i.e. [Sublime Text](http://www.sublimetext.com/) or [Notepad++](https://notepad-plus-plus.org/)) on your local machine and then copy paste into the terminal. This will make it easier to catch typos and make appropriate changes. 
 
 ```bash
+#!/bin/bash
+#BATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --mem=20G
+#SBATCH --time=3:00:00
+#SBATCH --job-name=star_align2
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
 
-STAR --genomeDir /n/groups/hbctraining/intro_rnaseq_hpc/reference_data_ensembl38/ensembl38_STAR_index/ \
---runThreadN 6 \
---readFilesIn Mov10_oe_1.subset.fq 
---outFileNamePrefix ../results/STAR/Mov10_oe_1_ \
+for i in *fq; do
+SAMPLE=$(echo ${i} | sed "s/.subset.fq//")
+echo ${SAMPLE}.subset.fq
+
+module load star-2.7.9a-gcc-7.3.0-eno6pnp
+
+STAR --genomeDir /gpfs1/cl/mmg232/course_materials/genome_index/star_index_chr1_hg19/ \
+--runThreadN 4 \
+--readFilesIn ${SAMPLE}.subset.fq \
+--outFileNamePrefix ${SAMPLE}_ \
 --outSAMtype BAM SortedByCoordinate \
 --outSAMunmapped Within \
---outSAMattributes Standard 
+--outSAMattributes Standard
+
+done
 
 ```
 

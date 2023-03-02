@@ -91,8 +91,8 @@ Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~20 mins| [MULTIQC output] | 
-| ~30 mins| [STAR aligner] |
+| ~20 mins| [MULTIQC output](../lessons/06_multiQC.md)| 
+| ~30 mins| [STAR aligner](../lessons/06_STAR_alignment.md) |
 
 Supplementary Reading:  
 [STAR manual](../materials/STARmanual.pdf)
