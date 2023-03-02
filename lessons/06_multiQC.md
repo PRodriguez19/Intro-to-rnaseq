@@ -24,7 +24,7 @@ There are several metrics you can evaluate in the RNA-seq workflow, these are di
 
 **Class Exercise**
 
-Today, you will be working on this exercise for the first 15 minutes of class. Your objective will be to: 
+Today, you will be working on this exercise for the first 20 minutes of class. Your objective will be to: 
 
 1. Download the data. These data are in the form of a `.zip` file output from FASTQC. 
 
@@ -40,7 +40,7 @@ These files are located on the shared drive:
 Exercise1_GEO_data  Exercise2_Crypto_data  Exercise3_patient_data
 ```
 
-3. View and interpret the multiqc results for each project using the metrics below. After the ~15 mins we will come back and discuss the results as a group. 
+3. View and interpret the multiqc results for each project using the metrics below. After the ~20 mins we will come back and discuss the results as a group. 
 
 ### Short description of datasets: 
 
