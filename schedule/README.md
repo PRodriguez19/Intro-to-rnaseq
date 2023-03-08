@@ -49,7 +49,7 @@ Supplemental Reading (*optional*):
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Mapping Lecture](../lectures/Lecture8-MMG232.pdf) |
+| ~30 mins| [Mapping & Trimmomatic Lecture](../lectures/Lecture8-MMG232.pdf) |
 | ~10 mins| [Download fasta and index](../lessons/05_Download_fasta_and_index.md)
 | ~10 mins| [Conda Again](../lessons/05_InstallConda_multiqc.md) |
 
@@ -108,16 +108,13 @@ Supplementary Reading:
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [BAM to count, bigwig, peaks] | 
-| ~30 mins| [Integrative Genome Browser (IGV)] | 
+| ~30 mins| [RSeQC](../lessons/07_RSeQC.md) | 
+| ~30 mins| [Counting Reads] | 
 
-### Homework Assignment 8 Due March 10th: FASTQC & Interpretation (100 points)
+### Homework Assignment 8 Due March 10th: FASTQC & Interpretation (130 points)
 
 *** 
 **Due after Spring Break:**
-
-### Homework Assignment 9: Alignment stats & Interpretation (150 points) 
-Due: March 24th by 11:59PM 
 
 ### Primary article research summary  
 Due: April 7th by 11:59PM    

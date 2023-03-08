@@ -132,9 +132,8 @@ Listed below are additional parameters that we will use in our command:
 * `--outSAMunmapped`: what to do with unmapped reads
 
 Some honorable mentions:
-* `--readFilesCommand zcat`: 
-* `--quantMode GeneCounts`:  
-
+* `--readFilesCommand zcat`
+* `--quantMode GeneCounts` 
 
 ```bash
 #!/bin/bash
