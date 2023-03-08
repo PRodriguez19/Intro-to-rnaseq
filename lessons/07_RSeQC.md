@@ -1,7 +1,7 @@
 ---
 Week: "7" 
 Lesson: "RSeQC"
-Date: "Thursday, March 2, 2023"
+Date: "Thursday, March 8, 2023"
 ---
 
 # Introduction to RSeQC
@@ -24,12 +24,14 @@ STAR produces multiple output files:
 * `Log.progress.out`: reports job progress statistics, such as the number of processed reads, % of mapped reads, etc. 
 * `STARtmp`: temp directory 
 
+**When the time comes, Multiqc will use the .out files to provide you with an aggregated report!**
+
 ## RSeQC
-Now that we have aligned reads in the form of a .bam file, we can proceed to perform additional QC on the BAM files. The major reason we are using this package is to utiltize the `infer_experiment` module. However, the RSeQC package offers a number of modules including evaluating sequencing saturation, mapped reads distribution, coverage uniformity, strand specificity, etc. You can read more about the package at the [RSeQC website](https://pythonhosted.org/RSeQC/).
+Now that you have aligned reads in the form of a .bam file, you can proceed to perform additional QC on the BAM files. The major reason we are using this package in class is to utiltize the `infer_experiment.py` module. However, the RSeQC package offers a number of modules including evaluating sequencing saturation, mapped reads distribution, coverage uniformity, strand specificity, etc. You can read more about the package at the [RSeQC website](https://pythonhosted.org/RSeQC/).
 
-Using the `infer_experiment.py` will provide you with a way, if need be, to determine "strandedness of reads". This concept will become especially important when we proceed to count reads using `HTseq-count` program. 
+Using `infer_experiment.py` will allow us with a way, if need be, to determine "strandedness of reads". Since everyone is reanalyzing published datasets, the authors may have provided this information to you already in the Methods section (or the GEO summary). But this doesn't always happen and its important to know this prior to counting readings with the `HTseq-count` program. 
 
-Files needed: 
+Files needed to use RSeQC: 
 * Aligned bam files 
 * Index file for each bam file 
 * A transcript bed file (in bed12 format)
@@ -68,3 +70,11 @@ Now, you can install RSeQC - this will take 5 -10 minutes.
 ```
 pip install --user RSeQC
 ``` 
+
+### Using RSeQC
+
+Download datset for today's lesson: 
+
+
+
+**Remember, once you log off you will need to use the command `conda activate rseqc` to use this program in the future!**
