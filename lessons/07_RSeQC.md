@@ -75,23 +75,16 @@ For example: chr1 11873 14409 uc001aaa.3 0 + 11873 11873 0 3 354,109,1189, 0,739
 ```
 more information about bed12 format can be found [here](https://bedtools.readthedocs.io/en/latest/content/general-usage.html)
 
-Download datset we will be using for today's lesson:
+Download datset for today's lesson:
 
 ```
 /gpfs1/cl/mmg232/course_materials/htseq_example
 ```
 
-Run the following line of code: 
+Run the following line of code and assess the output: 
 
 ```
 infer_experiment.py -r humanv41GFF.bed12 -i unknown_sorted.bam
-```
-
-The output should look like this: 
-
-```
-Fraction of reads explained by "1++,1--,2+-,2-+": 0.0169
-Fraction of reads explained by "1+-,1-+,2++,2--  ": 0.9030
 ```
 
 Consider the following: 
