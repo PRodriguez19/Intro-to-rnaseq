@@ -31,18 +31,6 @@ Now that you have aligned reads in the form of a .bam file, you can proceed to p
 
 Using `infer_experiment.py` will allow us with a way, if need be, to determine "strandedness of reads". Since everyone is reanalyzing published datasets, the authors may have provided this information to you already in the Methods section (or the GEO summary). But this doesn't always happen and its important to know this prior to counting readings with the `HTseq-count` program. 
 
-Files needed to use RSeQC: 
-* Aligned bam files 
-* Index file for each bam file 
-* A transcript bed file (in bed12 format)
-
-```
-BED12: A BED file where chrom, start, end, name, score, thickStart, thickEnd, itemRgb, blockCount, blockSizes, and blockStarts are listed in twelve columns.
-
-For example: chr1 11873 14409 uc001aaa.3 0 + 11873 11873 0 3 354,109,1189, 0,739,1347,
-```
-more information about bed12 format can be found [here](https://bedtools.readthedocs.io/en/latest/content/general-usage.html)
-
 ### To install RSeQC: 
 
 ```
@@ -74,6 +62,18 @@ pip install --user RSeQC
 **Stop here before proceeding to next steps**
 
 ### Using RSeQC
+
+Files needed to use `infer_experiment.py` RSeQC: 
+* Aligned bam files 
+* Index file for each bam file 
+* A transcript bed file (in bed12 format)
+
+```
+BED12: A BED file where chrom, start, end, name, score, thickStart, thickEnd, itemRgb, blockCount, blockSizes, and blockStarts are listed in twelve columns.
+
+For example: chr1 11873 14409 uc001aaa.3 0 + 11873 11873 0 3 354,109,1189, 0,739,1347,
+```
+more information about bed12 format can be found [here](https://bedtools.readthedocs.io/en/latest/content/general-usage.html)
 
 Download datset we will be using for today's lesson:
 
