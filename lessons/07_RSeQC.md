@@ -71,6 +71,8 @@ Now, you can install RSeQC - this will take 5 -10 minutes.
 pip install --user RSeQC
 ``` 
 
+**Stop here before proceeding to next steps**
+
 ### Using RSeQC
 
 Download datset for today's lesson: 
@@ -78,3 +80,47 @@ Download datset for today's lesson:
 
 
 **Remember, once you log off you will need to use the command `conda activate rseqc` to use this program in the future!**
+
+
+## Running HTSeq
+
+First, you will need to load the HTSeq module with: 
+
+```
+module load py-htseq-0.11.2-gcc-7.3.0-lbzmhgz
+```
+
+Run with help parameter to check that it is functional
+
+```
+htseq-count --help
+```
+
+```
+usage: htseq-count [options] alignment_file gff_file
+
+This script takes one or more alignment files in SAM/BAM format and a feature
+file in GFF format and calculates for each feature the number of reads mapping
+to it. See http://htseq.readthedocs.io/en/master/count.html for details.
+```
+
+The parameters we will be using are: 
+
+```
+-f {sam,bam}, --format {sam,bam}
+type of <alignment_file> data, either 'sam' or 'bam'
+(default: sam)
+
+-s {yes,no,reverse}, --stranded {yes,no,reverse}
+whether the data is from a strand-specific assay.
+Specify 'yes', 'no', or 'reverse' (default: yes).
+'reverse' means 'yes' with reversed strand interpretation
+
+-i IDATTR, --idattr IDATTR
+GFF attribute to be used as feature ID (default, suitable for Ensembl GTF files: gene_id)
+
+-m {union,intersection-strict,intersection-nonempty}, --mode {union,intersection-strict,intersection-nonempty}
+mode to handle reads overlapping more than one feature
+(choices: union, intersection-strict, intersection-nonempty; default: union)
+
+```
