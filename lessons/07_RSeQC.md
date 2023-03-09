@@ -1,6 +1,6 @@
 ---
 Week: "7" 
-Lesson: "RSeQC"
+Lesson: "RSeQC & HTSeq"
 Date: "Thursday, March 8, 2023"
 ---
 
@@ -75,27 +75,58 @@ pip install --user RSeQC
 
 ### Using RSeQC
 
-Download datset for today's lesson: 
+Download datset we will be using for today's lesson:
 
+```
+/gpfs1/cl/mmg232/course_materials/htseq_example
+```
 
+Run the following line of code: 
+
+```
+infer_experiment.py -r humanv41GFF.bed12 -i unknown_sorted.bam
+```
+
+The output should look like this: 
+
+```
+Fraction of reads explained by "1++,1--,2+-,2-+": 0.0169
+Fraction of reads explained by "1+-,1-+,2++,2--  ": 0.9030
+```
+
+Consider the following: 
+What type of library kit was used to create this library? 
+If you are using HISAT2 which parameter would you consider adding? How about for HTSeq? 
+
+Below are images of the slides that will help you make these decisions. 
+
+<p align="center">
+<img src="../img/summary_infer_experiment.png" width="800">
+</p>
+
+<p align="center">
+<img src="../img/table_stranded.png" width="800">
+</p>
 
 **Remember, once you log off you will need to use the command `conda activate rseqc` to use this program in the future!**
 
 
 ## Running HTSeq
 
-First, you will need to load the HTSeq module with: 
+First, you can always get more information on HTSeq by going to the external [link](https://htseq.readthedocs.io/en/release_0.11.1/count.html). In fact, any time you are running a new program on your own, make it a habbit to find and keep the manual or website open on your screen. 
+
+Load the HTSeq module with `module load`: 
 
 ```
 module load py-htseq-0.11.2-gcc-7.3.0-lbzmhgz
 ```
 
-Run with help parameter to check that it is functional
-
+Run with help parameter to check that HTSeq is functional (again good practice!)
 ```
 htseq-count --help
 ```
 
+You should the following: 
 ```
 usage: htseq-count [options] alignment_file gff_file
 
@@ -104,7 +135,7 @@ file in GFF format and calculates for each feature the number of reads mapping
 to it. See http://htseq.readthedocs.io/en/master/count.html for details.
 ```
 
-The parameters we will be using are: 
+**These are all the parameters you should be using. Take some time to read this.** 
 
 ```
 -f {sam,bam}, --format {sam,bam}
@@ -124,3 +155,42 @@ mode to handle reads overlapping more than one feature
 (choices: union, intersection-strict, intersection-nonempty; default: union)
 
 ```
+### Class Exercise 
+
+In class, we have been practicing writing scripts to run multiple files at once using a `for loop`. Today, please submit a job, that will contain a single line of code to process the `unknown_sorted.bam` file into a count file. 
+
+> Note htseq-count will take ~20 minutes to run just for this one sample. In the future, it is a good idea to create a `for loop` when you are ready to run your own samples.  
+
+Below is all the information you will need to run `htseq-count`: 
++ parent directory: htseq_example
++ GFF: /gpfs1/cl/mmg232/course_materials/genome_index/star_index_hg38/gencode.v43.chr_patch_hapl_scaff.annotation.gtf
++ alignment_file: unknown_sorted.bam
++ -i : gene_id 
++ -m : union 
++ you will then need to redirect the output to another file called `unknown_reverse.count`
++ please take a look at all the parameters listed above, they should all find their way into your code! 
+
+Job Submission parameters:
+```
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --mem=5G
+#SBATCH --time=5:00:00
+#SBATCH --job-name=htseq-count
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+```
+
+Once you have a line a code, go ahead and submit it. 
+
+Check that your job is running using: 
+
+```
+squeue -u net_id 
+
+squeue -u pdrodrig
+```
+
+If your job is not listed, this means that you code you submitted for processing contains an error and must be further troubleshooted. 
