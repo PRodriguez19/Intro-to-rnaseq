@@ -108,8 +108,9 @@ Supplementary Reading:
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [RSeQC](../lessons/07_RSeQC.md) | 
-| ~30 mins| [Counting Reads] | 
+| ~60 mins| [RSeQC & HTSeq](../lessons/07_RSeQC.md) | 
+
+Lecture slides: (../lectures/Lecture12-MMG232.pdf)
 
 ### Homework Assignment 8 Due March 10th: FASTQC & Interpretation (130 points)
 

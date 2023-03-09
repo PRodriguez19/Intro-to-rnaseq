@@ -108,7 +108,7 @@ Below are images of the slides that will help you make these decisions.
 <img src="../img/table_stranded.png" width="800">
 </p>
 
-**Remember, once you log off you will need to use the command `conda activate rseqc` to use this program in the future!**
+**Remember, once you log off today, you will need to use the command `conda activate rseqc` to use this program in the future!**
 
 
 ## Running HTSeq
