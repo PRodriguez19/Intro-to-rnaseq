@@ -1,4 +1,4 @@
-# Introduction to RNA-seq 
+# Introduction to RNA-seq (Feb 7th - March 9th) 
 
 ## Teaching Materials 
 This repository contains teaching materials from [hbctraining](https://github.com/hbctraining) but has been modified to support students enrolled in MMG232: Advanced Bioinformatics at the University of Vermont. The full citation for this work is provided below. 
@@ -15,6 +15,13 @@ This repository has teaching materials for an Introduction to RNA-sequencing dat
 ## To begin: Click on Class schedule 
 * [Class schedule](schedule/) 
 ---
+
+# Introduction to R (March 21st - April 6th) 
+
+These materials are intended to provide a **quick overview** of the R programming language in addition to more training in generating visualizations required for NGS datasets. Although we are concentrating on RNA-Seq datasets, most of these visualizations can be applied to other data types as well. 
+
+## To begin: Click on Class schedule 
+* [Class schedule](../IntroR/schedule/) 
 
 ### Citation
 
