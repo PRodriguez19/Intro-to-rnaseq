@@ -71,10 +71,6 @@ You can visualize your working directory by selecting the `Files` tab from the *
 
 ![Viewing your working directory](../img/getwd.png)
 
-If you wanted to choose a different directory to be your working directory, you could navigate to a different folder in the `Files` tab, then, click on the `More` dropdown menu and select `Set As Working Directory`.
- 
-![Setting your working directory](../img/setwd.png)
-
 
 ### Structuring your working directory
 To organize your working directory for a particular analysis, you should separate the original data (raw data) from intermediate datasets. For instance, you may want to create a `data/` directory within your working directory that stores the raw data, and have a `results/` directory for intermediate datasets and a `figures/` directory for the plots you will generate.
@@ -90,11 +86,7 @@ When finished, your working directory should look like:
 
 ### Adding files to your working directory
 
-There are a few files that we will be working with in the next few lessons and you can access them using the links provided below. If you right click on the link, and "Save link as..". Choose `~/Desktop/Intro-to-R/data` as the destination of the file. You should now see the file appear in your working directory. **We will discuss these files a bit later in the lesson.**
-
-* Download the **normalized counts file** by right clicking on [this link](https://raw.githubusercontent.com/hbctraining/Training-modules/master/IntroR/data/counts.rpkm.csv)
-* Download **metadata file** using [this link](https://raw.githubusercontent.com/hbctraining/Training-modules/master/IntroR/data/mouse_exp_design.csv)
-
+There are a few files that we will be working with
 
 ## Best practices
 
