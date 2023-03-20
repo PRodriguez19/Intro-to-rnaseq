@@ -1,9 +1,10 @@
 ---
-title: Introduction to R and RStudio
-authors: Mary Piper, Meeta Mistry
-date: "Friday, September 8, 2017"
+Week: "10" 
+Lesson: "Brief intro to R and RStudio"
+Date: "Tuesday, March 20, 2023"
 ---
-Approximate time: 15 minutes
+
+# Brief intro to R and RStudio 
 
 ## Learning Objectives
 
@@ -11,36 +12,15 @@ Approximate time: 15 minutes
 * Interact with R using RStudio.
 * Use the various features of RStudio.
 
-## What is R?
+## What is R and RStudio?
 
-The common misconception is that R is a programming language but in fact it is much more than that. Think of R as an environment for statistical computing and graphics, which brings together a number of features to provide powerful functionality.
+Here, we will assume that you are using R via RStudio. First time users often confuse the two. At its simplest, R is like a car's engine while RStudio is like a car's dashboard as illustrated in the Figure below.   
 
-The R environment combines:
+<img src="../img/R_vs_RStudio_1.png" width="600">
 
-* effective handling of big data 
-* collection of integrated tools
-* graphical facilities
-* simple and effective programming language
+More precisely, R is a programming language that runs computations, while RStudio is an **integrated development environment (IDE)** that provides an interface by adding many convenient features and tools. 
 
-
-
-## Why use R?
-
-<img src="../img/why_R.png" width="600">
-
-
-
-R is a powerful, extensible environment. It has a wide range of statistics and general data analysis and visualization capabilities.
-
-* Data handling, wrangling, and storage
-* Wide array of statistical methods and graphical techniques available
-* Easy to install on any platform and use (and it’s free!)
-* Open source with a large and growing community of peers
-
-
-## What is RStudio?
-
-RStudio is freely available open-source Integrated Development Environment (IDE). RStudio provides an environment with many features to make using R easier and is a great alternative to working on R in the terminal. 
+RStudio provides an environment with many features to make using R easier and is a great alternative to working on R in the terminal. 
 
 <img src="../img/rstudio_logo.png" width="300">
 
@@ -50,6 +30,17 @@ RStudio is freely available open-source Integrated Development Environment (IDE)
 * Platform agnostic
 * Open source
 
+
+## RStudio Interface
+
+**The RStudio interface has four main panels:**
+
+1. **Console**: where you can type commands and see output. *The console is all you would see if you ran R in the command line without RStudio.*
+2. **Script editor**: where you can type out commands and save to file. You can also submit the commands to run in the console.
+3. **Environment/History**: environment shows all active objects and history keeps track of all commands run in console
+4. **Files/Plots/Packages/Help**
+
+<img src="../img/rstudio-screenshot.png" width="600">
 
 ## Creating a new project directory in RStudio
 
@@ -65,14 +56,6 @@ Let's create a new project directory for our "Introduction to R" lesson today.
 
 ![RStudio interface](../img/Rstudio_interface.png)
 
-## RStudio Interface
-
-**The RStudio interface has four main panels:**
-
-1. **Console**: where you can type commands and see output. *The console is all you would see if you ran R in the command line without RStudio.*
-2. **Script editor**: where you can type out commands and save to file. You can also submit the commands to run in the console.
-3. **Environment/History**: environment shows all active objects and history keeps track of all commands run in console
-4. **Files/Plots/Packages/Help**
 
 ## Organizing your working directory & setting up
 
@@ -194,6 +177,12 @@ Before we move on to more complex concepts and getting familiar with the languag
 * Code and workflow are more reproducible if we can document everything that we do. Our end goal is not just to "do stuff", but to do it in a way that anyone can easily and exactly replicate our workflow and results. **All code should be written in the script editor and saved to file, rather than working in the console.** 
 * The **R console** should be mainly used to inspect objects, test a function or get help. 
 * Use `#` signs to comment. **Comment liberally** in your R scripts. This will help future you and other collaborators know what each line of code (or code block) was meant to do. Anything to the right of a `#` is ignored by R. *A shortcut for this is `Ctrl + Shift + C` if you want to comment an entire chunk of text.*
+
+### Learning more
+
+Below is a link to a "cheatsheet" that may come in handy! 
+[RStudio IDE cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf)
+
 
 ---
 
