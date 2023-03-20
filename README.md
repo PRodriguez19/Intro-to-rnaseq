@@ -21,7 +21,7 @@ This repository has teaching materials for an Introduction to RNA-sequencing dat
 These materials are intended to provide a **quick overview** of the R programming language in addition to more training in generating plots required for interpreting NGS datasets. Although we are concentrating on RNA-Seq datasets, most of these visualizations can be applied to other NGS data types as well. 
 
 ## New Class Schedule 
-* [Class schedule](../IntroR/schedule/) 
+* [Class schedule](/IntroR/schedule/README.md)
 
 ### Citation
 
