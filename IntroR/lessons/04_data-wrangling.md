@@ -1,9 +1,8 @@
 ---
-title: "Data wrangling: vectors and factors"
-authors: Meeta Mistry, Mary Piper, Radhika Khetani
-date: "Wednesday, September 13, 2017"
+Week: "10" 
+Lesson: "Data wrangling"
+Date: "Tuesday, March 20, 2023"
 ---
-Approximate time: 30 min
 
 ## Learning Objectives
 * Reading data into R
