@@ -12,15 +12,15 @@ This repository has teaching materials for an Introduction to RNA-sequencing dat
 1.	Understand the necessity for, and use of, the command line interface (bash) and HPC for analyzing high-throughput sequencing data.
 2.	Understand best practices for designing an RNA-seq experiment and analysis the resulting data.
 
-## To begin: Click on Class schedule 
-* [Class schedule](schedule/) 
+## Class schedule from Feb 7th to March 9th 
+* [Past schedule](schedule/) 
 ---
 
 # Introduction to R (March 21st - April 6th) 
 
-These materials are intended to provide a **quick overview** of the R programming language in addition to more training in generating visualizations required for NGS datasets. Although we are concentrating on RNA-Seq datasets, most of these visualizations can be applied to other data types as well. 
+These materials are intended to provide a **quick overview** of the R programming language in addition to more training in generating plots required for interpreting NGS datasets. Although we are concentrating on RNA-Seq datasets, most of these visualizations can be applied to other NGS data types as well. 
 
-## To begin: Click on Class schedule 
+## New Class Schedule 
 * [Class schedule](../IntroR/schedule/) 
 
 ### Citation
