@@ -4,7 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~10 mins| Intro to R | 
+| ~10 mins| [Intro to R](../lessons/01_Intro-to-R.md) | 
 | ~20 mins| [Syntax and data structures] | 
 | ~20 mins | [Functions and arguments] |
 | ~20 mins | [Data wrangling] |
