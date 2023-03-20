@@ -84,9 +84,6 @@ When finished, your working directory should look like:
 
 ![Your organized working directory](../img/complete_wd_setup.png)
 
-### Adding files to your working directory
-
-There are a few files that we will be working with
 
 ## Best practices
 
