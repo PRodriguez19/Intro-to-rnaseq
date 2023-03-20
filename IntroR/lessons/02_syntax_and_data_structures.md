@@ -54,6 +54,7 @@ x <- 3
 The assignment operator (`<-`) assigns **values on the right** to **variables on the left**. 
 
 *In RStudio, typing `Alt + -` (push `Alt` at the same time as the `-` key) will write ` <- ` in a single keystroke.*
+* For mac books push `option` (third key from left) and the `-` to write ` <- ` in a single keystroke.*
 
 
 ## Variables
@@ -72,6 +73,7 @@ When assigning a value to an variable, R does not print anything to the console.
 
 ```
 y
+[1] 5
 ```
 
 You can also view information on the variable by looking in your `Environment` window in the upper right-hand corner of the RStudio interface.
@@ -135,6 +137,11 @@ The table below provides examples of each of the commonly used data types:
 | Integer:  | 2L, 500L, -17L|
 | Logical:  | TRUE, FALSE, T, F|
 
+To check the data type use: 
+
+```r
+typeof("name")
+```
 ## Data Structures
 
 We know that variables are like buckets, and so far we have seen that bucket filled with a single value. Even when `number` was created, the result of the mathematical operation was a single value. **Variables can store more than just a single value, they can store a multitude of different data structures.** These include, but are not limited to, vectors (`c`), factors (`factor`), matrices (`matrix`), data frames (`data.frame`) and lists (`list`).
@@ -213,17 +220,23 @@ The expression vector is categorical, in that all the values in the vector belon
 
 ![Factor variables in environment](../img/factors.png)
 
+We can look at the structure of `expression`
+
+```r
+head(expression)
+str(expression)
+```
+
 ### Matrix
 
 A `matrix` in R is a collection of vectors of **same length and identical datatype**. Vectors can be combined as columns in the matrix or by row, to create a 2-dimensional structure.
 
 ![matrix](../img/matrix.png)
 
-Matrices are used commonly as part of the mathematical machinery of statistics. They are usually of numeric datatype and used in computational algorithms to serve as a checkpoint. For example, if input data is not of identical data type (numeric, character, etc.), the `matrix()` function will throw an error and stop any downstream code execution.
 
 ### Data Frame
 
-A `data.frame` is the _de facto_ data structure for most tabular data and what we use for statistics and plotting. A `data.frame` is similar to a matrix in that it's a collection of vectors of of the **same length** and each vector represents a column. However, in a dataframe **each vector can be of a different data type** (e.g., characters, integers, factors). 
+ A `data.frame` is similar to a matrix in that it's a collection of vectors of of the **same length** and each vector represents a column. However, in a dataframe **each vector can be of a different data type** (e.g., characters, integers, factors). 
 
 ![dataframe](../img/dataframe.png)
 
@@ -231,8 +244,23 @@ A data frame is the most common way of storing data in R, and if used systematic
 
 We can create a dataframe by bringing **vectors** together to **form the columns**. We do this using the `data.frame()` function, and giving the function the different vectors we would like to bind together. *This function will only work for vectors of the same length.*
 
+First let's look at the structure of `species` and `glengths`
+
+```r
+str(species)
+str(glengths)
+```
+
+Then let's create the dataframe: 
+
 ```r
 df <- data.frame(species, glengths)
+```
+
+Now, lets look at the dataframe using:
+
+```r
+head(df)
 ```
 
 *Note that you can view your data.frame object by clicking on its name in the `Environment` window.*
@@ -288,53 +316,23 @@ The input(s) are called **arguments**, which can include:
 1. the physical object (any data structure) on which the function carries out a task 
 2. specifications that alter the way the function operates (e.g. options)
 
+```r
+factorial(4)
+```
+
 Not all functions take arguments, for example:
 
 ```r
 getwd()
 ```
 
-However, most functions can take several arguments. If you don't specify a required argument when calling the function, you will either receive an error or the function will fall back on using a *default*. 
-
-The **defaults** represent standard values that the author of the function specified as being "good enough in standard cases". An example would be what symbol to use in a plot. However, if you want something specific, simply change the argument yourself with a value of your choice.
-
-### Basic functions
-
-We have already used a few examples of basic functions in the previous lessons i.e `getwd()`, `c()`, and  `factor()`. These functions are available as part of R's built in capabilities, and we will explore a few more of these base functions below. 
-
-You can also get functions from external [*packages or libraries*](https://github.com/hbctraining/Intro-to-R/blob/master/lessons/03_introR-functions-and-arguments.md#packages-and-libraries) (which we'll talk about in a bit), or [even write your own](https://hbctraining.github.io/Intro-to-R/lessons/03_introR-functions-and-arguments.html#user-defined-functions). 
-
-Let's revisit a function that we have used previously to combine data `c()` into vectors. The *arguments* it takes is a collection of numbers, characters or strings (separated by a comma). The `c()` function performs the task of combining the numbers or characters into a single vector. You can also use the function to add elements to an existing vector:
+If you don't specify a required argument when calling the function, you will either receive an error or the function will fall back on using a *default*. 
 
 ```r
-glengths <- c(glengths, 90) # adding at the end	
-glengths <- c(30, glengths) # adding at the beginning
+factoral()
+
+Error in factorial() : argument "x" is missing, with no default
 ```
-
-What happens here is that we take the original vector `glengths` (containing three elements), and we are adding another item to either end. We can do this over and over again to build a vector or a dataset.
-
-Since R is used for statistical computing, many of the base functions involve mathematical operations. If interested, we have linked a [detailed guide](http://www.sthda.com/english/wiki/comparing-means-in-r) for performing basic statistical tests in R. One example of a base R mathematical function would be `sqrt()`. The input/argument must be a number, and the the output is the square root of that number. Let's try finding the square root of 81:
-
-```r
-sqrt(81)
-```
-
-Now what would happen if we **called the function** (e.g. ran the function), on a *vector of values* instead of a single value? 
-
-```r
-sqrt(glengths)
-```
-
-In this case the task was performed on each individual value of the vector `glengths` and the respective results were displayed.
-
-
-Let's try another function, this time using one that we can change some of the *options* (arguments that change the behavior of the function), for example `round`:
-
-```r
-round(3.14159)
-```
-
-We can see that we get `3`. That's because the default is to round to the nearest whole number. **What if we want a different number of significant digits?**
 
 
 #### Seeking help on arguments for functions
@@ -342,33 +340,19 @@ We can see that we get `3`. That's because the default is to round to the neares
 The best way of finding out this information is to use the `?` followed by the name of the function. Doing this will open up the help manual in the bottom right panel of RStudio that will provide a description of the function, usage, arguments, details, and examples: 
 
 ```r
-?round
+?factorial
 ```	
 Alternatively, if you are familiar with the function but just need to remind yourself of the names of the arguments, you can use:
 
 ```r
-args(round)
+args(factorial)
 ```
 
 Even more useful is the `example()` function. This will allow you to run the examples section from the Online Help to see exactly how it works when executing the commands. Let's try that for `round()`:
 
 ```r
-example("round")
+example("factorial")
 ```
-
-In our example, we can change the number of digits returned by **adding an argutment**. We can type `digits=2` or however many we may want:
-
-
-```r
-round(3.14159, digits=2)
-```
-
-> *NOTE:* If you provide the arguments in the exact same order as they are defined (in the help manual) you don't have to name them:
->
-	round(3.14159, 2)
->
->However, it's usually not recommended practice because it's a lot of remembering to do, and if you share your code with others that includes less known functions it makes your code difficult to read. (It's however OK to not include the names of the arguments for basic functions like `mean`, `min`, etc...). Another advantage of naming arguments, is that the order doesn't matter.  This is useful when a function has many arguments. 
-
 
 ---
 

@@ -6,7 +6,7 @@
 |:-----------:|:----------| 
 | ~20 mins| [Intro to R](../lessons/01_Intro-to-R.md) | 
 | ~20 mins| [R Syntax](../lessons/02_syntax_and_data_structures.md)
-| ~20 mins | [Data wrangling](../lessons/04_data-wrangling.md)
+| ~20 mins | [Data wrangling](../lessons/03_data-wrangling.md)
 
 ***
 
