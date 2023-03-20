@@ -4,8 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~10 mins| [Intro to R](../lessons/01_Intro-to-R.md) | 
-| ~10 mins| [Package install](../lessons/03_packages_install.md)
+| ~20 mins| [Intro to R](../lessons/01_Intro-to-R.md) | 
 | ~20 mins| [R Syntax](../lessons/02_syntax_and_data_structures.md)
 | ~20 mins | [Data wrangling](../lessons/04_data-wrangling.md)
 
