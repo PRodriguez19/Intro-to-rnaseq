@@ -13,7 +13,8 @@ This repository has teaching materials for an Introduction to RNA-sequencing dat
 2.	Understand best practices for designing an RNA-seq experiment and analysis the resulting data.
 
 ## Class schedule from Feb 7th to March 9th 
-[Past schedule](schedule/) 
+### [Past schedule](schedule/) 
+
 ---
 
 # Introduction to R (March 21st - April 6th) 
