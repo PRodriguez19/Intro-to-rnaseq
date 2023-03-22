@@ -14,7 +14,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~60 mins| [Intro to dataset](../lessons/04_rnaseq_dataset.md) |
+| ~60 mins| [DESeq2 dataset](../lessons/04_rnaseq_dataset.md) |
 
 *** 
 ## Assignments Due 

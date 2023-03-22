@@ -4,7 +4,7 @@ Lesson: "DESeq2"
 Date: "Thursday, March 22, 2023"
 ---
 
-# The dataset 
+# DESeq2 dataset 
 
 For today's lesson we will be working with RNA-seq data from a recent publication in Nature Communications by [Shan et al. (2021)](https://doi.org/10.1038/s41467-021-26159-1). Before spring break, our final end product was the creation of counts files using HTSeq-count. Now, we will learn how to analyze this dataset in R. Our overall goal is to **identify a list of genes that are statistically distinct between the groups being compared**. This sounds easy right? Why not just do a log2FC with Microsoft Excel? The problem is, the **gene expression changes** we observe are not just a result of the differences between the groups that we are investigating, rather it **is a measurement of the sum of many effects**. In a set of biological samples the transcriptional patterns can be associated not only with our experimetal variable(s) but also many extraneous factors; some that we are aware of (i.e demographic factors, batch information) and sources that are unknown. The goal of differential expression analysis to determine the relative role of these effects, and to **separate the “interesting” from the “uninteresting”.** We will perform this differential analysis using DESeq2. 
 
