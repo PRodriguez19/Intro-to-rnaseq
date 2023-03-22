@@ -14,7 +14,8 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~60 mins| [Differential analysis with DESeq2 & PCA](../lessons/04_rnaseq_dataset.md) | 
+| ~10 mins| [Intro to dataset](../lessons/04_rnaseq_dataset.md) | 
+| ~50 mins| [Differential analysis with DESeq2 & PCA](../materials/RNA-Seq_DESeq2_tutorial_part1.html) | 
 
 *** 
 ## Assignments Due 
