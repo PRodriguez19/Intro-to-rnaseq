@@ -38,9 +38,9 @@ Copy this folder into your home directory:
 ```bash 
 /gpfs1/cl/mmg232/course_materials/R_tutorials/
 ```
-Once downloaded, navigate into the `ENSG_counts` folder located within R_tutorials. Then click on the file `RNA-Seq_DESeq2_tutorial_part1.Rmd` to open: 
+Once downloaded, navigate into the `ENSG_counts` folder located within R_tutorials. Then click on the file **`RNA-Seq_DESeq2_tutorial_EDIT.Rmd`** to open: 
 <p align="center">
-<img src="../img/ENSG_counts.png" width="500">
+<img src="../img/EDIT.png" width="500">
 </p>
 
 
