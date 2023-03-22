@@ -19,7 +19,7 @@ For today's lesson we will be working with RNA-seq data from a recent publicatio
  The authors in this paper discover that by ablating Tcf1 and Lef1 transcription factors in mature CD8+ T cells this induces the expression of genes from non-T cell lineages. We will focus on analyzing the Tcf7 dataset. Specifically, Tcf7 fl/fl mice were crossed with hCD2-Cre mice to create mature CD8+ T cells that lacked *Tcf7*. The protein coded by *Tcf7* is Tcf1. 
 
 <p align="center">
-<img src="../img/graphical_abstract.png" width="500">
+<img src="../img/graphical_abstract.png" width="800">
 </p>
 
 
@@ -38,14 +38,9 @@ Copy this folder into your home directory:
 ```bash 
 /gpfs1/cl/mmg232/course_materials/R_tutorials/
 ```
-Once downloaded, navigate into the `ENSG_counts` folder located within R_tutorials: 
+Once downloaded, navigate into the `ENSG_counts` folder located within R_tutorials. Then click on the file `RNA-Seq_DESeq2_tutorial_part1.Rmd` to open: 
 <p align="center">
 <img src="../img/ENSG_counts.png" width="500">
-</p>
-
-Then click on the file RNA-Seq_DESeq2_tutorial_part1.Rmd to open: 
-<p align="center">
-<img src="../img/rmd.png" width="300">
 </p>
 
 
@@ -72,7 +67,5 @@ library(tidyverse)
 ```
 
 ## Citation 
-
 Shan, Q., Li, X., Chen, X. et al. Tcf1 and Lef1 provide constant supervision to mature CD8+ T cell identity and function by organizing genomic architecture. Nat Commun 12, 5863 (2021). https://doi.org/10.1038/s41467-021-26159-1
 
-*This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.*

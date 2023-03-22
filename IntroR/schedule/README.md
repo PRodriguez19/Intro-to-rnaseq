@@ -16,8 +16,6 @@
 |:-----------:|:----------| 
 | ~60 mins| [Differential analysis with DESeq2 & PCA](../lessons/04_rnaseq_dataset.md) | 
 
-
-
 *** 
 ## Assignments Due 
 
