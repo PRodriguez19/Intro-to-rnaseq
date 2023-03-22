@@ -14,8 +14,9 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Differential analysis with DESeq2] | 
-| ~30 mins| [Principal Component Analysis] | 
+| ~60 mins| [Differential analysis with DESeq2 & PCA](../lessons/04_rnaseq_dataset.md) | 
+
+
 
 *** 
 ## Assignments Due 
