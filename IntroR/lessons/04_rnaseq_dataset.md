@@ -6,32 +6,32 @@ Date: "Thursday, March 22, 2023"
 
 # The dataset 
 
-For today's lesson we will be working with RNA-seq data from a recent publication in Nature Communications by [Shan et al. (2021)](https://doi.org/10.1038/s41467-021-26159-1). Before spring break, our final end product was the creation of counts files using HTSeq-count. Now, we will learn how to analyze this dataset with R. 
-
-Our overall goal is to **identify a list of genes that are statistically distinct between the groups being compared**. This sounds easy right? Why not just do a log2FC with Microsoft Excel? The problem is, the **gene expression changes** we observe are not just a result of the differences between the groups that we are investigating, rather it **is a measurement of the sum of many effects**. In a set of biological samples the transcriptional patterns can be associated not only with our experimetal variable(s) but also many extraneous factors; some that we are aware of (i.e demographic factors, batch information) and sources that are unknown. The goal of differential expression analysis to determine the relative role of these effects, and to **separate the “interesting” from the “uninteresting”.**
+For today's lesson we will be working with RNA-seq data from a recent publication in Nature Communications by [Shan et al. (2021)](https://doi.org/10.1038/s41467-021-26159-1). Before spring break, our final end product was the creation of counts files using HTSeq-count. Now, we will learn how to analyze this dataset in R. Our overall goal is to **identify a list of genes that are statistically distinct between the groups being compared**. This sounds easy right? Why not just do a log2FC with Microsoft Excel? The problem is, the **gene expression changes** we observe are not just a result of the differences between the groups that we are investigating, rather it **is a measurement of the sum of many effects**. In a set of biological samples the transcriptional patterns can be associated not only with our experimetal variable(s) but also many extraneous factors; some that we are aware of (i.e demographic factors, batch information) and sources that are unknown. The goal of differential expression analysis to determine the relative role of these effects, and to **separate the “interesting” from the “uninteresting”.** We will perform this differential analysis using DESeq2. 
 
 ## The publication
  
- T cell identity is established during thymic development, but how it is maintained in the periphery remains unknown. The authors in this paper discover that ablating Tcf1 (and Lef1) transcription factors in mature CD8+ T cells aberrantly induces genes from non-T cell lineages. Tcf1 is encoded by the *Tcf7* gene. 
+ T cell identity is established during thymic development, but how it is maintained in the periphery remains unknown. 
+ 
+ <p align="center">
+<img src="../img/tcell_dev.jpg" width="500">
+</p>
+ 
+ The authors in this paper discover that by ablating Tcf1 and Lef1 transcription factors in mature CD8+ T cells this induces the expression of genes from non-T cell lineages. We will focus on analyzing the Tcf7 dataset. Specifically, Tcf7 fl/fl mice were crossed with hCD2-Cre mice to create mature CD8+ T cells that lacked *Tcf7*. The protein coded by *Tcf7* is Tcf1. 
 
 <p align="center">
 <img src="../img/graphical_abstract.png" width="500">
 </p>
 
-Tcf7 fl/fl mice were crossed with hCD2-Cre mice to create mature CD8+ T cells that lacked Tcf7. 
 
-## The figures we will create 
+### The figures we will create and interpret 
 
-The different types of plots here are:
-
-* **PCA** to show 
+* **PCA & correlation heatmap** to show clusters of samples based on their similarity 
 * **Box plots** to show expression (normalized counts) of select genes 
 * **Heatmap** to show the expression of the significantly up- and down-regulated genes in the Tcf7 knock-out (KO)  versus the wildtype (WT) 
 * **Volcano plots** (essentially a scatter plot) to show the significance (adjusted p-value) and magnitude (log2FoldChange) of expression change between the WT samples versus the Tcf7 KO samples 
-* **pathwasy** to show the relevant pathways that are associated with up and down-regulated genes. 
+* **Pathway analysis** to show the relevant pathways that are associated with up and down-regulated genes. 
 
 # Getting Started 
-
 
 Copy this folder into your home directory:
 
