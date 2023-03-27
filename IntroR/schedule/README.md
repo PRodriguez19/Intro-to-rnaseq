@@ -18,7 +18,7 @@
 
 *** 
 
-## Tuesday, March 27th 
+## Tuesday, March 28th 
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
