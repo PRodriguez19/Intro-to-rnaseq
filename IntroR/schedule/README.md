@@ -17,6 +17,15 @@
 | ~60 mins| [DESeq2 dataset](../lessons/04_rnaseq_dataset.md) |
 
 *** 
+
+## Tuesday, March 27th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~60 mins| [Volcano Plot](../lessons/05_Volcano_plot.md) |
+
+***
+
 ## Assignments Due 
 
 ### HW#9 - Alignment & Counting (150 points)
