@@ -14,12 +14,13 @@ Copy this folder into your home directory:
 
 ## Install the following packages if you need to:   
 
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(RColorBrewer)
-library(cowplot)
++ library(dplyr)
++ library(tidyr)
++ library(ggplot2)
++ library(RColorBrewer)
++ library(cowplot)
 
+***
 
 ### Reminder: The dataset we are analyzing 
 
