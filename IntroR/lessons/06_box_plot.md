@@ -1,7 +1,7 @@
 ---
 Week: "11" 
 Lesson: "Box Plots"
-Date: "Thursday, March 29, 2023"
+Date: "Thursday, March 30, 2023"
 ---
 
 ## Getting Started 

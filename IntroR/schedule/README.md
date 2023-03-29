@@ -26,7 +26,7 @@
 
 ***
 
-## Thursday, March 29th 
+## Thursday, March 30th 
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
