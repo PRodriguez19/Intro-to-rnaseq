@@ -26,6 +26,14 @@
 
 ***
 
+## Thursday, March 29th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~60 mins| [Box Plots](../lessons/06_box_plot.md) |
+
+***
+
 ## Assignments Due 
 
 ### HW#9 - Alignment & Counting (150 points)
