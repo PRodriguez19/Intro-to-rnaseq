@@ -33,6 +33,16 @@
 | ~60 mins| [Box Plots](../lessons/06_box_plot.md) |
 
 ***
+ 
+
+## Tuesday, April 4th  
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~30 mins| [Heatmaps](../lessons/07_heatmaps.md) |
+| ~30 mins| [ssvQC](../lessons/07_ssvQC.md) |
+
+***
 
 ## Assignments Due 
 
