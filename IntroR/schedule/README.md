@@ -43,6 +43,15 @@
 | ~30 mins| [ssvQC](../lessons/07_ssvQC.md) |
 
 ***
+ 
+
+## Tuesday, April 6th  
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~60 mins| [Pathways](../lessons/08_pathways.md) |
+
+***
 
 ## Assignments Due 
 
