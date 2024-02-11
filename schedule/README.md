@@ -4,15 +4,8 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~20 mins| [Final Project Overview](../lectures/GuidelinesforFinalProject.pdf) | 
-| ~30 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture4-MMG232.pdf) |
-| ~15 mins| [Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lectures/Lecture11-MMG232.pdf) |
-
-Link to UCSC dataset: https://genome.ucsc.edu/s/pdrodrig/mm10%2Dmmg232 
-
-Supplementary Reading:  
-[Learning the SAM/BAM format](../lessons/06_Learning_the_SAM_BAM_format.md)   
-[Chromatin Biology: ChIPseq, CUT&RUN, ATAC-Seq](../lessons/06_Chromatin_Biology.md) 
+| ~20 mins| [Final Project Overview](../lectures/Guidelines-for-Final-Project.pdf) | 
+| ~40 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture1-MMG3320.pdf) |
 
 ***
 
