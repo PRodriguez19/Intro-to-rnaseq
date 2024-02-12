@@ -5,7 +5,8 @@
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~20 mins| [Final Project Overview](../lectures/Guidelines-for-Final-Project.pdf) | 
-| ~40 mins | [Introduction to RNA-seq & Experimental Design](../lectures/Lecture1-MMG3320.pdf) |
+| ~40 mins | [Introduction to RNA-seq & Experimental Design Ppt](../lectures/Lecture1-MMG3320.pdf) |
+| Extra | [Introduction to RNA-seq webpage](../lessons/01_intro-to-RNAseq) |
 
 ***
 

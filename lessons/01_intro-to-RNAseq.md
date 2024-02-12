@@ -1,7 +1,7 @@
 ---
-Week: "4" 
+Week: "5" 
 Lesson: "Intro to RNA-Seq"
-Date: "Tuesday, February 7, 2023"
+Date: "Tuesday, February 13, 2024"
 ---
 
 # Learning Objectives:
