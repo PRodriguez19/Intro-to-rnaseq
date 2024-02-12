@@ -8,13 +8,15 @@
 | ~40 mins | [Introduction to RNA-seq & Experimental Design Ppt](../lectures/Lecture1-MMG3320.pdf) |
 | Extra | [Introduction to RNA-seq webpage](../lessons/01_intro-to-RNAseq) |
 
+**Note: Directions for HW#7 can be found in the "Introduction to RNA-seq webpage" link above!**
+
 ***
 
 ## Thursday, February 15th 
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~30 mins| [Accessing Public Data from GEO](../lessons/02_accessing_public_experimental_data.md)| 
+| ~30 mins| [Accessing Public Data from GEO]| 
 | ~30 mins| [Submit a job using Slurm](../lessons/02_job_submission_slurm.md)| 
 
 [Powerpoint Slides: Accessing data from GEO]
