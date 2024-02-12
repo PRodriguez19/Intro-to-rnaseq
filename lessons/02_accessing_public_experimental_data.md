@@ -1,7 +1,7 @@
 ---
-Week: "4" 
+Week: "5" 
 Lesson: "Accessing Public Data from GEO"
-Date: "Thursday, February 9, 2023"
+Date: "Thursday, February 15, 2024"
 ---
 
 # Learning Objectives:
