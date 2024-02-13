@@ -21,6 +21,20 @@
 
 [Powerpoint Slides: Accessing data from GEO]
 
+
+***
+
+Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials! 
+
+| ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
+| ~20 mins| [STAR aligner](../lessons/06_STAR_alignment.md) |
+
+Supplementary Reading:  
+[HISAT2 manual](http://daehwankimlab.github.io/hisat2/manual/)
+[STAR manual](../materials/STARmanual.pdf)
+
+
+
 ***
 
 
