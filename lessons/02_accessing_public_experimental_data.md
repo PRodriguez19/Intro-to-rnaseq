@@ -4,7 +4,7 @@ Lesson: "Accessing Public Data"
 Date: "Thursday, February 15, 2024"
 ---
 
-# Learning Objectives:
+## Learning Objectives:
 
 * Understand the types of data that is accessible from Gene Expression Omnibus (GEO)
 * Use the command-line interface to copy over data from GEO
@@ -12,16 +12,24 @@ Date: "Thursday, February 15, 2024"
 ## Where we are going?
 
 <p align="center">
-<img src="../img/overview.png" width="400">
+<img src="../img/overview.png" width="800">
 </p>
 
-# # Accessing genomic reference data
+## Accessing genomic reference data
 
 ### FASTA
 During an NGS experiment, the nucleotide sequences stored inside the raw FASTQ files, or "sequence reads", need to be mapped or aligned to the reference genome to determine from where these sequences originated. Therefore, we need a reference genome (in FASTA format) in which to align our sequences.
 
+<p align="center">
+<img src="../img/FASTA.png" width="600">
+</p>
+
 ### GTF 
 In addition, many NGS methods require knowing where known genes or exons are located on the genome in order to quantify the number of reads aligning to different genome features, such as exons, introns, transcription start sites, etc. These analyses require reference data containing specific information about genomic coordinates of various genomic “features”, such as gene annotation files (in GTF, GFF, etc.). 
+
+<p align="center">
+<img src="../img/GTF_file_example.jpg" width="600">
+</p>
 
 To download reference data, there are a few different sources available:
 
@@ -33,7 +41,7 @@ To download reference data, there are a few different sources available:
 To find and download NGS experimental data and associated reference data, we will explore a few key repositories. For **accessing experimental data**, we will explore the [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) and the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) repositories. For **finding reference data**, we will navigate the [Ensembl database](http://useast.ensembl.org/index.html). 
 
 <p align="center">
-<img src="../img/inputs.png" width="400">
+<img src="../img/inputs.png" width="600">
 </p>
 
 ## General biological databases
