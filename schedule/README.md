@@ -16,7 +16,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~40 mins| [Accessing Public Data from GEO](../lessons/02_accessing_public_experimental_data.mg)| 
+| ~40 mins| [Accessing Public Data from GEO](../lessons/02_accessing_public_experimental_data.md)| 
 | ~30 mins| [Submit a job using Slurm](../lessons/02_job_submission_slurm.md)| 
 
 
