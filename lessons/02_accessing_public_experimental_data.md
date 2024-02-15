@@ -1,21 +1,116 @@
 ---
 Week: "5" 
-Lesson: "Accessing Public Data from GEO"
+Lesson: "Accessing Public Data"
 Date: "Thursday, February 15, 2024"
 ---
 
 # Learning Objectives:
 
-* Understand the type of data that is accessible from Gene Expression Omnibus (GEO)
+* Understand the types of data that is accessible from Gene Expression Omnibus (GEO)
 * Use the command-line interface to copy over data from GEO
 
-# Accessing public NGS sequencing data
+## Where we are going?
 
-All types of next-generation sequencing (NGS) analyses require access to public data, regardless of whether we are analyzing our own data or the data output from someone else's experiment. Reference data is available online as well as the experimental data from many published (and unpublished) studies. To access this data required a basic knowledge of **command line** *(Unit 1 - MMG232) and an understanding about the **associated tools and databases** (MMG231).
+<p align="center">
+<img src="../img/overview.png" width="400">
+</p>
 
-To find and download NGS experimental data and associated reference data, we will explore a few key repositories. For **accessing experimental data**, we will explore the [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) and the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) repositories. For **finding reference data**, we will navigate the [Ensembl database](http://useast.ensembl.org/index.html). We will focus on these repositories; however, other databases are also useful for exploring and downloading experimental and reference data, including [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables) and the [NCBI Genome](https://www.ncbi.nlm.nih.gov/genome/), and I encourage you to explore these more on your own.
+# # Accessing genomic reference data
 
-# Gene Expression Omnibus
+### FASTA
+During an NGS experiment, the nucleotide sequences stored inside the raw FASTQ files, or "sequence reads", need to be mapped or aligned to the reference genome to determine from where these sequences originated. Therefore, we need a reference genome (in FASTA format) in which to align our sequences.
+
+### GTF 
+In addition, many NGS methods require knowing where known genes or exons are located on the genome in order to quantify the number of reads aligning to different genome features, such as exons, introns, transcription start sites, etc. These analyses require reference data containing specific information about genomic coordinates of various genomic “features”, such as gene annotation files (in GTF, GFF, etc.). 
+
+To download reference data, there are a few different sources available:
+
+- **General biological databases:** Ensembl, NCBI, and UCSC
+- **Organism-specific biological databases:** Wormbase, Flybase, Cryptodb, etc. (often updated more frequently, so may be more comprehensive)
+
+*Note that these reference data sources are relevant to most types of genomic analyses, not just NGS analyses.
+
+To find and download NGS experimental data and associated reference data, we will explore a few key repositories. For **accessing experimental data**, we will explore the [Gene Expression Omnibus](https://www.ncbi.nlm.nih.gov/geo/) and the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) repositories. For **finding reference data**, we will navigate the [Ensembl database](http://useast.ensembl.org/index.html). 
+
+<p align="center">
+<img src="../img/inputs.png" width="400">
+</p>
+
+## General biological databases
+
+Biological databases for gene expression data store genome assemblies and provide annotations regarding where the genes, transcripts, and other genomic features are located on the genome. 
+
+Genome assemblies give us the **nucleotide sequence of the reference genome**. Although the Human Genome Project was "completed" in 2003, small gaps in the sequence remained (estimated 1% of gene-containing portions). As technology improves and more genomes are sequenced, these gaps are filled, mistakes are corrected and alternate alleles are provided. Therefore, every several years a **new genome build** is released that contains these improvements. 
+
+The **current genome build** is GRCh38/hg38 for the human, which was released in 2013 and is maintained by the Genome Reference Consortium (GRC). 
+
+<p align="center">
+<img src="../img/GRC.png" width="400">
+</p>
+
+Usually the biological databases will include the updated versions as soon as they are stably released, in addition to access to archived versions.
+
+Genome databases incorporate these genomes and generate the gene annotations with the following **similarities/differences**:
+
+- **Ensembl, NCBI, and UCSC** all use the **same genome assemblies or builds** provided by the GRC
+	- GRCh38 = hg38; GRCh37 = hg19
+
+- Each biological database **independently determines the gene annotations**; therefore, gene annotations between these databases can differ, even though the genome assembly is the same. Naming conventions are also different (chr1=1) between databases.
+
+- **Always use the same biological database for all reference data!**
+
+### Ensembl
+
+[*Ensembl*](http://useast.ensembl.org/index.html) provides a website that acts as a **single point of access to annotated genomes** for vertebrate species. For all other organisms there are additional Ensembl databases available through [Ensembl Genomes](http://ensemblgenomes.org/); however, they do not include viruses (NCBI does).
+
+- Genome assemblies/builds (reference genomes)
+	- New genome builds are released every several years or more depending on the species
+	- Genome assemblies are updated every two years to include patches, or less often depending on the species
+
+- Gene annotations
+	- Gene annotations are created or updated using a variety of sources (ENA, UniProtKB, NCBI RefSeq, RFAM, miRBase, and tRNAscan-SE databases)
+	- Automatic annotation is performed for all species using identified proteins and transcripts
+	- Manual curation by the HAVANA group is performed for human, mouse, zebrafish, and rat species, providing better confidence of transcript annotations
+	- Directly imports annotations from FlyBase, WormBase and SGD
+
+### Using the Ensembl genomic database and genome browser
+
+Navigate to the [Ensembl website](http://useast.ensembl.org/index.html) to view the interface. The homepage for Ensembl has a lot to offer, with the a lot of information and access to a range of functionality and tools.
+
+<p align="center">
+  <img src="../img/ensembl_interface.png" width="500">
+</p>
+
+- **Searching Ensembl**:  Look for a gene, location, variant and more using the search box on the homepage or the box that is provided in the top right corner of any Ensembl page.
+
+	- a gene name (for example, BRCA2) - best to use the official gene symbols ([HGNC](http://www.genenames.org))
+	- a UniProt accession number (for example, P51587)
+	- a disease name (for example, coronary heart disease)
+	- a variation (for example, rs1223)
+	- a location - a genomic region (for example, rat X:100000..200000)
+	- a PDB ID or a Gene Ontology (GO) term
+
+	Most search results will take you to the appropriate Ensembl view through a results page. These linked pages will allow you to **download information/sequences for specific genes/transcripts/exons/variants**. If you search using a location you will be directed straight to the location tab (this tab provides a view of a region of a genome). 
+
+- **Ensembl identifiers**: When using Ensembl, note that it uses the following format for biological identifiers:
+	
+    - **ENSG###########:**	Ensembl Gene ID
+    - **ENST###########:**	Ensembl Transcript ID
+    - **ENSP###########:**	Ensembl Peptide ID
+    - **ENSE###########:**	Ensembl Exon ID
+	
+    For non-human species a suffix is added:
+
+    - **ENSMUSG###:** MUS (Mus musculus) for mouse 
+    - **ENSDARG###:** DAR (Danio rerio) for zebrafish
+
+- **Downloading reference data from Ensembl**: Go to Downloads, then click FTP Download on the left side bar. 
+
+<p align="center">
+<img src="../img/download_ensembl.png" width="400">
+</p>
+
+# Accessing public NGS sequencing data via Gene Expression Omnibus (GEO)
 
 To find public experimental sequencing data, the NCBI's Gene Expression Omnibus (GEO) website is a useful place to search. The requirement for many grants is that experimental data be uploaded to GEO and the sequence read archive (SRA); therefore, there are quite a few datasets on GEO available to search. The interface for finding data on GEO is relatively user-friendly and easily searchable.
 
@@ -45,7 +140,7 @@ However, you will be finding data from a published paper on GEO. **The paper wil
 
 <img src="../img/mov10_paper.png" width="600">
 
-Then, we can search for the term **"GEO"**; different papers have different requirements for where this information is located. In this article, it is available in a separate section entitled "Accession Numbers".
+Then we can search for the term **"GEO"**; different papers have different requirements for where this information is located. In this article, it is available in a separate section entitled "Accession Numbers".
 
 <img src="../img/mov10_accession.png" width="600">
 
@@ -61,11 +156,11 @@ The GEO page contains information about the experiment, including:
 - links to the Sample GEO pages: each sample will have its own page with additional information regarding how the sample was generated and analyzed 
 - link to the SRA project containing the raw FASTQ files
 
-### **Remember, that you may be selecting a paper with multiple GEO accession numbers. This may be due to the authors analyzing a dataset generated from one or more other research groups. It is your responsibility to read the GEO page carefully prior to selecting a paper for downstream analysis.**  
+### **Note: You may select a paper with multiple GEO accession numbers.** The authors may be analyzing multiple different types of data (RNA-Seq, Exome-Seq, WGS, etc). It is your responsibility to read the GEO page carefully prior to selecting a paper for downstream analysis.**  
 
-In addition, if we were interested in **downloading the raw counts matrix (`GSE50499_GEO_Ceman_counts.txt.gz`)**, which gives the number of reads/sequences aligning to each gene, then we could scroll down to **supplementary data** at the bottom of the page. 
+In addition, if we were interested in **downloading the raw counts matrix (`GSE50499_GEO_Ceman_counts.txt.gz`)**, which gives the number of reads/sequences aligning to each gene we could scroll down to **supplementary data** at the bottom of the page. 
 
-We could download this file by clicking on the `ftp` link. In addition to the counts matrix file, we would probably also want the metadata for the file to know which sample belongs to which conditions by clicking on the "Series Matrix File(s)" link. 
+You could download this file by clicking on the `ftp` link. In addition to the counts matrix file, you may want the metadata for the file to know which sample belongs to which conditions by clicking on the "Series Matrix File(s)" link. 
 
 So yes, technically - you can skip the processing steps and just proceed with using the counts matrix created for you. But beware of the following: 
 
@@ -131,189 +226,72 @@ Also on this page is a listing of each run and the corresponding sample it came 
 
 Download the Accession list for the data you are interested in to your desktop. Then create a replicate of the Accession List on the VACC - call this file list_of_SRRs.txt
 
-## Download SRA-toolkit 
 
-We will be installing SRA tookit using the instructions found [here](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit). 
+## Environmental Module System 
+We would like to run a program called `fastq-dump` within the `sratoolkit` to download the fastq files. However, if we were to run the following `fastq-dump` command now we would retrieve the following error:
 
-1. Make a directory in your VACC account and call is `software`   
+```
+fastq-dump --help
 
-2. Next, you will retrieving the program package sratoolkit using the wget command. Be sure to download this package WITHIN your software directory.   
-
-    ```
-    wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
-    ```
-The result should produce an output similar to:  
-<img src="../img/wget-sratools.png" width="600">  
-
-
-
-3. The contents within this file need to be extracted. Notice the .tar.gz extension. This TAR is used to package files together for distribution or backup purposes.   
-
-    ```bash
-    tar -vxzf sratoolkit.tar.gz
-    ```
-The result should produce an output similar to:  
-<img src="../img/tar-sratools.png" width="600">
-
-
-4. Add the PATH to environment variable. This is a multi-part step.   
-
-    ```
-    nano .bash_profile
-    ```
-
-Now that you have accessed your bash profile, add the path to the `bin` folder for `sratoolkit.3.0.1-ubuntu64`. Below is showing the entire PATH for **MY account** - yours will have **YOUR user name.** After you add the PATH, then save.  
-
-    ```
-    export PATH=$PATH:/users/p/d/pdrodrig/software/sratoolkit.3.0.1-ubuntu64/bin
-    ```
-
-The result should produce an output similar to:  
-<img src="../img/bash-sratools.png" width="600">
-
-To make sure your changes take place, perform the following: 
-
-    ```
-    source .bash_profile
-    ```
-
-
-5. Verify the binaries will be found by the shell:  
-
-    ```bash
-    which fastq-dump
-    ```
-
-The result should produce an output similar to:
-
-    ```
-    /Users/JoeUser/sratoolkit.3.0.0-mac64/bin/fastq-dump
-    ```  
-
-6. Configure sratoolkit. This is a multi-part step 
-
-    ```
-    cd ~
-    cd scratch/
-    mkdir tmp
-    ```
-Navigate back to sratoolkit.3.0.0-mac64/bin:
-
-    ```
-    vdb-config -i
-    ```
-Use Tab to navigate around 
-MAIN
-[X] Enable Remote Access
-
-hit return to move into `CACHE` 
-location of user-repository - hit `o`. Navigate to the `tmp` directory hit Ok  
-<img src="../img/config.png" width="600">  
-
-Then save changes   
-<img src="../img/config2.png" width="600">  
-
-7. Test that the toolkit if functional  
-
-    ```
-    fastq-dump --stdout -X 2 SRR390728
-    ```
-
-Within a few seconds, the command should produce this exact output: 
-
-    ```
-    Read 2 spots for SRR390728
-    Written 2 spots for SRR390728
-    @SRR390728.1 1 length=72
-    CATTCTTCACGTAGTTCTCGAGCCTTGGTTTTCAGCGATGGAGAATGACTTTGACAAGCTGAGAGAAGNTNC
-    +SRR390728.1 1 length=72
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;9;;665142;;;;;;;;;;;;;;;;;;;;;;;;;;;;;96&&&&(
-    @SRR390728.2 2 length=72
-    AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
-    +SRR390728.2 2 length=72
-    ;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262
-    ```
-
-## Environment Variables
-
-Environment variables are, in short, variables that describe the environment in which programs run, and they are predefined for a given computer or cluster that you are on. You can reset them to customize the environment. 
-
-In this lesson, we are going to focus on two most commonly encountered environment variables: `$HOME` and `$PATH`.
-
-* `$HOME` defines the full path for the home directory of a given user.
-* `$PATH` defines a list of directories to search in when looking for a command/program to execute.
-
-Environment variables, in most systems, are called or denoted with a "$" before the variable name, just like a regular variable. Let's use the `echo` command to see what is stored in `$HOME`:
-
-```bash
-echo $HOME
+-bash: fastq-dump: command not found
 ```
 
-You should see the path to your home directory. `$HOME` can be used instead of the `~` (if you want to type 4 more characters).
+This is due to the fact that this program is not available in your current environment. However, a great work-around to downloading and configuraing programs is to first check if they are available as library packages through the VACC environmental module system. 
 
+Environmental Modules provide a convenient way for VACC users to load and unload packages. These packages are maintained and updated by the VACC. The following commands are necessary to work with modules: 
 
-`$HOME` is pretty straightforward, how about we take a look at what is stored in the `$PATH` variable:
+| Module commands | description |
+|:---------:|:---------:|
+| `module avail` | List all available software modules|
+| `module load` | Loads the named software module|
+| `module list` | Lists all the currently loaded modules | 
+| `module unload` | Unload a specific module |
+| `module purge` | Unload all loaded modules |
+| `module help` | Displays general help/information about modules |
 
-```bash
-echo $PATH
+Before we start using software, we have to load the module for each tool. 
 
-/users/m/m/mmg232in/miniconda3/condabin:/gpfs1/arch/spack-0.14.2/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/var/cfengine/bin:/usr/lpp/mmfs/bin:/opt/env-switcher/bin:/users/m/m/mmg232in/.local/bin:/users/m/m/mmg232in/bin:/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin
-```
-This output is a lot more complex! Let's break it down. When you look closely at the output of `echo $PATH`, you should a list of full paths separated from each other by a ":". 
-
-Here is the list of paths in a more readable format:
-* `miniconda3/condabin`
-* `/local/sbin`
-* `/cfengine/bin`
-* `/env-switcher/bin`
-* `/usr/local/rvm/rubies/ruby-2.4.9/bin`
-* `sratoolkit.3.0.1-ubuntu64/bin`
-
-Each of these paths are referring to a directory, in this case a lot of them are named `bin`. 
-
-### What are all these paths? And what do they represent?
-
-These are the directories that the shell will look through (in the same order as they are listed) for any given command or executable file that you type on the command prompt.
-
-**The path `/usr/bin` is usually where executables for commonly used commands are stored.**
-
-> As pointed out earlier, a lot of the folders listed in the `$PATH` variable are called `bin`. This is because of a convention in Unix to call directories that contain all the commands (in ***binary*** format) **`bin`**.
-
-***
-
-#### Modifying Environment Variables
-
-You can modify the contents of the `$PATH` environment variable with the `export` command. 
-
-The `export` command:
-* Example `export PATH=$PATH:~/opt/bin` (**do not run this**)
-* The arguments or **input to `export` should always include `$PATH`**
-  * This specifies that you want to maintain the existing contents.
-  
-This is often used to add paths to a directory with commands you commonly want to use. 
-
-Let's say you often use the `fastq-dump`  
-
-Without setting up your environmental variable, every time you want to run this tool you will need to type the following:
-
-```bash 
-/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin/fastq-dump <inputfile>
-```
-
-However, if `/users/m/m/mmg232in/software/sratoolkit.3.0.1-ubuntu64/bin` is part of the `$PATH` variable you can instead just type:
+If we check which modules we currently have loaded, we should not see `sratoolkit` listed. 
 
 ```bash
-fastq-dump <inputfile>
+module list
+```
+
+Let's load fastqc 
+
+```bash
+module load sratoolkit-2.9.6-gcc-7.3.0-65lpczt
+```
+
+Once a module for a tool is loaded, you have essentially made it directly available to you like any other basic shell command.
+
+```bash
+module list
+```
+
+How do we know which argument to use?
+
+```bash
+fastq-dump  --help
+```
+
+```bash
+Usage:
+  fastq-dump [options] <path> [<path>...]
+  fastq-dump [options] <accession>
+
+INPUT
+  -A|--accession <accession>       Replaces accession derived from <path> in 
+                                   filename(s) and deflines (only for single 
+                                   table dump) 
+  --table <table-name>             Table name within cSRA object, default is 
+                                   "SEQUENCE"
 ```
 
 ## Using SRA-toolkit to download multiple SRR files 
-Unfortunately, since the SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel. Lucky for us, the people at Harvard wrote a two scripts to do this for us. These scripts are located here: 
+Unfortunately, SRA-toolkit doesn't have its own methods for downloading multiple SRR files at once in parallel. Lucky for us, the people at Harvard wrote a two scripts to do this for us.  
  
-```
-cp -r /gpfs1/cl/mmg232/course_materials/download_from_SRA .
-```
-
-The first script is a loop, which goes through your list of SRR's, and calls a second script at each iteration, passing it an SRR number in the list.
+The first script is a loop, that will go through your list of SRR's, and calls a second script at each iteration, passing it for each SRR number on the list.
 
 ```bash
 nano sra_fqdump.sh
@@ -357,14 +335,14 @@ nano inner_script.sh
 fastq-dump --gzip $1
 ```
 
-In this way (by calling a script within a script) we will start a new job for each SRR download, and in this way download all the files at once in parallel -- much quicker than if we had to wait for each one to run sequentially. To run the main script:
+In this way (by calling a script within a script) we will start a new job for each SRR download, and download all the files at once in parallel. This is much quicker than if we had to wait for each one to run sequentially. To run the main script:
 
 ```bash
 sbatch sra_fqdump.sh
 ```
 
 ### Paired end files
-An important thing to note before you start the download of your files, is the **LibraryLayout** information (found in the RunInfoTable) - ie: whether your data is single or paired end. Unlike the standard format for paired end data, where we normally find two fastq files labelled as sample1_001.fastq and sample1_002.fastq, SRR files can be very misleading in that even paired end reads are found in one single file, with sequence pairs concatenated alongside each other. Because of this format, paired files need to be split at the download step. SRA toolkit has an option for this called "--split-files". By using this, one single SRR file will download as SRRxxx_1.fastq and SRRxxx_2.fastq.
+Unlike the standard format for paired end data, where we normally find two fastq files labelled as sample1_001.fastq and sample1_002.fastq, SRR files can be very misleading in that even paired end reads are found in one single file, with sequence pairs concatenated alongside each other. Because of this format, paired files need to be split at the download step. SRA toolkit has an option for this called "--split-files". By using this, one single SRR file will download as SRRxxx_1.fastq and SRRxxx_2.fastq.
 
 Furthermore, there is a very helpful improvement on this function called "--split-3" which splits your SRR into 3 files: one for read 1, one for read 2, and one for any orphan reads (ie: reads that aren't present in both files). This is important for downstream analysis, as some aligners require your paired reads to be in sync (ie: present in each file at the same line number) and orphan reads can throw this order off. Change the inner_script.sh as follows if your reads are paired end:
 
@@ -383,8 +361,8 @@ Furthermore, there is a very helpful improvement on this function called "--spli
 fastq-dump --split-3  $1
 ```
 
-### Bypassing storage issues
-Another important consideration when downloading large datasets to the server, is the maximum storage limit in your location. If you are downloading files to your home directory, the maximum allowed storage is 100GB. This can be a problem when downloading tens or hundreds of fastq files, as SRA-toolkit does not download the fastq files directly but writes an intermediate (equally large) cache file first, which is not removed. Because of this, you may run into storage errors very quickly, and will notice your files not downloading completely, and storage errors writing to your run.e error file. If this is the case, the scratch space on O2 (/n/scratch2) is a location with much greater storage (12TB limit), and a better place to run large downloads. 
+### Bypassing storage issues with scratch 
+Another important consideration when downloading large datasets to the server, is the maximum storage limit in your location. If you are downloading files to your home directory, the maximum allowed storage is 100GB. This can be a problem when downloading tens or hundreds of fastq files, as SRA-toolkit does not download the fastq files directly but writes an intermediate (equally large) cache file first, which is not removed. Because of this, you may run into storage errors very quickly, and will notice your files not downloading completely, and storage errors writing to your run.e error file. If this is the case, the scratch space on the VACC (/scratch). This is a location with much greater storage (12TB limit), and a better place to run large downloads. 
 
 
 ## Citation 
