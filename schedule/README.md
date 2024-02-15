@@ -18,6 +18,7 @@
 |:-----------:|:----------| 
 | ~50 mins| [Accessing Public Data from GEO](../lessons/02_accessing_public_experimental_data.md)| 
 | ~10 mins| [Submit a job using Slurm](../lessons/02_job_submission_slurm.md)| 
+
 **Please review Slurm on your own**
 
 ***
