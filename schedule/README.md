@@ -23,7 +23,26 @@
 
 ***
 
-Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials! 
+## Tuesday, February 20th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~40 mins | [FASTQC](../lectures/Lecture2-MMG3320.pdf) |
+| ~20 mins| [Running FASTQC](../lessons/03_running_fastqct.md)| 
+| Extra | [Assessing FASTQC](../lessons/03_assessing_fastqc_output.md)| 
+
+***
+
+## Thursday, February 22nd 
+
+Materials will be posted so that you can read and troubleshoot on your own. No in-person class. 
+* Installing Conda
+* Filezilla or other file transfer 
+* MULTIQC usage. I will provide (3) datasets for you to interpret. This will be apart of your next homework. 
+
+***
+
+**Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials!** 
 
 | ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
 | ~20 mins| [STAR aligner](../lessons/06_STAR_alignment.md) |
