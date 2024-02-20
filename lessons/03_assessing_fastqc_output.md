@@ -4,9 +4,17 @@ Lesson: "Assessing FASTQC results"
 Date: "Tuesday, February 20th, 2024"
 ---
 
+# Assessing FASTQC results
+
 ## Learning Objectives:
 
 * Evaluate the quality of your NGS data using FastQC
+
+## Grab Practice Data from this location
+
+```
+/gpfs1/cl/mmg3320/course_materials/FASTQC_example
+```
 
 ## Assessing the results from FastQC
 

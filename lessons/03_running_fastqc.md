@@ -4,14 +4,16 @@ Lesson: "QC with FASTQC"
 Date: "Tuesday, February 20th, 2024"
 ---
 
-# Learning Objectives:
+# QC with FASTQC
+
+## Learning Objectives:
 
 * Describe the contents and format of a FASTQ file
 * Create a quality report using FASTQC
 * Understand and use the environmental module system provided by the VACC 
 * Create and a script to automate FASTQC on multiple files 
  
-# Quality Control of FASTQ files
+## Quality Control of FASTQ files
 
 When working with high-throughput sequencing data, the raw reads you get off the sequencer will need to pass through a number of different tools in order to generate the final output. The first step in the RNA-Seq pipeline is to assess the quality of the sequence reads retrieved from the sequencing facility. 
 
