@@ -28,7 +28,7 @@
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | ~40 mins | [FASTQC](../lectures/Lecture2-MMG3320.pdf) |
-| ~20 mins| [Running FASTQC](../lessons/03_running_fastqct.md)| 
+| ~20 mins| [Running FASTQC](../lessons/03_running_fastqc.md)| 
 | Extra | [Assessing FASTQC](../lessons/03_assessing_fastqc_output.md)| 
 
 ***

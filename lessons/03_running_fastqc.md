@@ -146,79 +146,17 @@ FastQC will accept multiple file names as input, so we can use the `*.fq` wildca
 fastqc -o fastqc/ *.fq
 ```
 
-
-### Performing quality assessment using job submission scripts
+***
+** Class Activity**
 So far in our FASTQC analysis, we have been directly submitting commands to VACC using an interactive session. However, we are only running fastqc on one chromosome not the entire genome. Other larger fastq files will take a lot longer to run through FASTQC. 
+Now generate a script that will perform FASTQC on all fastq files within the `raw fastq` directory. Once you have completed your script, submit! 
 
-Submission of the script using the `sbatch` command allows Slurm to run your job when its your turn. Let's create a job submission script to automate this process: 
+Running parameters:
++ 10G of memory is required
++ 1 node, 2 tasks 
++ use job name 
 
-Our script will do the following:
-
-1. Load the FastQC module
-2. Run FastQC on all of our FASTQ files
-
-Let's first create a script named `fastqc.sh` using `nano`.
-
-```bash
-nano fastqc.sh
-```
-
-The first thing we need in our script is the **shebang line**:
-
-```bash
-#!/bin/bash
-```
-
-Following the shebang line are the Slurm directives. For the script to run, we need to include options for **queue/partition (-p) and runtime limit (-t)**. To specify our options, we precede the option with `#SBATCH`. Some key resources to specify are:
-
-|Resource|Flag|Description|
-|:----:|:----:|:----:|
-|partition|-p|partition name|
-|time|-t|hours:minutes run limit, after which the job will be killed|
-|core|-c|number of cores requested -- this needs to be greater than or equal to the number of cores you plan to use to run your job|
-|memory|--mem|memory limit per compute node for the job|
-
-Let's specify those options as follows:
-
-```bash
-#!/bin/bash
-#SBATCH --partition=bluemoon
-#SBATCH --nodes=1
-#SBATCH --ntasks=2
-#SBATCH --mem=10G
-#SBATCH --time=30:00:00
-#SBATCH --job-name=fastqc 
-# %x=job-name %j=jobid
-#SBATCH --output=%x_%j.out
-```
-
-Now in the body of the script, we can include any commands we want to run. In this case, it will be the following:
-
-```bash
-
-## make directory 
-mkdir fastqc_script
-
-## Load modules required for script commands
-module load fastqc-0.11.7-gcc-7.3.0-vcaesw7
-
-## Run FASTQC
-fastqc -o fastqc_script *.fq
-```
-
-> **NOTE:** These are the same commands we used when running FASTQC in the interactive session. Since we are writing them in a script, the `tab` completion function will **not work**, so please make sure you don't have any typos when writing the script!
-
-Once everything looks good submit the job!
-
-```bash
-sbatch fastqc.sh
-```
-
-You should immediately see a prompt saying `Submitted batch job JobID`. Your job is assigned with that unique identifier `JobID`. You can check on the status of your job with:
-
-```
-squeue -u jobid
-```
+***
 
 ---
 *This lesson has been developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/). These are open access materials distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.*
