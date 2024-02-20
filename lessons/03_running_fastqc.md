@@ -149,14 +149,16 @@ fastqc -o fastqc/ *.fq
 ```
 
 ***
+
 ** Class Activity**
-So far in our FASTQC analysis, we have been directly submitting commands to VACC using an interactive session. However, we are only running fastqc on one chromosome not the entire genome. Other larger fastq files will take a lot longer to run through FASTQC. 
-Now generate a script that will perform FASTQC on all fastq files within the `raw fastq` directory. Once you have completed your script, submit! 
+
+For this script, you are only running fastqc on data that has been sequenced for one chromosome ... not the entire genome. Therefore, running fastqc will take a lot longer later on! 
+Generate a script that will help you perform FASTQC on all fastq files within the `raw fastq` directory. Once you have completed your script, submit! 
 
 Running parameters:
 + 10G of memory is required
 + 1 node, 2 tasks 
-+ use job name 
++ use a unique job name 
 
 ***
 
