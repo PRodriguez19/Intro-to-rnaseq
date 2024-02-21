@@ -126,7 +126,7 @@ fmt                       9.1.0                hdb19cb5_0
 
 ***
 
-### Managing environments
+## Managing environments
 Conda allows you to create separate environments containing files, packages, and their dependencies that will not interact with other environments. You already have a default environment called `base`. The base environment is your "home base", and packages installed here will always be accessible to you regardless of your location within the server. However, you do not want to install all programs into your `base` environment as this can lead to some software conflicts. Instead, you will need to create a separate environment and install a package there. 
 
 We will now create an environment called `multiqc` and install the `multiqc` package. 
@@ -198,7 +198,7 @@ Now lets test out multiqc!
 	```
 
 	+ This is also a great time for you take a look at all the files contained the data folder. 
-	+ Notice, that `Multiqc` will provide an aggregate result from many bioinformatic outputs across many samples in a single report! 
+	+ Notice, that `Multiqc` will provide an aggregated result from many bioinformatic outputs across many samples in a single report! 
 	+ This is also a great time for you to understand why the `-d` parameter was added! 
 
 4. Use Filezilla to transfer the multiqc report from the VACC to your local desktop! 
@@ -211,7 +211,7 @@ Now lets test out multiqc!
 
 ## Additional information on Conda
 
-** This section is just for you to read! Not to try! Do not get confused with all the bioinformatic programs listed in this section.** 
+**This section is just for you to read! Not to try! Do not get confused with all the bioinformatic programs listed in this section.** 
 
 ### Creating environment + install tools
 
