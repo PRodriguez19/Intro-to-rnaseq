@@ -35,10 +35,16 @@
 
 ## Thursday, February 22nd 
 
-Materials will be posted so that you can read and troubleshoot on your own. No in-person class. 
-* Installing Conda
-* Filezilla or other file transfer 
-* MULTIQC usage. I will provide (3) datasets for you to interpret. This will be apart of your next homework. 
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~5 mins| [Installing Filezilla](../lessons/04_downloads_filezilla.md)| 
+| ~20 mins| [Installing Conda](../lessons/04_InstallConda_MultiQC.md)| 
+| ~20 mins | [MULTIQC usage](../lessons/03_assessing_fastqc_output.md)| 
+
+
+**Reminder: There will be no in-person class for Thursday. Please take the time to go through the above lessons on your own.**
+
+**If you have any trouble, do not panic, we can troubleshoot!**
 
 ***
 
