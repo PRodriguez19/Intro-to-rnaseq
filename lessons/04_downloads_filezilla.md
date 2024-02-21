@@ -32,6 +32,6 @@ Within the 'Site Manager' window, do the following:
 
 ### Filezilla Interface
 
- Next, if this if your first time using Filezilla we recommend that you take some time to get familiar withe the basics of the interface. This [tutorial](https://wiki.filezilla-project.org/FileZilla_Client_Tutorial_(en)) is a helpful resource.
+If this if your first time using Filezilla I recommend that you take some time to get familiar withe the basics of the interface. This [tutorial](https://wiki.filezilla-project.org/FileZilla_Client_Tutorial_(en)) is another helpful resource.
 
-You will see two panels in the interface. On the left hand side you will see your the files in your laptop and on the right hand side you have your home directory on VACC. Now, you can freely move documents from the VACC to your laptop, by double clicking or dragging it over to the right side panel. You will need this to submit the .html document for homework assignments. 
+You will see two panels in the interface. On the left hand side you will see your the files in your laptop and on the right hand side you have your home directory on VACC. Now, you can freely move documents from the VACC to your laptop, by double clicking or dragging it over to the right side panel!
