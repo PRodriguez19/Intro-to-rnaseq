@@ -6,6 +6,10 @@ Date: "Thursday, February 22nd, 2024"
 
 # Installing Conda 
 
+<p align="center">
+<img src="../img/Conda_logo.png" width="500">
+</p>
+
 Conda is an open-source package management system and environment management system that runs on Windows, macOS, and Linux. Conda quickly installs, runs, and updates packages and their dependencies. Conda also easily creates, saves, loads, and switches between environments on your local computer. Conda was created for Python programs but it can package and distribute software for any language.
 
 More information can be found [here](https://docs.anaconda.com/free/miniconda/index.html). 
@@ -31,14 +35,14 @@ More information can be found [here](https://docs.anaconda.com/free/miniconda/in
 
 	+ A few interactive things will happen during this portion:
 
-		+ You will be asked to review the license agreement. To skip to the end of the document hit `q` 
+		+ You will be asked to review the license agreement. To skip to the end of the document hit `q`. + Type yes to accept.  
 
 	```
 	Do you accept the license terms? [yes|no]
 	>>> yes
 	```
 
-	+ Type yes to accept.  
+	+ Press Enter. 
 	
 	```
 	In order to continue the installation process, please review the license
@@ -49,6 +53,8 @@ More information can be found [here](https://docs.anaconda.com/free/miniconda/in
 
 	+ It will also ask at some point if the installation location is ok. Since you are installing in your home directory, this is okay, so hit enter to accept. 
 
+	+ At this point, shown below, type "no" 
+	
 	```
 	Do you wish to update your shell profile to automatically initialize conda?
 	This will activate conda on startup and change the command prompt when activated.
@@ -61,28 +67,27 @@ More information can be found [here](https://docs.anaconda.com/free/miniconda/in
 	[no] >>> 
 	```
 
-	+ At this point type "no" 
-
+	+ Go ahead and close your terminal, and sign-in, to continue with the next steps. 
 
 	```
 	==> For changes to take effect, close and re-open your current shell. <==
 	```
 
-	+ Go ahead and close your terminal, and sign-in, to continue with the next steps. 
+
 	
-	+ If you see the following "error" upon signing in: 
+4. If you see the following "error" upon signing in: 
 	
 	```
 	AttributeError: module 'collections' has no attribute 'MutableMapping'
 	```
 
-		+ This is only because conda is active in your base envionment. To turn off conda in your base, type this in your terminal: 
+		+ This is only because conda is active in your base envionment. To turn off conda in your base, type this in your terminal and hit enter:  
 	
 		```
 		conda config --set auto_activate_base false 
     	```
 
-4. **Test your installation.** 
+5. **Test your installation.** 
 
 In your terminal, run the command `conda list`. A list of installed packages appears if it has been installed correctly.
 
