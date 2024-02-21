@@ -37,14 +37,11 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| ~5 mins| [Installing Filezilla](../lessons/04_downloads_filezilla.md)| 
-| ~20 mins| [Installing Conda](../lessons/04_InstallConda_MultiQC.md)| 
-| ~20 mins | [MULTIQC usage](../lessons/03_assessing_fastqc_output.md)| 
+| ~10 mins| [Installing Filezilla](../lessons/04_downloads_filezilla.md)| 
+| ~40 mins| [Installing Conda](../lessons/04_InstallConda_MultiQC.md)| 
 
 
-**Reminder: There will be no in-person class for Thursday. Please take the time to go through the above lessons on your own.**
-
-**If you have any trouble, do not panic, we can troubleshoot!**
+**Reminder: There will be no in-person class for Thursday. Please take the time to go through the above lessons on your own. If you have any trouble, do not panic, we can troubleshoot!**
 
 ***
 

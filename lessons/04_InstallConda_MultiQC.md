@@ -170,17 +170,132 @@ To check that `multiqc` is working type:
 multiqc --help
 ```
 
-To test out multiqc, navigate to `raw_fastq` directory and type the following to generate a multiqc .html file. 
-
-```
-multiqc .
-```
-
-Multiqc will provide an aggregate result from bioinformatic analyses across many samples in a single report! 
+## MULTIQC 
 
 <p align="center">
 <img src="../img/multiqc.jpg" width="500">
 </p>
+
+Now lets test out multiqc!  
+
+1. Download data from this location 
+
+	```
+	cp -r /gpfs1/cl/mmg3320/course_materials/multiqc_example . 
+	```
+
+2. Once downloaded, you will see that this folder, contains another folder called "data". 
+
+3. Generate a multiqc report for all data found inside. 
+	
+	```
+	multiqc -d data/
+	```
+
+	+ This is also a great time for you take a look at all the files contained the data folder. 
+	+ Notice, that `Multiqc` will provide an aggregate result from many bioinformatic outputs across many samples in a single report! 
+	+ This is also a great time for you to understand why the `-d` parameter was added! 
+
+4. Use Filezilla to transfer the multiqc report from the VACC to your local desktop! 
+
+	+ View the report. I don't expect you to understand everything contained within this report, but doesn't hurt to know where we are heading! 
+
+5. Be proud of your efforts! 
+
+*** 
+
+## Additional information on Conda
+
+** This section is just for you to read! Not to try! Do not get confused with all the bioinformatic programs listed in this section.** 
+
+### Creating environment + install tools
+
+Instead of base installations, more complicated installations (either large or with many dependencies) can be installed by creating a new environment.
+
+The basic structure of this is
+
+```
+conda create -n new-env
+```
+
+This will simply create an empty environment called new-env, with python3 as the default version based on the installation of Miniconda that we chose.
+
+As you start creating many environments you might forget the names of a few, which you can look up using:
+
+```
+conda env list
+```
+
+You can activate your new environment using:
+
+```
+conda activate new-env
+```
+
+Instead of (base), your command prompt should now say (new-env)
+
+You can exit or “close” an environment with: 
+
+```
+conda deactivate
+```
+
+Creating an environment with a specific python version
+
+Many bioinformatics tools still rely on python2 or may have legacy dependencies that do. We can create environments for these like so:
+
+```
+conda create -n python-v2.7 python=2.7
+```
+
+You may also find over time that a particular environment or tool is no longer useful to you. To remove, you must use a conda-specific command: 
+
+```
+conda env remove -n python-v2.7
+conda env remove -n new-env
+```
+
+### Installing within an environment
+
+Once an environment is created + activated, installation can be as simple as executing the conda install command for each package inside that environment.
+```
+conda create -n program
+```
+And then install the tool itself
+
+```
+conda  activate fastANI
+conda install -c bioconda fastani
+```
+
+Always check your installation with --help or -h: 
+
+```
+fastANI -h
+```
+
+### Create + installing packages in one step
+
+You can also create a new env + install a package all in one step. Below is an example: 
+
+```
+conda create -n kraken2 -c bioconda kraken2
+```
+
+### Updating
+
+Say it’s been a few months since we last used fastQC, we could update it with:
+
+```
+conda update fastqc
+```
+
+Conda itself needs to be updated, which is done with: 
+
+```
+conda update conda
+```
+
 
 
 
