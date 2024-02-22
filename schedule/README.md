@@ -6,7 +6,7 @@
 |:-----------:|:----------| 
 | ~20 mins| [Final Project Overview](../lectures/Guidelines-for-Final-Project.pdf) | 
 | ~40 mins | [Introduction to RNA-seq & Experimental Design Ppt](../lectures/Lecture1-MMG3320.pdf) |
-| Extra | [Introduction to RNA-seq webpage](../lessons/01_intro-to-RNAseq) |
+| Extra | [Introduction to RNA-seq webpage](../lessons/01_intro-to-RNAseq.md) |
 
 **Note: Directions for HW#7 can be found in the "Introduction to RNA-seq webpage" link above!**
 
