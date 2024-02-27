@@ -45,6 +45,16 @@
 
 ***
 
+## Tuesday, February 27th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~40 mins | [Trimming & Mapping](../lectures/Lecture3-MMG3320.pdf) |
+| ~10 mins| [Trim Galore - Class Activity #1](../lessons/05_trim_galore.md)| 
+| ~10 mins | [Indexing a Genome - Class Activity #2](../lessons/05_Download_fasta_and_index.md)| 
+
+***
+
 **Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials!** 
 
 | ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
