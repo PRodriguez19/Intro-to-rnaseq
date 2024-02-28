@@ -107,15 +107,11 @@ Now, let's start filling this in for the purpose of submitting files for alignme
 Our script will be "written" in sections. Please note, 
 + You have already been provided the script so no peeking! 
 + The point of this exercise is the understand how this script is composed. Yes, you are mostly just copying-and-pasting, but do take this time to read the descriptions provided. 
-+ Open Jupyter Notebooks for this exercise. 
++ Open Jupyter Notebooks for this exercise. Call the script hisat2-practice.sh 
 
 1. Provide the job submission parameters. Type in a job name. 
 
 	```
-	function test() {
-	  console.log("This code will have a copy button to the right of it");
-	}
-	
 	#!/bin/bash
 	#SBATCH --partition=bluemoon
 	#SBATCH --nodes=1
@@ -142,12 +138,12 @@ Our script will be "written" in sections. Please note,
 	+ Remember, the hashtag symbol are used to comment. This is a really important habit to stress. Commenting allows you, the bioinformatician, to understand what you were thinking as you are developing your code.  
     + We’re setting the variable `SAMPLE` as the "sample name" using the `sed` command to find and replace every instance where it says `.fastq.gz` and replace with nothing. 
     	+ This let’s us have a variable that is essentially a list of every sample name.
-    	+ Say for example, the sample name is called WT_REP1.fastq.gz. 
+    	+ Say for example, the sample name is called WT-REP1.fastq.gz. 
     		+ The `sed` command will find the `.fastq.gz` and replace with this with nothing.  
-    		+ So upon returning the SAMPLE variable with echo, you will only end up with WT_REP1
+    		+ So upon returning the SAMPLE variable with echo, you will only end up with WT-REP1. 
     + echo the names of each sample to make sure it’s correct
 
-3. Next, copy-and-paste this section below. Load the modules required to run the commands.  
+3. Next, copy-and-paste this section below. In your terminal, see if the modules are loaded. If not, load them. 
 
 	```
     # Load required modules
@@ -163,12 +159,51 @@ Our script will be "written" in sections. Please note,
     GENOME="GRCm39"
     p=2
     ```
+	
+	> All of these are examples of VARIABLES. These variables are being set to either a path, a character name, or a number.  
 
-Followed by the commands to be executed by script. Below the entire script hisat2_align.sh is provided:  
+5. Next, copy-and-paste this section below.
 
+	```
+	# Align reads to the reference genome
+    hisat2 \
+        -p ${p} \
+        -x ${DBDIR}/${GENOME} \
+        -U ${SAMPLE}.fastq.gz \
+        -S ${SAMPLE}.sam &> ${SAMPLE}.log
+    ```
 
+6. Move your terminal tab. Do not close your script, we will return to it shortly. 
 
-  After running the hisat2_align.sh script with the FASTQ provided, the outputs will look like this:
+7. Run the following command on your terminal. 
+
+	```
+	hisat2 --help
+	```
+	
+	+ What does `-U` mean? 
+	+ What does `-S` mean? 
+	+ What does `-x` mean? 
+
+	**Its really important at this point, that you take some time to understand what these parameters are!**
+	**This isn't a race, take your time.**
+	
+	**When you are ready, come up and show me the following:** 
+	a) I would like you to point on your terminal screen and show me what each of the parameters above mean. 
+	b) Rewrite the following block of code on your practice script, to accomodate **paired-end** reads. Let's pretend that the file names are WT-REP1-R1.fastq.qz and WT-REP1-R2.fastq.qz. 
+	c) MULTIQC output of `hisat2_align.sh`. See #8 and 9 below. 
+	d) Open the `SRR13423162.log` file. See #8 below.   
+	
+	```
+	# Align reads to the reference genome
+    hisat2 \
+        -p ${p} \
+        -x ${DBDIR}/${GENOME} \
+        -U ${SAMPLE}.fastq.gz \
+        -S ${SAMPLE}.sam &> ${SAMPLE}.log
+    ```
+
+8. In the beginning of class you ran `hisat2_align.sh`. If successful, the outputs will look like this:
 
         ```
         align_CD8_7422840.out  SRR13423162.log             SRR13423165.fastq.gz
@@ -178,15 +213,5 @@ Followed by the commands to be executed by script. Below the entire script hisat
         SRR13423162.fastq.gz   SRR13423165.bam             SRR13423165.txt
         ```
 
-5. Run MUlTIQC 
+9. Run MUlTIQC 
 
-Activate conda first
-
-```
-conda activate multiqc
-```
-
-then run the command
-```
-multiqc .
-```
