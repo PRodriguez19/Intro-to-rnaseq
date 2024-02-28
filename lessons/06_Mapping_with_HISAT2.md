@@ -1,7 +1,7 @@
 ---
 Week: "6" 
 Lesson: "Mapping with HISAT2"
-Date: "Thursday, February 28, 2024"
+Date: "Thursday, February 29, 2024"
 ---
 
 # Mapping with HISAT2 
@@ -17,18 +17,18 @@ Date: "Thursday, February 28, 2024"
 
 1. Grab the data folder from this location 
 
-```
-/gpfs1/cl/mmg3320/course_materials/HISAT2_example 
-```
+	```
+	/gpfs1/cl/mmg3320/course_materials/HISAT2_example 
+	```
 
 2. Submit the `hisat2_align.sh` script to SLURM 
 
 3. Check to see that your job is running. If your terminal looks like below...
 
-```
+	```
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           16545144  bluemoon align_CD pdrodrig  R      24:11      1 node329
-```
+	```
 
 <p align="center">
 <img src="../img/dog_good_job.jpg" width="300">
@@ -40,10 +40,13 @@ Date: "Thursday, February 28, 2024"
 ## Read Alignment using HISAT2 
 The alignment process consists of choosing an appropriate reference genome to map our reads against, and performing the read alignment using one of several splice-aware alignment tools such as [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) (HISAT2 is a successor to both HISAT and TopHat2). The choice of aligner is a personal preference and also dependent on the computational resources that are available to you.
  
-For this first part, we will be using HISAT2 (hierarchical indexing for spliced alignment of transcripts 2), an aligner that is fast and sensitive used for mapping next-generation sequencing reads (whole-genome, whole-exome, transcriptome). 
+Today we will be using HISAT2 (hierarchical indexing for spliced alignment of transcripts 2), an aligner that is fast and sensitive used for mapping next-generation sequencing reads (whole-genome, whole-exome, transcriptome). 
 
++ [HISAT2 main page](http://daehwankimlab.github.io/hisat2/)
++ [HISAT2 user manual](http://daehwankimlab.github.io/hisat2/manual/)
 
-## Introduction to Loops
+***
+## Class Exercise 2: Refresher on Loops
 
 Everyone will be downloading a minimum of (6) FASTQ files from the GEO repository. To repeat the alignment and downstream processing steps for each sample precisely, its best to run the same line of code to each sample at the same time. For this we can turn to loops, a function of programming languages that allow us to write out a series of commands and perform them on all the files we want at one time. In addition to being a major time saver, this makes your code a lot easier to read and much more concise overall.
 
@@ -51,14 +54,14 @@ There are many types of loops, but the kind we are going to cover is called a fo
 
 ### Variables
 
-The variable portion of a for loop is the item that we are going to iterate over and will change with every “new” loop. **This is typically each individual sample or file that the action is being performed on.** In their simplest form they will look something like this:
+The variable portion of a for loop is the item that we are going to iterate over and will change with every “new” loop. **The action is typically being performed on each individual file.** In their simplest form variables can look like this:
 
 ```
 DIRECTORY=PATH/TO/DIRECTORY
 
 DBDIR=/users/p/d/pdrodrig/genome_index
 ```
-> In this case, this is showing a location to a specific directory 
+> In the above example, this is showing a location to a specific directory 
 
 As a reminder, if we want to make sure this assignment worked, use the `echo` command. This is a command that prints out whatever is provided to it, which can be really useful to test commands or report information back to yourself during a loop.
 
@@ -99,96 +102,73 @@ done
 > The VARIABLE could be any letter or word that is meaningful, but is commonly represented by a single letter like "i" for ease. 
 > Often the `in` portion will be a directory instead of single files (A, B, C) - i.e. a directory that contains the FASTQ files you want to work with. 
 
-Now, let's start filling this in for the purpose of submitting files for alignment using HISAT2 and creating BAM files. **BAM is a binary version of the SAM file, also known as Sequence Alignment Map format.** The SAM file is a tab-delimited text file that contains information for each individual read and its alignment to the genome. However, SAM files are never a desirable output because of their large size therefore, we will be opting to immediately create BAM files using the program SAMtools. We will talk more about these file formats in the next class. 
+Now, let's start filling this in for the purpose of submitting files for alignment using HISAT2 and creating BAM files. **BAM is a binary version of the SAM file, also known as Sequence Alignment Map format.** The SAM file is a tab-delimited text file that contains information for each individual read and its alignment to the genome. However, SAM files are never a desirable output because of their large size therefore, we will be opting to immediately create BAM files using the program SAMtools.
 
-Our script will be written in sections: 
+Our script will be "written" in sections. Please note, 
++ You have already been provided the script so no peeking! 
++ The point of this exercise is the understand how this script is composed. Yes, you are mostly just copying-and-pasting, but do take this time to read the descriptions provided. 
++ Open Jupyter Notebooks for this exercise. 
 
-1. Will provide the job submission parameters
+1. Provide the job submission parameters. Type in a job name. 
 
-        ```
-        #!/bin/bash
-        #SBATCH --partition=bluemoon
-        #SBATCH --nodes=1
-        #SBATCH --ntasks=2
-        #SBATCH --mem=40G
-        #SBATCH --time=24:00:00
-        #SBATCH --job-name=align_CD8
-        # %x=job-name %j=jobid
-        #SBATCH --output=%x_%j.out
-        ```
+	```
+	function test() {
+	  console.log("This code will have a copy button to the right of it");
+	}
+	```
 
-2. Next, this section will allow us to run the script on all files *while* maintaining the file name for each file output 
+	```
+	#!/bin/bash
+	#SBATCH --partition=bluemoon
+	#SBATCH --nodes=1
+	#SBATCH --ntasks=2
+	#SBATCH --mem=10G
+	#SBATCH --time=3:00:00
+	#SBATCH --job-name=
+	# %x=job-name %j=jobid
+	#SBATCH --output=%x_%j.out
+	```
 
-        ```bash
-        for i in reads/*.fastq
-        do
-          SAMPLE=$(echo ${i} | sed "s/.fastq//") 
-          echo ${SAMPLE}.fastq
-        ```
+2. Next, copy-and-paste this section below. The importance of this section, is that it will allow you to process all fastq files *while* maintaining the file name for each file output.  
 
-    Dissecting each line we see that:
+	```
+	# Iterate through each fastq.gz file in the current directory
+	for fastq_file in *fastq.gz; do
+    
+    # Extract sample name from the file name
+    SAMPLE=$(echo ${fastq_file} | sed "s/.fastq.gz//")
+    echo ${SAMPLE}.fastq.gz 
+	```
 
-    + We’re setting the variable SAMPLE to be the characters that make up each sample name using sed to find and replace for the “word” .fastq with nothing. This let’s us have a variable that is essentially a list of every sample name.
+    How does it maintain sample naming? 
+	+ Remember, the hashtag symbol are used to comment. This is a really important habit to stress. Commenting allows you, the bioinformatician, to understand what you were thinking as you are developing your code.  
+    + We’re setting the variable `SAMPLE` as the "sample name" using the `sed` command to find and replace every instance where it says `.fastq.gz` and replace with nothing. 
+    	+ This let’s us have a variable that is essentially a list of every sample name.
+    	+ Say for example, the sample name is called WT_REP1.fastq.gz. 
+    		+ The `sed` command will find the `.fastq.gz` and replace with this with nothing.  
+    		+ So upon returning the SAMPLE variable with echo, you will only end up with WT_REP1
     + echo the names of each sample to make sure it’s correct
 
-3. Load the modules required to run the commands 
+3. Next, copy-and-paste this section below. Load the modules required to run the commands.  
 
-        ```
-        module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
-        module load samtools-1.10-gcc-7.3.0-pdbkohx
-        ```
+	```
+    # Load required modules
+    module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
+    module load samtools-1.10-gcc-7.3.0-pdbkohx
+    ```
 
-4. Followed by the commands to be executed by script. Below the entire script hisat2_align.sh is provided:  
+4. Next, copy-and-paste this section below.
 
-        ```
-        #!/bin/bash
-        #SBATCH --partition=bluemoon
-        #SBATCH --nodes=1
-        #SBATCH --ntasks=2
-        #SBATCH --mem=10G
-        #SBATCH --time=3:00:00
-        #SBATCH --job-name=align_CD8
-        # %x=job-name %j=jobid
-        #SBATCH --output=%x_%j.out
+	```
+    # Set database directory, genome, and processor count
+    DBDIR="/gpfs1/cl/mmg3320/course_materials/genome_index/hisat2_index_mm10"
+    GENOME="GRCm39"
+    p=2
+    ```
 
-        for i in *fastq.gz; do
-        SAMPLE=$(echo ${i} | sed "s/.fastq.gz//")
-        echo ${SAMPLE}.fastq.gz 
+Followed by the commands to be executed by script. Below the entire script hisat2_align.sh is provided:  
 
-        DBDIR=/gpfs1/cl/mmg232/course_materials/hisat2_index
-        GENOME="GRCm39"
-        p=2
 
-        module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
-        module load samtools-1.10-gcc-7.3.0-pdbkohx
-
-        #align to GRCm39
-        hisat2 \
-          -p ${p} \
-          -x ${DBDIR}/${GENOME} \
-          -U ${SAMPLE}.fastq.gz \
-          -S ${SAMPLE}.sam &> ${SAMPLE}.log
-
-        #create bam file
-        samtools view ${SAMPLE}.sam \
-          --threads 2 \
-          -b \
-          -o ${SAMPLE}.bam \
-  
-        #remove sam files once bam file is created
-        rm ${SAMPLE}.sam
-
-        #output stats
-        samtools flagstat ${SAMPLE}.bam > ${SAMPLE}.txt
-
-        # sort the bam file based on coordinates
-        samtools sort ${SAMPLE}.bam -o ${SAMPLE}_sorted.bam
-
-        # index bam file
-        samtools index ${SAMPLE}_sorted.bam
-
-        done &> hisat2.log
-        ```
 
   After running the hisat2_align.sh script with the FASTQ provided, the outputs will look like this:
 
