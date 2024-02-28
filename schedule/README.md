@@ -55,9 +55,17 @@
 
 ***
 
+## Thursday, February 29th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~40 mins | [HISAT2](../lectures/Lecture4-MMG3320.pdf) |
+| ~20 mins| [HISAT2 aligner](../lessons/06_Mapping_with_HISAT2.md) |
+
+***
+
 **Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials!** 
 
-| ~40 mins| [HISAT2: intro & script](../lessons/05_Mapping_with_HISAT2.md) | 
 | ~20 mins| [STAR aligner](../lessons/06_STAR_alignment.md) |
 
 Supplementary Reading:  

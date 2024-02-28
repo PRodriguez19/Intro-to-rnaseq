@@ -1,7 +1,7 @@
 ---
 Week: "6" 
 Lesson: "Mapping with HISAT2"
-Date: "Thursday, February 23, 2023"
+Date: "Thursday, February 28, 2024"
 ---
 
 # Mapping with HISAT2 
@@ -11,14 +11,31 @@ Date: "Thursday, February 23, 2023"
 * Generate the bash script required to align and generate the desired outputs using HISAT2 and SAMtools, respectively 
 * Understand the output files 
 
+***
 
-## Setting up 
+**Class Exercise #1**  
 
-To get started with this lesson, we will be aligning (2) FASTQ files using the HISAT2 aligner: 
+1. Grab the data folder from this location 
 
 ```
-cp -r /gpfs1/cl/mmg232/course_materials/HISAT2_example .
+/gpfs1/cl/mmg3320/course_materials/HISAT2_example 
 ```
+
+2. Submit the `hisat2_align.sh` script to SLURM 
+
+3. Check to see that your job is running. If your terminal looks like below...
+
+```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          16545144  bluemoon align_CD pdrodrig  R      24:11      1 node329
+```
+
+<p align="center">
+<img src="../img/dog_good_job.jpg" width="300">
+</p>
+
+***
+
 
 ## Read Alignment using HISAT2 
 The alignment process consists of choosing an appropriate reference genome to map our reads against, and performing the read alignment using one of several splice-aware alignment tools such as [STAR](https://github.com/alexdobin/STAR) or [HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) (HISAT2 is a successor to both HISAT and TopHat2). The choice of aligner is a personal preference and also dependent on the computational resources that are available to you.
