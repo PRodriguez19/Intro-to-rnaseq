@@ -17,7 +17,7 @@ Date: "Thursday, February 29, 2024"
 
 1. Grab the data folder from this location 
 
-	```
+	```bash
 	/gpfs1/cl/mmg3320/course_materials/HISAT2_example 
 	```
 
@@ -25,7 +25,7 @@ Date: "Thursday, February 29, 2024"
 
 3. Check to see that your job is running. If your terminal looks like below...
 
-	```
+	```bash
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           16545144  bluemoon align_CD pdrodrig  R      24:11      1 node329
 	```
@@ -56,7 +56,7 @@ There are many types of loops, but the kind we are going to cover is called a fo
 
 The variable portion of a for loop is the item that we are going to iterate over and will change with every “new” loop. **The action is typically being performed on each individual file.** In their simplest form variables can look like this:
 
-```
+```bash
 DIRECTORY=PATH/TO/DIRECTORY
 
 DBDIR=/users/p/d/pdrodrig/genome_index
@@ -65,7 +65,7 @@ DBDIR=/users/p/d/pdrodrig/genome_index
 
 As a reminder, if we want to make sure this assignment worked, use the `echo` command. This is a command that prints out whatever is provided to it, which can be really useful to test commands or report information back to yourself during a loop.
 
-```
+```bash
 echo $DBDIR 
 ```
 
@@ -206,7 +206,7 @@ Our script will be "written" in sections. Please note,
 
 8. In the beginning of class you ran `hisat2_align.sh`. If successful, the outputs will look like this:
 
-        ```
+        ```bash
         align_CD8_7422840.out  SRR13423162.log             SRR13423165.fastq.gz
         hisat2_align.sh        SRR13423162_sorted.bam      SRR13423165.log
         hisat2.log             SRR13423162_sorted.bam.bai  SRR13423165_sorted.bam
