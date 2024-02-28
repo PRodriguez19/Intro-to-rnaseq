@@ -111,7 +111,7 @@ Our script will be "written" in sections. Please note,
 
 1. Provide the job submission parameters. Type in a job name. 
 
-	```
+	```bash
 	#!/bin/bash
 	#SBATCH --partition=bluemoon
 	#SBATCH --nodes=1
@@ -125,7 +125,7 @@ Our script will be "written" in sections. Please note,
 
 2. Next, copy-and-paste this section below. The importance of this section, is that it will allow you to process all fastq files *while* maintaining the file name for each file output.  
 
-	```
+	```bash
 	# Iterate through each fastq.gz file in the current directory
 	for fastq_file in *fastq.gz; do
     
@@ -145,7 +145,7 @@ Our script will be "written" in sections. Please note,
 
 3. Next, copy-and-paste this section below. In your terminal, see if the modules are loaded. If not, load them. 
 
-	```
+	```bash
     # Load required modules
     module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
     module load samtools-1.10-gcc-7.3.0-pdbkohx
@@ -153,7 +153,7 @@ Our script will be "written" in sections. Please note,
 
 4. Next, copy-and-paste this section below.
 
-	```
+	```bash
     # Set database directory, genome, and processor count
     DBDIR="/gpfs1/cl/mmg3320/course_materials/genome_index/hisat2_index_mm10"
     GENOME="GRCm39"
@@ -164,7 +164,7 @@ Our script will be "written" in sections. Please note,
 
 5. Next, copy-and-paste this section below.
 
-	```
+	```bash
 	# Align reads to the reference genome
     hisat2 \
         -p ${p} \
@@ -177,7 +177,7 @@ Our script will be "written" in sections. Please note,
 
 7. Run the following command on your terminal. 
 
-	```
+	```bash
 	hisat2 --help
 	```
 	
@@ -189,12 +189,13 @@ Our script will be "written" in sections. Please note,
 	**This isn't a race, take your time.**
 	
 	**When you are ready, come up and show me the following:** 
-	a) I would like you to point on your terminal screen and show me what each of the parameters above mean. 
-	b) Rewrite the following block of code on your practice script, to accomodate **paired-end** reads. Let's pretend that the file names are WT-REP1-R1.fastq.qz and WT-REP1-R2.fastq.qz. 
-	c) MULTIQC output of `hisat2_align.sh`. See #8 and 9 below. 
-	d) Open the `SRR13423162.log` file. See #8 below.   
 	
-	```
+	a) I would like you to point on your terminal screen and show me what each of the parameters above mean.  
+	b) Rewrite the following block of code on your practice script, to accomodate **paired-end** reads. Let's pretend that the file names are WT-REP1-R1.fastq.qz and WT-REP1-R2.fastq.qz.  
+	c) MULTIQC output of `hisat2_align.sh`. See #8 and 9 below.   
+	d) Open the `SRR13423162.log` file. See #8 below.     
+	
+	```bash
 	# Align reads to the reference genome
     hisat2 \
         -p ${p} \
@@ -214,4 +215,62 @@ Our script will be "written" in sections. Please note,
         ```
 
 9. Run MUlTIQC 
+
+10. The entire `hisat2_align.sh` script is shown below:
+
+```bash
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=2
+#SBATCH --mem=10G
+#SBATCH --time=3:00:00
+#SBATCH --job-name=align_CD8
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+
+# Iterate through each fastq.gz file in the current directory
+for fastq_file in *fastq.gz; do
+    
+    # Extract sample name from the file name
+    SAMPLE=$(echo ${fastq_file} | sed "s/.fastq.gz//")
+    echo ${SAMPLE}.fastq.gz 
+
+    # Set database directory, genome, and processor count
+    DBDIR="/gpfs1/cl/mmg3320/course_materials/genome_index/hisat2_index_mm10"
+    GENOME="GRCm39"
+    p=2
+
+    # Load required modules
+    module load hisat2-2.1.0-gcc-7.3.0-knvgwpc
+    module load samtools-1.10-gcc-7.3.0-pdbkohx
+
+    # Align reads to the reference genome
+    hisat2 \
+        -p ${p} \
+        -x ${DBDIR}/${GENOME} \
+        -U ${SAMPLE}.fastq.gz \
+        -S ${SAMPLE}.sam &> ${SAMPLE}.log
+
+    # Convert SAM to BAM
+    samtools view ${SAMPLE}.sam \
+        --threads 2 \
+        -b \
+        -o ${SAMPLE}.bam
+
+    # Remove SAM file
+    rm ${SAMPLE}.sam
+
+    # Generate alignment statistics
+    samtools flagstat ${SAMPLE}.bam > ${SAMPLE}.txt
+
+    # Sort the BAM file by coordinates
+    samtools sort ${SAMPLE}.bam -o ${SAMPLE}_sorted.bam
+
+    # Index the sorted BAM file
+    samtools index ${SAMPLE}_sorted.bam
+
+    echo "Sample ${SAMPLE} processing complete."
+done
+```
 
