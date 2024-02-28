@@ -115,9 +115,7 @@ Our script will be "written" in sections. Please note,
 	function test() {
 	  console.log("This code will have a copy button to the right of it");
 	}
-	```
-
-	```
+	
 	#!/bin/bash
 	#SBATCH --partition=bluemoon
 	#SBATCH --nodes=1
