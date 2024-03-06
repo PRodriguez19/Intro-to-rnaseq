@@ -64,6 +64,15 @@
 
 ***
 
+## Thursday, March 7th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| ~20 mins | [RSeQC & HTSEQ](../lectures/Lecture5-MMG3320.pdf) |
+| ~40 mins| [Class Exercises for RSeQC & HTSEQ](../lessons/07_RSeQC.md) |
+
+***
+
 **Class Materials to use with caution! I have not troubleshooted yet for this year. This is all last year course materials!** 
 
 | ~20 mins| [STAR aligner](../lessons/06_STAR_alignment.md) |
