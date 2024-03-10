@@ -206,3 +206,35 @@ Job Submission parameters:
 <img src="../img/Beach-dogs.png" width="400">
 </p>
 
+***
+
+The for-loop to run HT-Seq on your samples for the final project is shown below. Each sample will take ~30 minutes each. 
+
+```bash
+#!/bin/bash
+#SBATCH --partition=bluemoon
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --mem=10G
+#SBATCH --time=30:00:00
+#SBATCH --job-name=htseq-count
+# %x=job-name %j=jobid
+#SBATCH --output=%x_%j.out
+
+module load py-htseq-0.11.2-gcc-7.3.0-lbzmhgz
+
+# Iterate through all .bam files in the current directory
+for bam_file in *.bam; do
+    # Extract the filename without the .bam extension
+    name=$(basename "$bam_file" .bam)
+    echo "$name"
+
+    # Run htseq-count with specified parameters
+    htseq-count -f bam \
+        -s reverse \
+        -i gene_id \
+        -m union \
+        "$bam_file" /gpfs1/cl/mmg3320/course_materials/genome_index/GTF_files/human_gencode_v43.gtf > "$name.ENSG.count"
+done
+
+```
