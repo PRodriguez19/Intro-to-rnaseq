@@ -1,34 +1,8 @@
 ---
 Week: "10" 
 Lesson: "Brief intro to R and RStudio"
-Date: "Tuesday, March 20, 2023"
+Date: "Tuesday, March 19, 2024"
 ---
-
-# Brief intro to R and RStudio 
-
-## Learning Objectives
-
-* Describe and interact with R and RStudio.
-* Install packages 
-
-## What is R and RStudio?
-
-Here, we will assume that you are using R via RStudio. First time users often confuse the two. At its simplest, R is like a car's engine while RStudio is like a car's dashboard as illustrated in the Figure below.   
-
-<img src="../img/R_vs_RStudio_1.png" width="600">
-
-More precisely, R is a programming language that runs computations, while RStudio is an **integrated development environment (IDE)** that provides an interface by adding many convenient features and tools. 
-
-RStudio provides an environment with many features to make using R easier and is a great alternative to working on R in the terminal. 
-
-<img src="../img/rstudio_logo.png" width="300">
-
-* Graphical user interface, not just a command prompt
-* Great learning tool 
-* Free for academic use
-* Platform agnostic
-* Open source
-
 
 ## RStudio Interface
 
@@ -39,9 +13,7 @@ RStudio provides an environment with many features to make using R easier and is
 3. **Environment/History**: environment shows all active objects and history keeps track of all commands run in console
 4. **Files/Plots/Packages/Help**
 
-## Creating a new project directory in RStudio
-
-Let's create a new project directory for our "Introduction to R" lesson today. 
+## Creating a new project directory in RStudio 
 
 1. Open RStudio
 2. Go to the `File` menu and select `New Project`.
