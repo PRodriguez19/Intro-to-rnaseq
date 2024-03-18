@@ -12,9 +12,13 @@ This repository has teaching materials for the analysis of an NGS dataset. This 
 1.	Understand the necessity for, and use of, the command line interface (bash) and HPC for analyzing high-throughput sequencing data.
 2.	Implement best practices for the analysis of an NGS dataset.
 
-## Class schedule starting on Feb 13th 
+## Past class schedule Feb 13 - Mar 8
 
-[Class schedule](schedule/) 
+[Past Class schedule](schedule/) 
+
+## RNA-Seq analysis with R (starting March 19th) 
+
+[Current Class schedule](IntroR/schedule/) 
 
 ### Citation
 
