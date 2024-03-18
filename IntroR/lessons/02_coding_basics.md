@@ -6,7 +6,7 @@ Date: "Tuesday, March 19, 2024"
 
 ## Learning Objectives
 
-* Become familiar with R syntax
+* Remember basic R syntax
 * Understand variables and the assignment operator in R
 * Understand the various data types and data structures in R
 * Understanding the structure of a function and how it is used
@@ -149,7 +149,7 @@ Each **element** contains a single value, and there is no limit to how many elem
 
 **Class Exercise**
 
-Create one character vector and one numerical vector with the following data of life expectancy for all animals listed below: 
+Create one character vector and one numerical vector using the data of life expectancy below: 
 
 | Animal | Years|
 | ------:|:----:|
@@ -183,47 +183,14 @@ We can create a dataframe by bringing **vectors** together to **form the columns
 ***
 **Class Exercise #2** 
 
-1. Look at the structure of the vectors created in class-exercise-1 using `str(vector-name)`
+1. Check that the structures of the vectors created for class-exercise-1 are the same length using `str(vector-name)`
 
-2. Create a dataframe, and assign the newly created dataframe to an object called `life_exp`. 
+2. If they are, create a dataframe. Assign the newly created dataframe to an object called `life_exp`  
 
 *Note, if successful, you will be able to view your data.frame object by clicking on its name in the `Environment` window.*
 
 ***
 
-### Lists
-
-Lists are a data structure in R that can be perhaps a bit daunting at first, but soon become amazingly useful. A list is a data structure that can hold any number of any types of other data structures.
-
-![list](../img/list.png)
-
-
-If you have variables of different data structures you wish to combine, you can put all of those into one list object by using the `list()` function and placing all the items you wish to combine within parentheses:
-
-```r
-list1 <- list(species, df, number)
-```
-
-Print out the list to screen to take a look at the components:
-
-```r
-list1
-	
-[[1]]
-[1] "ecoli" "human" "corn" 
-
-[[2]]
-  species glengths
-1   ecoli      4.6
-2   human   3000.0
-3    corn  50000.0
-
-[[3]]
-[1] 5
-
-```
-
-There are three components corresponding to the three different variables we passed in, and what you see is that structure of each is retained.
 
 ## Functions and their arguments
 
@@ -235,8 +202,10 @@ The general usage for a function is the name of the function followed by parenth
 
 ```r
 function_name(input)
+
+function_name(argument1 = value1, argument2 = value2, ...) 
 ```
-The input(s) are called **arguments**, which can include:
+The input(s) are called **arguments** which can include:
 
 1. the physical object (any data structure) on which the function carries out a task 
 2. specifications that alter the way the function operates (e.g. options)

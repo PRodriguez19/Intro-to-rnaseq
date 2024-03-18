@@ -37,17 +37,21 @@ When working with genomic data, we often have a metadata file containing informa
 
 The `read.csv` function has *one required argument* and several *options* that can be specified. 
 
-Download the following .csv file from this location: 
+***
+
+*Class Exercise #3* 
+
++ Create a folder called `Rtutorial_day1` 
+
++ Download the following .csv file into the `Rtutorial_day1` folder (location below): 
 
 ```
-/gpfs1/cl/mmg232/course_materials/tutorials/R_data/mouse_exp_design.csv
+/gpfs1/cl/mmg3320/course_materials/R_tutorials/other/mouse_exp_design.csv
 ```
 
-The mandatory argument is a path to the file and filename: 
++ Once you have verified the file is located in `Rtutorial_day1`, load the file using `read.csv`. Store the file in an object called `metadata`. 
 
-```r
-metadata <- read.csv(file="mouse_exp_design.csv")
-```
+*** 
 
 > *Note: By default, `read.csv` converts (= coerces) columns that contain characters (i.e., text) into the `factor` data type. Depending on what you want to do with the data, you may want to keep these columns as `character`. To do so, `read.csv()` and `read.table()` have an argument called `stringsAsFactors` which can be set to `FALSE`.*
 
@@ -95,9 +99,42 @@ str(metadata)
  $ replicate: num  1 2 3 1 2 3 1 2 3 1 ...
 ```
 
+__You can also get this information from the "Environment" tab in RStudio.__
+
 As you can see, the columns `genotype` and `celltype` are of the `factor` class, whereas the replicate column has been interpreted as integer data type.
 
-__You can also get this information from the "Environment" tab in RStudio.__
+### Factors
+
+A **factor** is a special type of vector that is used to **store categorical data**. Each unique category is referred to as a **factor level** (i.e. category = level). Factors are built on top of integer vectors such that each **factor level** is assigned an **integer value**, creating value-label pairs. 
+
+![factors](../img/factors_sm.png)
+
+Let's create a factor vector to understand this a bit more. 
+
+```r
+expression <- c("low", "high", "medium", "high", "low", "medium", "high")
+```
+
+Now we can convert this character vector into a *factor* using the `factor()` function:
+
+```r
+expression <- factor(expression)
+```
+
+So, what exactly happened when we applied the `factor()` function? 
+
+![factor_new](../img/factors_new.png)
+
+The expression vector is categorical, in that all the values in the vector belong to a set of categories; in this case, the categories are `low`, `medium`, and `high`. By turning the expression vector into a factor, the **categories are assigned integers alphabetically**, with high=1, low=2, medium=3. This in effect assigns the different factor levels. You can view the newly created factor variable and the levels in the **Environment** window.
+
+![Factor variables in environment](../img/factors.png)
+
+We can look at the structure of `expression`
+
+```r
+head(expression)
+str(expression)
+```
 
 ### List of functions for data inspection
 
