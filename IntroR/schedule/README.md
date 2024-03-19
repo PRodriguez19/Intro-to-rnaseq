@@ -8,6 +8,22 @@
 | 40 mins | [Coding basics](../lessons/02_coding_basics.md) | 
 | 20 mins | [Data Wrangling](../lessons/03_data-wrangling.md) | 
 
+
+Libraries to install: 
+
+# BiocManager 
+# biomaRt
+# cowplot
+# dplyr
+# DESeq2
+# ggplot2
+# EnhancedVolcano
+# knitr
+# magrittr
+# tidyverse
+# RColorBrewer
+# pheatmap
+
 ***
 
 ## Thursday, March 21st 
