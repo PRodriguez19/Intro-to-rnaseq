@@ -11,18 +11,18 @@
 
 Libraries to install: 
 
-# BiocManager 
-# biomaRt
-# cowplot
-# dplyr
-# DESeq2
-# ggplot2
-# EnhancedVolcano
-# knitr
-# magrittr
-# tidyverse
-# RColorBrewer
-# pheatmap
++ BiocManager 
++ biomaRt
++ cowplot
++ dplyr
++ DESeq2
++ ggplot2
++ EnhancedVolcano
++ knitr
++ magrittr
++ tidyverse
++ RColorBrewer
++ pheatmap
 
 ***
 
