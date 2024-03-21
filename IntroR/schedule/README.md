@@ -4,7 +4,7 @@
 
 | Time |  Topic  |  
 |:-----------:|:----------| 
-| 5 mins | [Intro-to-R](../lessons/01_Intro-to-R.md)
+| 5 mins | [Intro-to-R](../lessons/01_Intro-to-R.md) | 
 | 40 mins | [Coding basics](../lessons/02_coding_basics.md) | 
 | 20 mins | [Data Wrangling](../lessons/03_data-wrangling.md) | 
 
@@ -27,6 +27,10 @@ Libraries to install:
 ***
 
 ## Thursday, March 21st 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 5 mins | [DESeq2-Advanced](../lessons/04_rnaseq_dataset.md) | 
 
 ***
 
