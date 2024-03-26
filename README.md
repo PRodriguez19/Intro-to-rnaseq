@@ -20,6 +20,10 @@ This repository has teaching materials for the analysis of an NGS dataset. This 
 
 [Current Class schedule](IntroR/schedule/) 
 
+### Course rmarkdowns files (.rmd & .html) 
+
+[Rmarkdown files](IntroR/materials/) 
+
 ### Citation
 
 To cite material from this course in your publications, please use:
