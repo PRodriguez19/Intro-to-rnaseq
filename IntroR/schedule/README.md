@@ -34,6 +34,15 @@ Libraries to install:
 
 ***
 
+
+## Tuesday, March 26th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [Volcano-plot](../lessons/05_Volcano_plot.md) | 
+
+***
+
 ## Assignments Due 
 
 ### HW#10 - Alignment & Counting (150 points)
