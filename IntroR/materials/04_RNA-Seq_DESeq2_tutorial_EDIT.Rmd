@@ -1,0 +1,296 @@
+---
+title: "Analyzing RNA-Seq with DESeq2"
+date: "3/15/2023"
+output: html_document
+---
+
+#### Install the required R libraries 
+
+```{r}
+# Install CRAN packages
+#install.packages(c("knitr", "RColorBrewer", "pheatmap"))
+```
+
+
+#### Code chunk options 
+The knitr package provides a lot of options for customizing nearly all components of code chunk, including the text outputs, source codes, and plots. Under the text outputs, you can find `echo`. When `echo = TRUE` this means to display the source code in the output documents. When `warning = FALSE` this means that all warnings will be suppressed. 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+### Load the required libraries 
+
+```{r}
+library(knitr)
+library(DESeq2) 
+library(RColorBrewer)
+library(pheatmap)
+library(ggplot2)
+library(tidyverse)
+```
+
+
+## Introduction 
+As a reminder, we have previously assigned all the sequencing reads to a given gene by directly counting reads overlapping with gene loci using HTSeq-count. Now, the next step is to analyze the counts data for the detection of differentially expressed genes (DEGs). The package DESeq2 provides methods to test for differential expression by use of negative binomial generalized linear models. 
+
+### Overview  
+To use DESeq2 it requires the following:   
+1. counts matrix   
+2. table of sample information    
+3. design indicates how to model the samples  
+
+### Why un-normalized counts?
+
+As input, the DESeq2 package expects count data as obtained to be in the form of a matrix of integer values. The values in the matrix should be un-normalized counts. The DESeq2 model internally corrects for library size, so transformed or normalized values should not be used as input. To normalize for sequencing depth and RNA composition, DESeq2 uses the median of ratios method. On the user-end there is only one step, but on the back-end there are multiple steps involved, including: 
+
+Step 1: creating a pseudo-reference sample (row-wise geometric mean)  
+
+Step 2: calculates ratio of each sample to the reference    
++ For every gene in a sample, the ratios (sample/ref) are calculated (as shown below). This is performed for each sample in the dataset. Since the majority of genes are not differentially expressed, the majority of genes in each sample should have similar ratios within the sample.  
+
+Step 3: calculate the normalization factor for each sample (size factor)
++ The median value (column-wise for the above table) of all ratios for a given sample is taken as the normalization factor (size factor) for that sample, as calculated below. Notice that the differentially expressed genes should not affect the median value
+
+Step 4: calculate the normalized count values using the normalization factor. This normalization method is called **median of ratios**. 
+
+### The DESeqDataSet
+
+The *object* used by the DESeq2 package to store the (1) read counts, (2) table of sample information , and (3) design is the *DESeqDataSet*, this is usually represented as `dds`.  
+
+dds = 1 + 2 + 3   
+dds = readcounts, table of sample, design   
+
+There are multiple ways of constructing a *DESeqDataSet*, depending on what pipeline was used upstream of DESeq2 to generated counts or estimated counts. For example, if you used Salmon to generate read-counts, you would use `DESeqDataSetFromTximport()`
+
+a) From [transcript abundance files and tximport](#tximport) - `DESeqDataSetFromTximport()`
+b) From a [count matrix](#countmat) - DESeqDataSetFromMatrix
+c) From [htseq-count files](#htseq) - `DESeqDataSetFromHTSeqCount`
+
+We will be discussing how to input files output from `htseq-count` program. 
+
+### htseq-count input
+
+First, we will input our annotation file. This file was created in Microsoft Excel, you could use `nano` or `vim`, or create a data frame. But essentially this annotation file should look similar to below:  
+
+```{r}
+sampleTable <- read.csv("GSE164713_tcf1_anno.csv", header = T)
+head(sampleTable)
+```
+
+The order here actually matters. Let's check why... by turning to the `DESeqDataSetFromHTSeqCount` manual 
+```{r}
+?DESeqDataSetFromHTSeqCount
+```
+
+
+```{r}
+#Convert to data frame 
+sampleTable <- data.frame(sampleTable)
+head(sampleTable)
+str(sampleTable)
+```
+
+Next, we want to specify the "condition" and "batch" column as factors. By doing so, this will allow us to categorize the data and store it as levels. 
+```{r}
+#specify as factor 
+condition <- factor(sampleTable$condition)
+batch <- factor(sampleTable$batch)
+```
+
+## Running DESeq2 requires DESeqDataSet
+
+```{r}
+dds <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
+                                  directory = ".",
+                                  design = ~batch + condition)
+
+dds
+```
+
+The *DESeqDataSet* object must have an associated *design formula*. The design formula expresses the variables which will be used in modeling. The formula should be a tilde (~) followed by the variables with plus signs between them if required. 
+
+*Note*: The design can be changed later, however then all differential analysis steps should be repeated, as the design formula is used to estimate the log2 fold changes of the model. 
+
+*Note*: In order to benefit from the default settings of the package, one should put the variable of interest at the end of the formula and make sure the control level is the first level. 
+
+In other words, since we want to measure the effect of the condition between the two treatments this should go at the end and if we wanted to control for potential batch differences due to how these replicates were made we would add this as the first variable(~batch+condition). 
+
+
+### Pre-filtering
+
+While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: by removing rows in which there are very few reads, we reduce the memory size of the `dds` data object, and we increase the speed of the transformation and testing functions within DESeq2. It can also improve visualizations, as features with no information for differential expression are not plotted.
+
+Below we perform a minimal pre-filtering to keep only rows that have at least 10 reads total. 
+
+```{r prefilter}
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
+
+### Note on factor levels 
+
+By default, R will choose a *reference level* for factors based on alphabetical order. Therefore, if you never tell the DESeq2 functions which level you want to compare against (e.g. which level represents the control group), the comparisons will be based on the alphabetical order of the levels. 
+
+use *relevel* to specify the reference level:
+
+```{r relevel}
+dds$condition <- relevel(dds$condition, ref = "WT")
+``` 
+
+
+### Now let's run the Differential expression analysis 
+
+The standard differential expression analysis steps are wrapped into a single function, *DESeq*. The estimation steps performed by this function are described in the manual page for `?DESeq`. 
+
+Results table will be generated using the function *results*, which extracts a results table with log2 fold changes, *p* values and adjusted *p* values. 
+
+Using the *results* function, the user can specify the comparison to build a results table for, using the `contrast` argument. 
+
+Details about the comparison are printed to the console, directly above the results table. The text, `condition KO vs WT`, tells you that the estimates are of the logarithmic fold change log2(KO/WT) i.e. log2(treated/untreated). 
+
+```{r}
+dds <- DESeq(dds)
+res <- results(dds, contrast = c('condition', 'KO', 'WT'))
+head(res)
+```
+
++ `_baseMean` - Mean of the normalized counts for all samples in the comparison, for a given gene
++ `_log2FoldChange` - log2 fold change between Tcf1 KO and WT
++ `_pvalue` - Wald test *P* value
++ `_padj` - Benjamini-Hochberg adjusted Wald test *P* value (P-value after multiple test correction)
+
+
+We can now order our results table by the smallest *padj* value:
+```{r}
+result <- res[order(res$padj), ]
+head(result)
+```
+
+
+```{r}
+table(result$padj<0.05)
+```
+
+Now, we can take this output and merge with the normalized counts data. This output will contain 19,000+ rows still we simply just ordered it by padj value. We will label this file with "unfiltered_matrix" 
+```{r}
+resdata <- merge(as.data.frame(result), as.data.frame(counts(dds, normalized=TRUE)), by="row.names", sort=FALSE)
+
+names(resdata)[1] <- "Gene_id"
+
+head(resdata)
+
+#write results
+write.csv(resdata, file="TCF1vsKO_all_matrix.csv")
+```
+
+The next code chunk makes use of the `tidyverse` package. 
++ `dplyr` lets you manipulate tabular data. 
++ `tidyr` provides additional functions that let you reshape data to get it into a tidy format. 
++ `ggplot2` offers a grammar of graphics approach to data visualization. + `stringr` provides fast and consistent functions for dealing with string data. 
++ `broom` takes many different kinds of R objects and turns them into tidy data frames. 
++ `magrittr` provide the pipe function (%>%) much used by other R packages and in this book.
+
+We are using this package as a way of getting a list of differentially expressed genes (DEGs) only. Now, we are filtering the 19,000+ rows to only rows which meet the criteria of having an absolute log2FC of 1 and padj of less than 0.05. We will label this file with "log2fc1_fdr05_DEGlist" 
+
+```{r}
+#Get DEG up/down lists
+resdata <- as.data.frame(result) %>% dplyr::filter(abs(log2FoldChange) > 1 & padj < 0.05) %>% tibble::rownames_to_column("Gene_id")
+
+#write results
+write.csv(resdata, "TCF1KOvsWT_log2fc1_fdr05_DEGlist.csv", row.names = TRUE)
+
+head(resdata)
+```
+
+
+## Data transformation and visualization 
+
+### Principal components analysis (PCA)
+
+In order to test for differential analysis, we used raw counts. These matrices are so large that we need convenient ways to extract the important information from these large data matrices - it is useful to transform the data. 
+
+In using principal component analysis (PCA): 
++ The data is reduced to smaller matrices so they can more easily be examined, plotted and interpreted.
++ The most important factors are extracted (principal components). 
+
+Below we are using either *variance stabilizing transformation* (vst) (Tibshirani 1988; Huber et al. 2003; Anders and Huber 2010) or regularized logarithm (rlog) (Love, Huber, and Anders 2014). Both transformations will produce transformed data on the log2 scale which has been normalized with respect to library size or other normalization factors.
+
+While using either function, one can specify the argument *blind* for whether the transformation should be blind to the sample information specified by the design formula. A blind dispersion estimate is not appropriate if one expects that many or the majority of genes (rows) will have large differences in counts which are explained by the experimental design. These differences due to experimental design will be interpreted as **unwanted noise**, and will result in overly shrinking the transformed values towards each other. By setting blind to FALSE, the dispersions already estimated will be used to perform transformations, or if not present, they will be estimated using the current design formula.
+
+Now using the transformed data we will generate a PCA plot. The PCA plot will show the samples in a 2D plane spanned by the first two principal components. This type of plot is useful for visualizing the overall effect of experimental covariates (ex. age) and batch effects (ex. day sample was prepared).
+
+```{r}
+vstcounts <- vst(dds, blind = FALSE)
+plotPCA(vstcounts, intgroup=c("condition"))
+```
+
+It is also possible to customize the PCA plot using the *ggplot* function. Below we are adding shapes to represent the different days the samples were created. 
+
+```{r figPCA2}
+pcaData <- plotPCA(vstcounts, intgroup=c("condition", "batch"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=condition, shape=batch)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed()
+```
+
+Now, we are making sure the x and y axis are similar using `ylim` argument
+```{r}
+pcaData <- plotPCA(vstcounts, intgroup=c("condition", "batch"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=condition, shape=batch)) +
+  geom_point(size=3) +
+  ylim(-10,10) + 
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed()
+```
+
+Now that we got it looking the way we want it, we can take some time to interpret the plot. Each data point represents one sample. The x-axis typically PC1, explains the largest source of variation in the dataset.  We can see that PC1 is primarily explained by knocking out the gene Tcf7 (encodes Tcf1) in CD8 T cells. The next largest source of variance within the dataset, or PC2, is explained by one sample created on day1 in the WT group. Overall, the groups are clustering as expected. 
+
+### Clustering Heatmap 
+
+Similar to PCA, hierarchical clustering is another, complementary method for identifying strong patterns in a dataset and potential outliers. The heatmap displays the correlation of gene expression for all pairwise combinations of samples in the dataset. Since the majority of genes are not differentially expressed, samples generally have high correlations with each other (values higher than 0.80). Samples below 0.80 may indicate an outlier in your data and/or sample contamination.
+
+The tree can indicate which samples are more similar to each other based on the normalized gene expression values. The color blocks indicate substructure in the data, and you would expect to see your replicates cluster together as a block for each sample group. Additionally, we expect to see samples clustered similar to the groupings observed in a PCA plot.
+
+```{r}
+library(pheatmap)
+rld <- rlog(dds, blind=FALSE)
+rld_mat <- assay(rld)
+rld_cor <- cor(rld_mat)
+pheatmap(rld_cor)
+```
+
+Using some arguments, we can make the plot look pretty
+```{r}
+pheatmap(rld_cor, clustering_distance_rows = "euclidean", 
+         fontsize = 8, cellwidth = 40, show_rownames = F, 
+         color= colorRampPalette(brewer.pal(9, "BrBG"))(400))
+         
+```
+
+
+### Session info 
+
+```{r}
+sessionInfo()
+```
+
+
+### Citation
+title: "Analyzing RNA-Seq with DESeq2"
+author: "Michael I. Love, Simon Anders, and Wolfgang Huber"
+
+**Note:** if you use DESeq2 in published research, please cite:
+
+> Love, M.I., Huber, W., Anders, S. (2014)
+> Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.
+> *Genome Biology*, **15**:550.
+> [10.1186/s13059-014-0550-8](http://dx.doi.org/10.1186/s13059-014-0550-8)
+
+

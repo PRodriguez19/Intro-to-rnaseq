@@ -1,0 +1,445 @@
+---
+title: "Visualizing the results: Volcano Plots"
+date: "3/25/2024"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+### Introduction
+We will continue to visualize the RNA-Seq dataset of CD8+ T cells that do not express the transcription factor Tcf1 (encoded by Tcf7) versus cells that do (WT = wildtype). Our goal is to represent this data in various forms over the next few sessions. 
+
+Last week, we generated plots (PCA/correlation heatmap) to visualize the quality of the samples. Today, we will work on visualizing group of genes identified as differentially expressed (DEGs) between the two groups being compared in this study (Tcf7_KO versus WT). 
+
+The volcano plot is a scatterplot that visualizes both the (log2) fold change and level of significance (usually −log10[p−value]). This data visualization enables the display of a large amount of data in a concise way. Typically, only a handful of datapoints in the volcano plot are of interest, also known as hits. The hits are datapoints that surpass a threshold that is defined by the user for both the significance and fold change. Annotation of hits (with names) is used to draw attention to these most relevant or interesting datapoints.
+
+We will be generating volcano plots using:  
+
+1) `ggplots2`: an data visualization package that is offered via the `tidyverse` collection 
+
+2) [EnhancedVolcano](https://bioconductor.org/packages/devel/bioc/vignettes/EnhancedVolcano/inst/doc/EnhancedVolcano.html): a package created by Kevin Blighe, Sharmila Rana, and Myles Lewis to generate publication-ready volcano plots. 
+
+### Load the required libraries 
+Remember to first check if you require a package for this tutorial using `library()`. Once the package is installed there is no need to reinstall it over and over again. 
+
+```{r}
+#BiocManager::install('EnhancedVolcano') #if you need to install
+#BiocManager::install("biomaRt") #if you need to install
+
+library(EnhancedVolcano)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(genekitr)
+```
+
+***
+
+### Part I: Volcano plot w/ ggplot2 
+
+We will generate a volcano plot with `ggplot2` that will take inspiration from this [article](https://aacrjournals.org/cancerdiscovery/article/8/5/616/9954/HOXA9-Cooperates-with-Activated-JAK-STAT-Signaling). 
+
+![deBock.et.al.2020](img/leukemia_aacr.png)
+
+<p align="center">
+<img src="img/leukemia_volcano.png" width="300">
+</p>
+
+For the volcano plot above we can see that the authors are coloring "genes of significance" by p-adjusted values only. Whereby, genes that have a p-adjusted value of less than 0.05 are colored red and those that do not meet this threshold are being colored as black. Overall, this is perfectly fine to do as the authors wrote their methods transparently and leave no confusion with how the data was plotted.
+
+#### Prepping the data  
+
+```{r, add data}
+resdata <- read.csv("TCF1KOvsWT_unfiltered_matrix.csv", header = T)
+head(resdata)
+str(resdata)
+```
+
+Right now, there is not a column which indicates whether the gene is considered differentially expressed based on **p-adjusted values alone**. We will add this in. 
+
+```{r, padj_filter}
+threshold_padj <- resdata$padj < 0.05 
+length(which(threshold_padj)) ## Which values in an object are considered true and what is the length?? 
+```
+
+We now have created a logical vector. A `TRUE` value will correspond to genes that meet the criteria of having a padj of < 0.05 while `FALSE` means it is > 0.05 (or fails this criteria). 
+
+To add this vector to our results table we can use the `$` notation on the left hand side of the assignment operator to create a column: 
+
+```{r, add-column}
+resdata$threshold <- threshold_padj ## Add vector as a column (threshold) to the resdata
+str(resdata)
+```
+
+***
+
+#### Plotting with `ggplot2`
+We will begin by using the `ggplot()` function to initialize the basic graph structure. The basic idea is that you can specify different parts of the plot and add them together using the `+` operator. These parts are often referred to as layers.
+
+**As input ggplot() requires a data frame**
+
+Let's start: 
+
+```{r, blank-ggplot}
+#ggplot(resdata) #what happens? 
+```
+
+Notice, that you will get a blank plot because `ggplot2` requires the user to specify layers using the `+` operator. 
+
+One type of layer is called **geometric objects**. Examples include:
+
+* points (`geom_point`, `geom_jitter` for scatter plots, dot plots, etc)
+* lines (`geom_line`, for time series, trend lines, etc)
+* boxplot (`geom_boxplot`, for boxplots!)
+
+Any plot created with `ggplot()` **must have at least one `geom`**. You can add a `geom` to a plot using the `+` operator
+
+```{r, geom_point1}
+#ggplot(resdata) +
+  #geom_point() # note what happens here
+```
+
+You will find that even though we have added a layer by specifying `geom_point`, we still get an error. This is because each type of geom usually has a **required set of aesthetics** to be set. Aesthetic mappings are set with the `aes()` function and can be set inside `geom_point()`. If we supplied aesthetics within `ggplot()`, they will be used as defaults for every layer. Examples of aesthetics include:
+
+* position (i.e., on the x and y axes)
+* color ("outside" color)
+* fill ("inside" color) 
+* shape (of points)
+* line type
+* size
+
+We will begin by specifying the x- and y-axis since `geom_point()` requires this information for a scatter plot.
+
+```{r, geom_point2}
+ggplot(resdata) +
+  geom_point(aes(x = log2FoldChange, 
+                 y = -log10(padj)))
+```
+
+Now, let's move to customizing the appearance of the data points by adding color. We can color the points (i.e. those which represent significant genes) based on threshold column we created earlier. 
+
+```{r, color}
+ggplot(resdata) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),
+                       colour=threshold))
+```
+
+Lets take a second to change the look of the non-data plotting elements, such as the grid and labels. Many of these elements can be altered within a `theme()` layer. 
+
+The ggplot2 `theme` system handles non-data plot elements such as: 
++ axis titles and label style
++ plot background 
++ presence of major or minor gridlines 
++ legend appearance 
+
+There are a few build-in themes we can use that will change the background/foreground colors by adding it as an additional layer. Themes can be found [here](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+
+I like the classic theme, so let's add it in. 
+
+```{r, classic}
+ggplot(resdata) +
+        geom_point(aes(x=log2FoldChange, 
+                       y=-log10(padj), colour=threshold)) + 
+  theme_classic()
+```
+
+Let's edit the title & x and y labels, including its size, text, and position. In addition, we want to remove the legend completely. 
+
+```{r, axis_labels}
+ggplot(resdata) +
+        geom_point(aes(x=log2FoldChange, 
+                       y=-log10(padj), colour=threshold)) + 
+  theme_classic() + 
+        ggtitle("TCF7 KO versus WT") +
+        xlab("Log2 fold change") + 
+        ylab("-Log10(padj)") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), 
+              axis.title = element_text(size = rel(1.25))) 
+```
+
+
+We are almost there but the colors are not right. We can fix this with `scale_color_manual` and change the values to black and red like the article. 
+
+In addition, we are adding the parameter `scale_x_continuous` to set the x-axis limit. This is the default scales, we are simply adjusting it so that the plot is centered. We are also using `coord_cartesian` function. Setting "limits" with the Cartesian coordinate system will zoom the plot but will not change the underlying data. Here we are not changing the plot but are using the "clip" argument and setting it to "no". This will allow the 'outlier' points to be drawn on the plot.  
+
+```{r, color-change}
+ggplot(resdata) +
+        geom_point(aes(x=log2FoldChange, 
+                       y=-log10(padj), colour=threshold)) + 
+  theme_classic() + 
+        ggtitle("TCF7 KO versus WT") +
+        xlab("Log2 fold change") + 
+        ylab("-Log10(padj)") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), 
+              axis.title = element_text(size = rel(1.25))) +
+  scale_color_manual(values = c("black", "red")) +
+  scale_x_continuous(limits = c(-20, 20)) + 
+  coord_cartesian(ylim=c(0, 300), clip = "off")                                            
+
+```
+
+This is a great way to get a global picture of what is going on, but what if wanted to label our plot with gene names from our DE list? (Notice, that the authors labeled HOXA9 on their plot.) HOXA9 is a gene symbol. However, this is where we hit a road block since our gene ids are currently listed as ENSEMBL gene ids. 
+
+
+```{r}
+head(resdata)
+```
+
+```{r, geneidconversion}
+resdata$Gene_id <- sub("\\.\\d+", "", resdata$Gene_id)
+ids <- resdata$Gene_id
+gene_symbol_map <- transId(ids, transTo = "symbol", org = "mouse")
+```
+
+The option we used above was to specify the pattern as ".", followed by one or more digits (\\d+) at the end of the string and replace with blank ('"). regex 
+
+```{r, merge}
+names(resdata)[1] = "input_id"
+
+resdata_gene <- merge(resdata, gene_symbol_map, by.x = "input_id", by.y = "input_id")
+
+str(resdata_gene)
+```
+
+
+```{r}
+#Add a column to dataframe to specify up or down regulated
+resdata_gene$diffexpressed <- "Unchanged"
+
+#if log2FC > 1 and padj < 0.05 set as upregulated
+resdata_gene$diffexpressed[resdata_gene$padj < 0.05 & resdata_gene$log2FoldChange > 1] <- "Upregulated"
+
+#if log2FC > -1 and padj < 0.05 set as downregulated
+resdata_gene$diffexpressed[resdata_gene$padj < 0.05 & resdata_gene$log2FoldChange < -1] <- "Downregulated"
+
+```
+
+![Figure_Volcano](img/figure_volcano.png)
+
+```{r, warning=FALSE}
+ggplot(resdata_gene) +
+        geom_point(aes(x=log2FoldChange, 
+                       y=-log10(padj), colour=diffexpressed)) + 
+  theme_classic() + 
+        ggtitle("TCF7 KO versus WT") +
+        xlab("Log2 fold change") + 
+        ylab("-Log10(padj)") +
+        theme(legend.position = "right",
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), 
+              axis.title = element_text(size = rel(1.25))) +
+  scale_color_manual(values = c("blue", "black", "red"),
+                     labels = c("Downregulated", "Not Significant", "Upregulated")) +
+  scale_x_continuous(limits = c(-20, 20)) + 
+  coord_cartesian(ylim=c(0, 300), clip = "off")  
+```
+
+```{r, annotation}
+resdata_sig <- as.data.frame(resdata_gene) %>% dplyr::filter(abs(log2FoldChange) > 1 & padj < 0.05)
+head(resdata_sig)
+#write.csv(resdata_sig, file="Tcf7_ko_versus_wt_DEG.csv")
+
+# Count the number of rows where diffexpressed is "Upregulated"
+upregulated_count <- nrow(resdata_sig[resdata_sig$diffexpressed == "Upregulated", ])
+upregulated_count
+
+downregulated_count <- nrow(resdata_sig[resdata_sig$diffexpressed == "Downregulated", ])
+downregulated_count
+
+```
+
+
+```{r, annotation2, warning=FALSE}
+p <- ggplot(resdata_gene) +
+        geom_point(aes(x=log2FoldChange, 
+                       y=-log10(padj), colour=diffexpressed)) + 
+  theme_classic() + 
+        ggtitle("TCF7 KO versus WT") +
+        xlab("Log2 fold change") + 
+        ylab("-Log10(padj)") +
+        theme(legend.position = "right",
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), 
+              axis.title = element_text(size = rel(1.25))) +
+  scale_color_manual(values = c("blue", "black", "red"),
+                     labels = c("Downregulated", "Not Significant", "Upregulated")) +
+  scale_x_continuous(limits = c(-20, 20)) + 
+  coord_cartesian(ylim=c(0, 300), clip = "off") 
+
+  # Add annotation
+p + annotate("text", x = 15, y = 10, label = "560", colour = "red", size = 8, hjust = 0) +
+  annotate("text", x = -15, y = 10, label = "412", colour = "blue", size = 8, hjust = 1)
+  
+ggsave("figure_volano2.png")
+```
+
+
+*** 
+
+### Part II: Volcano plot w/ EnhancedVolcano 
+
+In its most basic usage, `EnhancedVolcano` requires: 
++ data-frame (i.e. `resdata_gene`), 
++ a column of rownames (i.e. `lab =`), 
++ a column name containing log2 fold changes (i.e. `x =log2FoldChange`)
++ a column name containing nominal or adjusted pvalues (i.e. `y = padj`)
+
+There are numerous arguments that can be used to customize the volcano plot with `EnhancedVolcano`. We will begin with the most fundamental and most important of these options which includes visualizing sections of the volcano plot based off p adjusted cutoff of < 0.05 and absolute log2 of 1. For both, vertical and horizontal lines will be drawn to show these cutoffs exactly where we want them. Note, this was done in the plot above, however were you confident where these lines were drawn? 
+
+```{r}
+EnhancedVolcano(resdata_gene,
+                lab = as.character(resdata_gene$symbol),
+                x = 'log2FoldChange',
+                y = 'padj', 
+                title = "TCF7_KO versus WT",
+                FCcutoff = 1,
+                pCutoff = 0.05)
+```
+
+Now, lets convert our colors to red and black like the article. Naturally, EnhancedVolcano will color based on four quadrants. These quadrants are shown (in order):  
+1) NS - shown in black
+2) Log2FC - shown in green
+3) p-value - shown in blue 
+4) p-value & Log2FC - shown in red 
+
+In addition, let's move the legend position to the right of the plot. 
+
+```{r}
+EnhancedVolcano(resdata_gene,
+                lab = as.character(resdata_gene$symbol),
+                x = 'log2FoldChange',
+                y = 'padj', 
+                title = "TCF7_KO versus WT",
+                subtitle = "Differential expression", 
+                FCcutoff = 1,
+                pCutoff = 0.05,
+                labSize = 4, 
+                axisLabSize = 12, 
+                col=c('black', 'black', 'black', 'red3'),
+                legendLabels=c('Not sig.','Log2FC','padj', 'padj & Log2FC'),
+                legendPosition = 'right',
+                legendLabSize = 16,
+                legendIconSize = 5.0)
+```
+
+There might be too many genes labeled here making the plot look cluttered. Let's label a few select DE genes. First, lets get a complete of list of our DEGs using: 
+
+```{r}
+resdata_sig <- as.data.frame(resdata_gene) %>% dplyr::filter(abs(log2FoldChange) > 1 & padj < 0.05)
+head(resdata_sig)
+write.csv(resdata_sig, file="Tcf7_ko_versus_wt_DEG.csv")
+```
+
+Looking at the supplementary data, the authors identified some genes such as 'Cd19', 'Ccr7', and 'Gzma' as biologically significant to their findings. In addition, this article focusing on two transcription factors 'Tcf7' and 'Lef1' so it would be a good idea to view those. I also am including 'Actn1' as more of positive control. It is the most signficantly downregulated gene in our dataset and I want to make sure it shows up on the correct side of the graph. 
+
+```{r}
+EnhancedVolcano(resdata_gene,
+                lab = as.character(resdata_gene$symbol),
+                x = 'log2FoldChange',
+                y = 'padj', 
+                selectLab = c('Ccr7', 'Cd19', 'Actn1', 'Gzma', 'Ccl5', 'Tcf7', 'Lef1'),
+                title = "TCF7_KO versus WT",
+                subtitle = "Differential expression", 
+                FCcutoff = 1,
+                pCutoff = 0.05,
+                labSize = 4, 
+                axisLabSize = 12, 
+                col=c('black', 'black', 'black', 'red3'),
+                legendLabels=c('Not sig.','Log2FC','padj', 'padj & Log2FC'),
+                legendPosition = 'right',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                widthConnectors = 1.0,
+                colConnectors = 'black')
+```
+
+It looks like a few genes are hard to read. We can fix this by adding a boxed label. This will make the gene name pop out and will be given a white background. I am also choosing to bold the gene name. In addition, lets get rid of the major and minor grid lines as they are taking away from the image aesthetics. 
+
+```{r}
+EnhancedVolcano(resdata_gene,
+                lab = as.character(resdata_gene$symbol),
+                x = 'log2FoldChange',
+                y = 'padj', 
+                selectLab = c('Ccr7', 'Cd19', 'Actn1', 'Gzma', 'Ccl5', 'Tcf7', 'Lef1'),
+                title = "TCF7_KO versus WT",
+                subtitle = "Differential expression", 
+                FCcutoff = 1,
+                pCutoff = 0.05,
+                labSize = 4, 
+                axisLabSize = 12, 
+                col=c('black', 'black', 'black', 'red3'),
+                labCol = 'black',
+                labFace = 'bold',
+                boxedLabels = TRUE,
+                legendLabels=c('Not sig.','Log2FC','padj', 'padj & Log2FC'),
+                legendPosition = 'right',
+                legendLabSize = 16,
+                legendIconSize = 5.0,
+                drawConnectors = TRUE,
+                widthConnectors = 1.0,
+                colConnectors = 'black', 
+                gridlines.major = FALSE,
+                gridlines.minor = FALSE)
+
+ggsave("TCF7_KO_verus_WT-Enhancedvolano.png")
+```
+
+If you wanted to play around with colors (up versus down regulated) below is a script to help you get started. 
+
+```{r}
+keyvals <- ifelse(
+  resdata_gene$log2FoldChange < -2, 'royalblue',
+  ifelse(resdata_gene$log2FoldChange > 2, 'red',
+         'black'))
+keyvals[is.na(keyvals)] <- 'black'
+names(keyvals)[keyvals == 'red'] <- 'Upregulated'
+names(keyvals)[keyvals == 'black'] <- 'NA'
+names(keyvals)[keyvals == 'royalblue'] <- 'Downregulated'
+
+EnhancedVolcano(resdata_gene,
+  lab = as.character(resdata_gene$symbol),
+  x = 'log2FoldChange',
+  y = 'padj', 
+  selectLab = rownames(resdata_gene)[which(names(keyvals) %in%
+                                             c('Upregulated','Downregulated'))],
+  xlab = bquote(~Log[1]~ 'fold change'),
+  colCustom = keyvals,
+  title = "TCF7_KO versus WT",
+  subtitle = "Differential expression", 
+  FCcutoff = 1,
+  pCutoff = 0.05,
+  labSize = 4, 
+  axisLabSize = 12,
+  legendLabels=c('Not sig.','Log2FC','padj', 'padj & Log2FC'),
+  legendPosition = 'left',
+  legendLabSize = 16,
+  legendIconSize = 5.0,
+  gridlines.major = FALSE,
+  gridlines.minor = FALSE)
+
+```
+
+### Session info 
+
+```{r}
+sessionInfo()
+```
+
+
+### Citation
+title: "EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling"
+author: "Kevin Blighe, Sharmila Rana, Myles Lewis"
+
+**Note:** if you use Enhanced Volcano in published research, please cite:
+
+> Blighe K, Rana S, Lewis M (2022). EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling. R package version 1.16.0, https://github.com/kevinblighe/EnhancedVolcano. 
+
