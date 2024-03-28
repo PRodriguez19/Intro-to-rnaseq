@@ -43,6 +43,15 @@ Libraries to install:
 
 ***
 
+## Thursday, March 28th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [ggplot2_continued](../lessons/06_ggplot2.md) | 
+
+***
+
+
 ## Assignments Due 
 
 ### HW#10 - Alignment & Counting (150 points)
