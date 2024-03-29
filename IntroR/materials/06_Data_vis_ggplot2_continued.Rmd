@@ -1,0 +1,265 @@
+---
+title: "Data visualization ggplot2 continued"
+date: "3/27/2024"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction 
+
+We will continue our lesson with data visualization using `ggplot2`.  We’ll finish off with a solo 3-part exercise to demonstrate your understanding of this function usage. 
+
+## Load libraries and data 
+```{r, load-data, warning=FALSE, message=FALSE}
+#install.packages("tidyverse")
+#install.packages(c("palmerpenguins", "ggthemes"))
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+```
+
+The `palmerpenguins` package includes the penguins dataset containing body measurements for penguins on three islands in the Palmer Archipelago, and the `ggthemes` package, which offers a colorblind safe color palette.
+
+### Questions of interest 
+
++ Do penguins with longer flippers weigh more or less than penguins with shorter flippers?
++ What does the relationship between flipper length and body mass look like? Is it positive? Negative? Linear? Nonlinear? 
++ Does the relationship vary by the species of the penguin? How about by the island where the penguin lives? 
+
+Let’s create visualizations that we can use to answer some of these questions.
+
+#### The `penguin` dataframe 
+
+The penguins data frame found in `palmerpenguins`. A data frame is a rectangular collection of variables (in the columns) and observations (in the rows). `palmerpenguins` contains 344 observations collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER2.
+
+Let’s define some terms:
+
+  + A **variable** is a quantity, quality, or property that you can measure.
+
+  + A **value** is the state of a variable when you measure it. The value of a variable may change from measurement to measurement.
+
+  + An **observation** is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object). An observation will contain several values, each associated with a different variable. Sometimes are referred to as a data point.
+
+  + **Tabular data** is a set of values, each associated with a variable and an observation. Tabular data is tidy if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.
+  
+In this context, a **variable** refers to an attribute of all the penguins, and an **observation** refers to all the attributes of a single penguin.
+
+## Let's begin 
+```{r, view-data}
+#View(penguins)
+nrow(penguins)
+ncol(penguins)
+# a tibble is a special data frame used in tidyverse 
+
+penguins
+```
+
+This data frame contains 8 columns. Some of the variables in `penguins` are: 
+
+  + species: a penguin’s species (Adelie, Chinstrap, or Gentoo).
+
+  + flipper_length_mm: length of a penguin’s flipper, in millimeters.
+
+  + body_mass_g: body mass of a penguin, in grams.
+
+Reminders: 
+
+  + bar charts use bar geoms `(geom_bar())`
+  + line charts use line geoms `(geom_line())`
+  + boxplots use boxplot geoms `(geom_boxplot())`
+  + scatterplots use point geoms `(geom_point())`
+  + density plot use density geoms `geom_density()`
+
+***
+
+### Class Exercise #1 - using ggplot function 
+
+Using the `ggplot()` function:
+  + input the `penguins` dataframe  
+  + x = flipper_length_mm
+  + y = body_mass_g 
+  + make a scatterplot 
+
+```{r, input_penguin-data}
+# ?ggplot()
+## look at the examples if you forgot! 
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm, y = body_mass_g)) + geom_point()
+```
+
+**Interpretation:**
+Now we have something that looks like what we might think of as a “scatterplot”. Ssing this plot we can start answering the question that motivated our exploration: “What does the relationship between flipper length and body mass look like?” The relationship appears to be positive (as flipper length increases, so does body mass), fairly linear (the points are clustered around a line instead of a curve), and moderately strong (there isn’t too much scatter around such a line). **Penguins with longer flippers are generally larger in terms of their body mass.**
+
+**Warning**
+We’re seeing this message because there are two penguins in this dataset with missing body mass and/or flipper length values and `ggplot2` has no way of representing them on the plot without both of these values. Like R, `ggplot2` subscribes to the philosophy that missing values should never silently go missing. This type of warning is probably one of the most common types of warnings you will see when working with real data – missing values are a very common issue! To suppress warnings add `warnings=FALSE` to the code chunk settings. 
+
+***
+### Class Exercise #2 - Add color
+
+How can we answer the question, does the relationship between flipper length and body mass differ by species?
+
++ Let's look at the dataframe - is the data provided for you to answer this question? Is it even possible to answer this question? 
+
+Now incorporate **species** into your plot and see if this reveals any additional insights into the apparent relationship between these variables. Do this by representing species with different colored points.
+
+```{r, add-color, warning=FALSE}
+# modify the aesthetic mapping to include color! 
+ggplot(data = penguins, 
+       mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point()
+```
+
+Notice what is happening in the plot above.
+When a categorical variable is mapped to an aesthetic, `ggplot2` will automatically assign a unique value of the aesthetic (here a unique color) to each unique level of the variable (each of the three species), a process known as **scaling**. `ggplot2` will also add a legend that explains which values correspond to which levels. 
+
+***
+
+### Class Exercise #3 - add another layer 
+
+Now let’s add one more layer: a smooth curve displaying the relationship between body mass and flipper length. Refer back to the code above, and think about how we can add this to our existing plot. Remember this will be a new geometric object added as a layer ! 
+
+```{r, add-layer, warning=FALSE, message=FALSE}
+# geom_smooth(method = "lm") where would this go? 
+  # linear model = lm 
+
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+```
+
+***
+
+### Class Exercise #4 - one trend line 
+
+When aesthetic mappings are defined in `ggplot()`, at the global level, they’re passed down to each of the subsequent geom layers of the plot. However, each geom function in `ggplot2` can also take a mapping argument, which allows for aesthetic mappings to occur at the local level. Since we want points to be colored based on species but don’t want the lines to be separated out for them, specify `color = species` for `geom_point()` only and see the difference. 
+
+```{r, one_trend-line, warning=FALSE, message=FALSE}
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(mapping = aes(color = species)) + 
+  geom_smooth(method = "lm")
+```
+
+***
+
+### Class Exercise #5 - add shapes 
+
+Now lets add different shapes for each species of penguins and improve labels. Why do this? 
+
+It’s generally not a good idea to represent information using only colors on a plot, as people perceive colors differently due to color blindness or other color vision differences. Therefore, in addition to color, we can also map species to the shape aesthetic. Go ahead and add this in! 
+
+```{r, shapes, warning=FALSE, message=FALSE}
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(mapping = aes(color = species, shape = species)) + 
+  geom_smooth(method = "lm")
+```
+
+***
+
+### Class Exercise #6 - add labels
+
+Improve the labels of our plot using the `labs()` function in a new layer. 
+
+Add the following arguments: 
++ **title** adds a title = Body mass and flipper length
+
++ **subtitle** adds a subtitle to the plot = Dimensions for Adelie, Chinstrap, and Gentoo Penguins
+
++ x is the x-axis label = Flipper length (mm)
+
++ y is the y-axis label = Body mass (g)
+
++ color = Species 
+
++ shape = Species 
+
+In addition, improve the color palette to be colorblind safe with the `scale_color_colorblind()` function from the `ggthemes` package. **This is another layer!**
+
+```{r, add_labels, warning=FALSE, message=FALSE}
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(mapping = aes(color = species, shape = species)) + 
+  geom_smooth(method = "lm") +
+  labs(title = "Body mass and flipper length", 
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+       x = "Flipper length (mm)", y = "Body mass (g)", 
+       color = "Species", shape = "Species") + 
+  scale_color_colorblind() 
+```
+
+***
+
+### Class Exercises - on your own
+
+A) Recreate the following visualization labeled exercise_A.png. 
+
+```{r, classic_theme, warning=FALSE, message=FALSE}
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  labs(title = "Body mass and flipper length", 
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+       x = "Flipper length (mm)", y = "Body mass (g)", 
+       color = "Species", shape = "Species") + 
+  scale_color_colorblind() + 
+  theme_classic()
+
+ggsave("exercise_A.png")
+```
+
+
+B) Make a scatterplot of bill_depth_mm vs. bill_length_mm. That is, make a scatterplot with bill_depth_mm on the y-axis and bill_length_mm on the x-axis. What is the relationship between these two variables?
+
+```{r, exercise_B, warning=FALSE, message=FALSE}
+ggplot(data = penguins, 
+       mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point()
+```
+
+C) What happens if you make a scatterplot of bill_depth_mm vs species? What might be a better choice of geom? Try another one! 
+
+```{r, exercise_C, warning=FALSE, message=FALSE}
+ggplot(data = penguins, 
+       mapping = aes(x = species, y = bill_depth_mm, color = species)) +
+  geom_boxplot()
+```
+
+D) Recreate the following visualization labeled exercise_D.png. 
+
+```{r, exercise_D, warning=FALSE, message=FALSE}
+ggplot(
+  data = penguins, 
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(mapping = aes(color = bill_depth_mm)) + 
+  geom_smooth()
+
+ggsave("exercise_D.png")
+```
+
+Important point:
+
+  + Typically, the first one or two arguments to a function are so important that you should know them by heart. The first two arguments to `ggplot()` are `data` and `mapping`, sometimes these names are not supplied! Order matters! See the example below. 
+
+```{r, example, warning=FALSE}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point()
+```
+
+
+
