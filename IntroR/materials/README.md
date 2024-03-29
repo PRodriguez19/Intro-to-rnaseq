@@ -17,5 +17,5 @@ Date: March 26, 2024
 + [05_Volcano_plot.Rmd](05_Volcano_plot.Rmd)
 
 Date: March 28, 2024
-+ [06_ggplot2_continued](Data_vis_ggplot2_continued.html)
-+ [06_ggplot2_continued.Rmd](Data_vis_ggplot2_continued.Rmd)
++ [06_ggplot2_continued](06_Data_vis_ggplot2_continued.html)
++ [06_ggplot2_continued.Rmd](06_Data_vis_ggplot2_continued.Rmd)
