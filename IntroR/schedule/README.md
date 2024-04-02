@@ -51,6 +51,14 @@ Libraries to install:
 
 ***
 
+## Tuesday, April 2nd 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [Boxplot](../lessons/07_box_plot.md) | 
+
+***
+
 
 ## Assignments Due 
 
