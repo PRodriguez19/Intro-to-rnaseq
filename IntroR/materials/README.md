@@ -19,3 +19,7 @@ Date: March 26, 2024
 Date: March 28, 2024
 + [06_ggplot2_continued](06_Data_vis_ggplot2_continued.html)
 + [06_ggplot2_continued.Rmd](06_Data_vis_ggplot2_continued.Rmd)
+
+Date: April 2, 2024
++ [07_Box_plots](07_Box_plots.html)
++ [07_Box_plots.Rmd](07_Box_plots.Rmd)

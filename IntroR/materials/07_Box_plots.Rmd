@@ -1,0 +1,507 @@
+---
+title: "Boxplots"
+date: "04/01/2024"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Normalization
+The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples.
+
+The counts of mapped reads for each gene is proportional to the expression of RNA ("interesting") in addition to many other factors ("uninteresting"). Normalization is the process of scaling raw count values to account for the "uninteresting" factors. In this way the expression levels are more comparable between and within samples.
+
+The main factors often considered during normalization are:
+ 
+ - **Sequencing depth:** Accounting for sequencing depth is necessary for comparison of gene expression between samples. In the example below, each gene appears to have doubled in expression in *Sample A* relative to *Sample B*, however this is a consequence of *Sample A* having double the sequencing depth. 
+    
+    <p align="center">
+    <img src="img/normalization_methods_depth.png" width="400">
+    </p>
+ 
+	>***NOTE:** In the figure above, each pink and green rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.*
+ 
+ - **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene X* and *Gene Y* have similar levels of expression, but the number of reads mapped to *Gene X* would be many more than the number mapped to *Gene Y* because *Gene X* is longer.
+    
+    <p align="center">
+    <img src="img/normalization_methods_length.png" width="200">
+    </p>
+    
+ - **RNA composition:** A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses [[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)]. 
+ 
+    <p align="center">
+    <img src="img/normalization_methods_composition_updated.png" width="400">
+    </p>
+    
+	Why the presence of one DE gene could lead to a decrease in reads for other genes within the same sample is explained below. The total number of reads available via a sequencer is a finite resource. For the sake of simplicity say the total number of reads available is 2000. In the example below, *Sample A* has four genes with roughly the same amount of read counts. However, *Sample B* has one gene that is 10X upregulated. Therefore, we might expect something like this: 
+	
+|	gene |group1|group2|
+| ---- | ---- | ---- |
+|gene1 |500   |154 |
+|gene2 |500   |154 |
+|gene3 |500   |154 |
+|gene4 |500   |1538 |
+	
+If we were to divide each sample by the total number of reads to normalize, the counts would be greatly skewed by the DE gene, which takes up most of the counts for *Sample B*, but not *Sample A*. 
+**There are several common normalization methods that exist, these are described below**
+	
+| Normalization method | Description | Accounted factors | Recommendations for use |
+| ---- | ---- | ---- | ---- |
+| **CPM** (counts per million) | counts scaled by total number of reads | sequencing depth | gene count comparisons between replicates of the same samplegroup; **NOT for within sample comparisions or DE analysis**  |
+| **TPM** (transcripts per kilobase million) | counts per length of transcript (kb) per million reads mapped | sequencing depth and gene length | gene count comparisons within a sample or between samples of the same sample group; **NOT for DE analysis** |
+| **RPKM/FPKM** (reads/fragments per kilobase of exon per million reads/fragments mapped) | similar to TPM | sequencing depth and gene length | gene count comparisons between genes within a sample; **NOT for between sample comparisons or DE analysis** |
+| DESeq2's **median of ratios** [[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)] | counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene | sequencing depth and RNA composition | gene count comparisons between samples and for DE analysis; **NOT for within sample comparisons** |
+| EdgeR's **trimmed mean of M values (TMM)** [[2](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25)] | uses a weighted trimmed mean of the log expression ratios between samples | sequencing depth, RNA composition | gene count comparisons between samples and for DE analysis; **NOT for within sample comparisons** |
+	
+***
+
+## Introduction to Boxplots 
+
+Today we will create boxplots which display the distribution of normalized counts (output from DESeq2) on the y-axis with the conditions shown on the x-axis for each gene of interest.  
+
+![Nrp2 boxplot](img/nrp2_boxplot.png){width=50%}
+
+Looking at the boxplot above, it provides a graphical view of the distribution of the data based on a five number summary:
+
++ The top and bottom of the box represent the (1) first and (2) third quartiles (25th and 75th percentiles, respectively).
++ The line inside the box represents the (3) median (50th percentile).
++ The whiskers extending above and below the box represent the (4) maximum, and (5) minimum of a data set.
+
+### Load the libraries
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(RColorBrewer)
+library(cowplot)
+```
+
+
+### Data input 
+
+To create this visualization, we need to input our normilized counts data from the DEG output created during the Volcano plot tutorial. It is called `Tcf7_ko_versus_wt_DEG.csv`. Assign this to object `all_matrix`. 
+
+```{r}
+all_matrix <- read.csv("Tcf7_ko_versus_wt_DEG.csv", header = T)
+all_matrix <- data.frame(all_matrix)
+head(all_matrix)
+```
+
+Next, load the annotation file called `GSE164713_tcf1_anno.csv` to an object called `meta`.  
+```{r}
+meta <- read.csv("GSE164713_tcf1_anno.csv", header = T)
+head(meta)
+```
+
+***
+## Data transformation
+
+Visualization is an important tool for generating insight, but it’s rare that you get the data in exactly the right form you need to make the graph you want. Often you’ll need to create some new variables to answer your questions with your data, or maybe you just want to rename the variables or reorder the observations to make the data a little easier to work with.
+
+To do this we will use a packages from `dplyr`. `dplyr` is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges. 
+  
+### `dplyr` basics 
+
+  1. The first argument is always a data frame.
+  2. The subsequent arguments typically describe which columns to operate on, using the variable name. 
+  3. The output is always a new data frame. 
+  4. There are four groups that dplyr operates' on: rows, columns, groups, or tables. 
+
+#### Common verbs from `dpylr`  
+
+  + `filter()` allows you to keep rows based on the values of the columns.
+  + `summarise()` reduces multiple values down to a single summary.
+  + `arrange()` changes the ordering of the rows.
+  + `slice()` allows you to select and remove rows. 
+  + `mutate()` adds new variables that are functions of existing variables
+  + `select()` picks variables based on their names.
+
+##### Other   
+
++ pipe (%>%)  
+The pipe allows the output of a previous command to be used as input to another command instead of using nested functions. 
+
+>**NOTE:** Shortcut to write the pipe is <kbd>shift</kbd> + <kbd>command</kbd> + <kbd>M</kbd>
+
++ equal-to operator (==) 
+The `=` is an assignment operator while the `==` is a comparison operator. The `=` is used to assign a value and the `==` operator is used to compare two variables or constants. The equal-to operator (==) returns TRUE if both operands have the same value; otherwise, it returns FALSE. 
+
+### Class Exercise #1 
+
+First, lets take a look at our matrix. As is, it does not seem that the data is ordered with genes most differentially expressed at the top. Which verb would we use to order by padj? 
+
+```{r}
+order_matrix <- arrange(all_matrix, padj) 
+#order_matrix
+```
+
+Next, we would like to select the columns of interest and put these columns into another object called `symbol_deg`. 
++ The columns we would like are 8-13 and column 15. 
+
+Which verb would we use now? 
+
+```{r}
+symbol_deg <- order_matrix %>% select(symbol, WT_CD8_rep1:TCF1_KO_CD8_rep3)
+```
+
+Finally, we would only like the top 20 rows. We do not need the rest. Which verb would we use for this? 
+
+```{r}
+top_20_deg <- slice(symbol_deg, 1:20)
+```
+
+
+***
+
+### Lengthening data, exercise #1
+
+
+In the `top_20_deg` matrix, we can see that each sample is a column in the data frame and every gene is a row. We want to compare the **normalized counts between samples** using the boxplot function in `ggplot2`. It is important to note that `ggplot2` requires **data assigned to x- or y-coordinates to be stored as a single column** in the data frame. 
+
+Since the normalized counts values of each sample is stored in a different column, we need to 'gather' these columns together into a single column before we can plot them. 
+
+To do this we can use a `tidyr` function called `pivot_longer()`. The `pivot_longer()` function is used to pivot a data frame from a "wide" format to a "long" format. The basic usage is shown below: 
+
+```{r}
+## DO NOT RUN
+# Syntax for `pivot_longer()` function
+
+#pivot_longer(input_data_frame,
+             #cols = columns_to_gather_together,
+             #values_to = "name_for_column_of_gathered_values")
+
+```
+
+Go ahead and modify the above code with the appropriate parameters:   
++ the input data frame is called `top_20_deg`   
++ we would like to gather all the counts into a single column except for the column called symbol   
++ name for column = "normalized_counts"   
++ Finally, this entire function should be assigned to an object called "expression_plot"  
+
+```{r}
+expression_plot <- pivot_longer(top_20_deg,
+                                cols = 2:7,
+                                values_to = "normalized_counts")
+```
+
+We can look at what `pivot_longer` did a bit more closely. Instead of each gene taking a single row the `pivot_longer` command gives us expression data in a single column for each gene.
+
+```{r}
+#View(expression_plot)
+```
+
+***
+
+### Class Exercise #2 
+
+Next we would to merge 'expression_plot' with the 'meta' data frame. This is because, we would like to add the annotation "condition" to our long dataframe. To do this, we will use `left_join` function from `tidyverse`. 
+
++ A `left_join()` keeps all the observations in x 
++ A `right_join()` keeps all the observations in y 
+
+Use the manual help page to guide you. 
+```{r}
+#?left_join()
+```
+
+We can see that the basic usage will look similar to this: 
+```{r}
+## DO NOT RUN 
+#left_join(x = data_frame1, y = data_frame2, by = how_they_will_be_joined)
+```
+
+Go ahead and try to fill in the function for `left_join` with the appropriate parameters. Assign this function to `expression_plot2`. 
+
+```{r}
+# Join metadata for visualizing groups or features
+expression_plot2 <- left_join(x = expression_plot, 
+                             y = meta, 
+                             by = "name")
+
+#View(expression_plot)
+```
+
+*** 
+
+Now, we need to create filtered expression_plots for the genes of interest: Actn1, Igf1r, Nrp2, and Ccl5, to create separate plots for each gene. To do this we will be using the following: 
+
++ pipe (%>%)  
+
++ equal-to operator (==) 
+
+
+```{r}
+Nrp2_exp <- expression_plot2 %>%
+  filter(symbol == "Nrp2")
+
+#View(Nrp2_exp)
+```
+
+
+***
+
+### Class Exercise #3
+
+Last week we used `ggplot()` to create a scatterplot. Below was the outcome: 
+
+```{r}
+## DO NOT RUN
+#ggplot(resdata) +
+        #geom_point(aes(x=log2FoldChange, 
+                       #y=-log10(padj), colour=threshold)) + 
+        #ggtitle("TCF7 KO versus WT") 
+```
+
+Generate a code to create a boxplot of the `Nrp2_exp` object below. For now be sure to provide an `x`, `y`, and `fill` value. 
+
+```{r}
+ggplot(Nrp2_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) +
+  ggtitle("Nrp2") 
+
+```
+
+
+```{r}
+### Re-factor the x-axis variable to be in the correct order
+Nrp2_exp$condition <- factor(Nrp2_exp$condition, levels = c("WT", "KO"))
+
+ggplot(Nrp2_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) +
+  ggtitle("Nrp2") 
+```
+
+For additional customization of the style or position of the legends, we learned about the `theme()` function. 
+
++ Go ahead and add on the `theme_bw()`
++ Relabel x axis to Condition
++ Relabel y axis to Normalized Counts 
+
+```{r}
+Nrp2_exp$condition <- factor(Nrp2_exp$condition, levels = c("WT", "KO"))
+
+ggplot(Nrp2_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) +
+  theme_bw() +
+        ggtitle("Nrp2") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+***
+
+### Class Exercise #4
+
+#### Color scales
+
+While the default colors may be fine for many applications, they are often not sufficient to highlight the relationships of interest or are not optimal for the intended audience/publication. For our boxplot, the default colors look great but still we may want some freedom with customization. 
+
+There are "cheatsheets" available for specifying the base R colors by [name](https://cpb-us-e1.wpmucdn.com/sites.ucsc.edu/dist/d/276/files/2015/10/colorbynames.png) or [hexadecimal](http://www.sthda.com/english/wiki/color-chart-hexadecimal) code, and there are these websites [here](https://hclwizard.org) and [here](http://tristen.ca/hcl-picker/#/hlc/6/1.05/113840/D4E966) for picking colors or palettes of interest and returning the hexadecimal code(s). 
+
+To apply any of these colors to our plot, we can individually specify the colors by providing them within a `scale_fill_manual` layer. 
+
+1) Select two colors that speak to you
+
+2) Add this in using `scale_fill_manual`. This is inserted right after `theme_bw()`
+
+3) Finally, assign the `ggplot()` function to an object and call it `boxplot_nrp2`
+
+```{r}
+## Step 2
+Nrp2_exp$condition <- factor(Nrp2_exp$condition, levels = c("WT", "KO"))
+
+ggplot(Nrp2_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) + 
+  theme_bw() + scale_fill_manual(values = c("deepskyblue1", "firebrick3")) + 
+        ggtitle("Nrp2") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              panel.grid = element_blank(), 
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+```{r}
+## Step 3 
+Nrp2_exp$condition <- factor(Nrp2_exp$condition, levels = c("WT", "KO"))
+
+## object for boxplot Nrp2
+boxplot_nrp2 <- ggplot(Nrp2_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) + 
+  theme_bw() + scale_fill_manual(values = c("deepskyblue1", "firebrick3")) +
+        ggtitle("Nrp2") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              panel.grid = element_blank(), 
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+***
+
+### Class Exercise #5 
+
+There are (3) other genes that we would like to represent as boxplots as well. These are Actn1, Igf1r, and Ccl5. Go ahead and create boxplots for these as well.
+This will take ~10 minutes. 
+
+```{r}
+Actn1_exp <- expression_plot2 %>%
+filter(symbol == "Actn1")
+
+Actn1_exp$condition <- factor(Actn1_exp$condition, levels = c("WT", "KO"))
+
+boxplot_actn1 <- ggplot(Actn1_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) + 
+  theme_bw() + scale_fill_manual(values = c("deepskyblue1", "firebrick3")) +
+        ggtitle("Actn1") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              panel.grid = element_blank(), 
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+
+```{r}
+Ccl5_exp <- expression_plot2 %>%
+filter(symbol == "Ccl5")
+
+Ccl5_exp$condition <- factor(Ccl5_exp$condition, levels = c("WT", "KO"))
+
+## object for boxplot Ccl5
+boxplot_ccl5 <- ggplot(Ccl5_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) + 
+  theme_bw() + scale_fill_manual(values = c("deepskyblue1", "firebrick3")) +
+        ggtitle("Ccl5") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              panel.grid = element_blank(), 
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+
+```{r}
+Kif1b_exp <- expression_plot2 %>%
+filter(symbol == "Kif1b")
+
+Kif1b_exp$condition <- factor(Kif1b_exp$condition, levels = c("WT", "KO"))
+
+## object for boxplot Ccl5
+boxplot_kif1b <- ggplot(Kif1b_exp) +
+  geom_boxplot(aes(x=condition, 
+                   y=normalized_counts, 
+                   fill=condition)) + 
+  theme_bw() + scale_fill_manual(values = c("deepskyblue1", "firebrick3")) +
+        ggtitle("Kif1b") +
+        xlab("Condition") + 
+        ylab("Normalized Counts") +
+        theme(legend.position = "right",
+              panel.grid = element_blank(), 
+              plot.title = element_text(size = rel(1.25), hjust = 0.5), #title
+              axis.title = element_text(size = rel(0.75)),
+              axis.text = element_text(size = rel(0.75))) #axis
+```
+
+
+***
+### Class Exercise #6
+
+Finally, we have created the following objects: boxplot_nrp2, boxplot_actn1, boxplot_igf1r, boxplot_ccl5. Each has all the information required to generate an image of a boxplot. We would like all the images to be arranged in one plot. To do this we will utilize the function `plot_grid`. This is an function offered through the `cowplot` library used to arrange multiple plots into a grid. 
+
+```{r}
+# simple grid
+#plot_grid(plot1, plot2, plot3, plot4)
+```
+
+Using the `plot_grid` function generate a simple grid that captures all (4) boxplots. 
++ We would like this grid arranged in two columns 
++ Then assign this to the object "boxplot_grid" 
++ use `?plot_grid` for help 
+
+```{r}
+# Arranging multiple plots in a figure
+boxplot_grid <- plot_grid(boxplot_actn1,
+                          boxplot_kif1b,
+                          boxplot_nrp2,
+                          boxplot_ccl5,
+                          ncol = 2)
+boxplot_grid
+```
+
+
+Vertical alignment (align = "v") means that any vertical reference lines, such as the right and left y axis lines, are aligned in the plots. By contrast, horizontal alignment (align = "h") aligns horizontal reference lines. Both types of alignment can be used separately (align = "v" or align = "h") or in combination (align = "vh" or align = "hv").
+
+```{r}
+# Arranging multiple plots in a figure
+boxplot_grid <- plot_grid(boxplot_actn1,
+                          boxplot_kif1b,
+                          boxplot_nrp2,
+                          boxplot_ccl5,
+                          labels = c("A", "B", "C", "D"),
+                          align = 'v',
+                          ncol = 2)
+
+boxplot_grid
+
+#boxplot_grid <- add_sub(boxplot_grid, "Condition", x = 0.5, hjust = 0.5)
+#ggdraw(boxplot_grid)
+
+```
+
+
+```{r}
+# Save plot to pdf
+ggsave(plot = boxplot_grid,
+       filename = "boxplot_figure.pdf",
+       device = "pdf",
+       width = 6,
+       height = 4,
+       units = "in",
+       dpi = 300)
+```
+
+### Session Info 
+```{r}
+sessionInfo()
+```
+
+
+
+
+
