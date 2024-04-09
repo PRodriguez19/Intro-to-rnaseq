@@ -9,21 +9,6 @@
 | 20 mins | [Data Wrangling](../lessons/03_data-wrangling.md) | 
 
 
-Libraries to install: 
-
-+ BiocManager 
-+ biomaRt
-+ cowplot
-+ dplyr
-+ DESeq2
-+ ggplot2
-+ EnhancedVolcano
-+ knitr
-+ magrittr
-+ tidyverse
-+ RColorBrewer
-+ pheatmap
-
 ***
 
 ## Thursday, March 21st 
@@ -56,6 +41,14 @@ Libraries to install:
 | Time |  Topic  |  
 |:-----------:|:----------| 
 | 60 mins | [Boxplot](../lessons/07_box_plot.md) | 
+
+***
+
+## Tuesday, April 9th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [Heatmaps](../lessons/08_heatmaps.md) | 
 
 ***
 
