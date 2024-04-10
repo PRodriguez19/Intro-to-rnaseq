@@ -23,3 +23,7 @@ Date: March 28, 2024
 Date: April 2, 2024
 + [07_Box_plots](07_Box_plots.html)
 + [07_Box_plots.Rmd](07_Box_plots.Rmd)
+
+Date: April 9, 2024
++ [08_Heatmap](08_heatmap.html)
++ [08_Heatmap.Rmd](08_heatmap.Rmd)

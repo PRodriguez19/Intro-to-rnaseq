@@ -1,0 +1,356 @@
+---
+title: "Heatmap_visualization"
+date: "4/8/2024"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Introduction to Heatmaps 
+
+We have discovered that `ggplot2` has incredible functionality and versatility; however, it is not always the best choice for all graphics. There are a plethora of different packages that specialize in particular types of figures. Today we will concentrate on creating **hierarchical** heatmaps using one of these packages called `pheatmap`. 
+
+`pheatmap` is a package used for drawing pretty heatmaps in R. This function has several advantages including the ability to control heatmap dimensions and appearance. 
+
+We will take inspiration from the figure below: 
+
+<p align="center">
+<img src="img/fig-F.png" height="500">
+</p>
+
+Generally, heatmaps are used to compare numeric data from different conditions or groups. Above, the heatmap was used to look at the genes that have significantly different expression between mice with or without the *Prdm16* gene. The hierarchical clustering shown in the figure, adds information about which mice are most similar to each other in the expression of these genes.
+
+
+### Loading packages 
+
+```{r}
+#install.packages(pheatmap) #install pheatmap 
+library(pheatmap)
+library(RColorBrewer)
+library(ggplot2)
+library(cowplot)
+library(tidyr)
+library(dplyr)
+library(patchwork)
+library(ggplotify)
+```
+
+### Loading data 
+
+We will continue using our counts matrix generated two weeks ago that identified differentially expressed genes between TCF7 KO versus WT. 
+
+Load the `.DEG.csv` file and the `.anno.csv` and place them into the object called `all_matrix` and `heatmap_meta`, respectively. 
+
+For `all_matrix`: 
+1. Read it in as a data frame 
+2. Then proceed to select the symbol column and columns containing counts information, place this into another object called `heatmap_matrix` 
+3. Make sure that `heatmap_matrix` is also being read as a data.frame and specify `row.names = 1`
+
+```{r}
+all_matrix <- read.csv("Tcf7_ko_versus_wt_DEG.csv", header = T)
+all_matrix <- data.frame(all_matrix)
+```
+
+```{r}
+heatmap_matrix <- select(all_matrix, symbol, WT_CD8_rep1:TCF1_KO_CD8_rep3)
+heatmap_matrix <- data.frame(heatmap_matrix, row.names = 1)
+#heatmap_matrix
+```
+
+```{r}
+heatmap_meta <- read.csv("TCF7KO_vs_WT_anno.csv", header = T)
+heatmap_meta 
+```
+
+*** 
+## Setting-up
+
+There are few steps that need to be performed prior to using the `pheatmap()` function. 
+
+1. The row names of our metadata need to be read as sample names and also match the column names of our counts data. Then we will "select" only the genotype column. 
+
+```{r}
+# Assign the sample names to be the row names
+rownames(heatmap_meta) <- heatmap_meta$sample_id
+```
+
+```{r}
+heatmap_meta <- select(heatmap_meta, genotype)
+```
+
+**The object `heatmap_meta` is the dataframe for the column annotations.**
+
+If you wanted to add more column annotations, this is the point during the workflow that you would do it! 
+
+2. The factor levels specified in the genotype column will determine the color automatically assigned to the group. We can manually specify the levels using the `factor()` function.
+
+```{r}
+# Re-level factors
+heatmap_meta$genotype <- factor(heatmap_meta$genotype, 
+                                levels = c("WT", "KO"))
+```
+
+
+3. To provide any customized colors to use in the heatmap to denote the groups using the `brewer.pal` function. 
+
+```{r}
+# Colors for heatmap
+heatmap_colors <- rev(brewer.pal(10, "RdBu"))
+```
+
+
+4. We can also specify the colors to use to denote the annotations. The colors for the annotations need to be provided as a list. 
+
+```{r}
+# Colors for denoting annotations
+ann_colors <- list(genotype = c(KO = "#D11313", WT = "#6DB0F8"))
+
+# Based on the hex color system 
+# https://www.color-hex.com/ 
+```
+
+***
+
+## Plotting with `pheatmap` 
+
+```{r}
+# Plot heatmap  
+pheatmap(heatmap_matrix)
+```
+
+
+Now we will proceed to filling out the basic arguments required to graph a heatmap. Below, a few of the major arguments are given. 
+
+```{r}
+# BASIC USAGE 
+## DO NOT RUN 
+#pheatmap(numeric_matrix, 
+         #color = ,
+         #annotation_col = , 
+         #annotation_colors = ,
+         #show_colnames = , 
+         #show_rownames = )
+
+?pheatmap() #if you have questions 
+# We would like to remove column names and row names 
+# annotation_col = annotation column 
+# annotation_color = annotation colors 
+# color = color of our heatmap itself 
+```
+
+
+```{r}
+pheatmap(heatmap_matrix, 
+         color = heatmap_colors,
+         annotation_col = heatmap_meta,
+         annotation_colors = ann_colors,
+         show_colnames = F, 
+         show_rownames = F)
+```
+
+
+
+*** 
+
+### Transforming the Data: Z-score 
+
+Upon addition of `scale="row"` Z-scores are plotted, rather than the actual normalized count value. Z-scores are computed on a gene-by-gene basis by subtracting the mean and then dividing by the standard deviation. The Z-scores are computed **after the clustering**, so that it only affects the graphical aesthetics and the color visualization is improved.
+
+```{r}
+pheatmap(heatmap_matrix, 
+         color = heatmap_colors,
+         annotation_col = heatmap_meta,
+         annotation_colors = ann_colors,
+         show_colnames = F, 
+         show_rownames = F,
+         scale = "row")
+
+#Whats still wrong with the heatmap below?
+```
+
+Above, we can see clustering occuring between the different groups, which is good since these genes are supposed to be significantly different in their expression. 
+
+### Customizing heatmap 
+
+We can add a few more arguments to make it look more like the figure, such as removing redundant annotations. 
+
+```{r, heatmap}
+pheatmap(heatmap_matrix, 
+         color = heatmap_colors,
+         annotation_col = heatmap_meta,
+         annotation_colors = ann_colors,
+         show_colnames = F, 
+         show_rownames = F,
+         scale = "row",
+         annotation_names_col = F) # removes genotype annotation  
+```
+
+
+```{r, heatmap2, fig.height=6, fig.width=5}
+pheatmap(heatmap_matrix, 
+         color = heatmap_colors,
+         annotation_col = heatmap_meta,
+         annotation_colors = ann_colors,
+         show_colnames = F, 
+         show_rownames = F,
+         scale = "row",
+         annotation_names_col = F,
+         cellwidth = 20,
+         cellheight = 0.4,
+         treeheight_row = 10,
+         treeheight_col = 20) 
+```
+
+Now we are converting this plot into a ggplot object and saving it into `heatmap`. 
+
+```{r}
+heatmap <- as.ggplot(pheatmap(heatmap_matrix, 
+                              color = heatmap_colors,
+                              annotation_col = heatmap_meta,
+                              annotation_colors = ann_colors,
+                              show_colnames = F, 
+                              show_rownames = F,
+                              scale = "row",
+                              annotation_names_col = F,
+                              cellwidth = 10,
+                              cellheight = 0.2,
+                              treeheight_row = 10,
+                              treeheight_col = 20))
+```
+
+
+```{r}
+# Save image
+ggsave(filename = "heatmap_figure.png",
+       plot = heatmap,
+       units = "in", 
+       width = 5, 
+       height = 6, 
+       dpi = 300)  
+```
+
+
+## Making a figure 
+
+Saving RDS object
+```{r}
+#saveRDS(object, file = "")
+```
+
+Loading RDS object
+```{r}
+#object_name <- readRDS(object_name_of_RDS)
+```
+
+Load boxplots objects and volcano plot object: 
+```{r}
+boxplot_ccl5 <- readRDS("boxplot_ccl5.RDS")
+boxplot_actn1 <- readRDS("boxplot_actn1.RDS")
+boxplot_nrp2 <- readRDS("boxplot_nrp2.RDS")
+boxplot_kif1b <- readRDS("boxplot_kif1b.RDS")
+
+volcano_de <- readRDS("final_volcano_plot.RDS")
+```
+
+To view the boxplots: 
+```{r}
+boxplot_kif1b + boxplot_actn1 + boxplot_ccl5 + boxplot_nrp2
+```
+
+To remove the legend from boxplots: 
+```{r}
+boxplot_kif1b <- boxplot_kif1b + theme(legend.position = "none")
+boxplot_actn1 <- boxplot_actn1 + theme(legend.position = "none")
+boxplot_ccl5 <- boxplot_ccl5 + theme(legend.position = "none")
+boxplot_nrp2 <- boxplot_nrp2 + theme(legend.position = "none")
+```
+
+To view boxplots w/o legend: 
+```{r}
+boxplot_kif1b + boxplot_actn1 + boxplot_ccl5 + boxplot_nrp2
+```
+
+Now that we have saved all boxplots as ggplot2 objects, we can specify how to order them into a figure using cowplot’s `plot_grid()` function to assemble our final image. 
+
+Your goal is to recreate the final_figure.png. The steps that I used to create this plot are stated below, but you might find other ways to do this! 
+
+1. I assembled all the boxplots together to make panel C using the `plot_grid`. Then I labeled this object `FigC_boxplot` 
+2. Then I created another object for panels A and B only. I needed to adjust the height and widths of these panels since I wanted the volcano plot to be legible. This object was called `FigAB`. 
+3. Finally, I assembled panels A, B, and C together. This I called `final_figure`
+
+**Please present your final figure before leaving class today**
+
+```{r}
+#plot_grid(p1, p2, arguments)
+
+```
+
+
+```{r}
+# FigC_boxplot
+# we would like to add a label 
+# we would like the box plots laid out horizontally 
+
+FigC_boxplot <- plot_grid(boxplot_kif1b, 
+                          boxplot_actn1, 
+                          boxplot_ccl5, 
+                          boxplot_nrp2, 
+                          labels = "C", 
+                          nrow = 1) 
+```
+
+
+```{r}
+# FigAB
+
+FigAB <- plot_grid(heatmap, volcano_de, labels = c("A", "B"),
+                   rel_heights = c(1, .5),
+                   rel_widths = c(1, 2),
+                   align = "h",
+                   ncol = 2) 
+
+FigAB
+```
+
+
+
+Finally, you can combine Figure panels A, B, and C together and save it into the object called `final_figure`. 
+
+```{r, fig.height=6, fig.width=8}
+#final_figure 
+
+final_figure <- plot_grid(FigAB, FigC_boxplot,
+                          align = "v",
+                          rel_heights = c(1, .5),
+                          ncol = 1, 
+                          nrow = 2)
+
+final_figure
+```
+
+**ADD YOUR INITIALS TO THE PDF**
+```{r}
+ggsave(plot = final_figure,
+       filename = "final_figure_XX.pdf",
+       device = "pdf",
+       width = 8,
+       height = 6, 
+       units = "in",
+       dpi = 300)
+```
+
+
+## Session info 
+
+```{r}
+sessionInfo()
+```
+
