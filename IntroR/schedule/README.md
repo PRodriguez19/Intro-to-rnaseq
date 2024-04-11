@@ -52,6 +52,14 @@
 
 ***
 
+## Thursday, April 11th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [Pathways](../lessons/09_pathways.md) | 
+
+***
+
 
 ## Assignments Due 
 
