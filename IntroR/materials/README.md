@@ -27,3 +27,7 @@ Date: April 2, 2024
 Date: April 9, 2024
 + [08_Heatmap](08_heatmap.html)
 + [08_Heatmap.Rmd](08_heatmap.Rmd)
+
+Date: April 11, 2024
++ [09_Pathways](09_Pathways.html)
++ [09_Pathways.Rmd](09_Pathways.Rmd)

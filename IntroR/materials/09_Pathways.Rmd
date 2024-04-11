@@ -1,0 +1,481 @@
+---
+title: "Functional analysis"
+author: "Princess Rodriguez"
+date: "4/11/2024"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+### Install and load required ackages 
+
+```{r load packages}
+library(clusterProfiler) #BiocManager::install("clusterProfiler")
+library(org.Mm.eg.db) #BiocManager::install("org.Mm.eg.db") ## this is for mouse! 
+library(DOSE) #BiocManager::install("DOSE")
+library(ggnewscale) #install.packages("ggnewscale")
+library(pathview) #BiocManager::install("pathview")
+#library(ggupset) #install.packages("ggupset")
+library(enrichplot) #BiocManager::install("enrichplot")
+library(knitr)
+
+#remotes::install_github("YuLab-SMU/clusterProfiler") 
+
+```
+
+
+```{r}
+#library(BiocManager)
+#BiocManager::valid()
+```
+
+
+***
+
+## Functional analysis 
+
+The goal of functional analysis is provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **Depletion of TCF7 results in an enrichment in genes required for myeloid cell identity**. Therefore, we may expect an enrichment of processes/pathways related to **myeloid/innate immune responses**.
+
+#### GO Ontologies
+
+The Gene Ontology (GO) knowledgebase is the world's largest source of information on the function of genes. GO terms are organized into three independent controlled vocabularies (ontologies) in a species-independent manner: 
+
+- **Biological process:** refers to the biological role involving the gene or gene product, and could include "transcription", "signal transduction", and "apoptosis". A biological process generally involves a chemical or physical change of the starting material or input.
+
+- **Molecular function:** represents the biochemical activity of the gene product, such activities could include "ligand", "GTPase", and "transporter". 
+
+- **Cellular component:** refers to the location in the cell of the gene product. Cellular components could include "nucleus", "lysosome", and "plasma membrane".
+
+Each GO term has a term name (e.g. **DNA repair**) and a unique term accession number (**GO:0005125**), and a single gene product can be associated with many GO terms. 
+
+
+
+## clusterProfiler
+
+We will be using [clusterProfiler](http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) to perform over-representation analysis on GO terms associated with our list of significant genes. 
+
+Over-representation (or enrichment) analysis is a statistical method that determines whether genes from pre-defined sets (ex: those beloging to a specific GO term or KEGG pathway) are present more than would be expected (over-represented) in a subset of your data. In this case, the subset is your set of under or over expressed genes. 
+
+Clusterprofiler will take as input a significant gene list and a background gene list and performs statistical enrichment analysis using hypergeometric testing. The basic arguments allow the user to select the appropriate organism and GO ontology (BP, CC, MF) to test. 
+
+***
+
+## Prepping the data  
+
+```{r prep data}
+resdata <- read.csv("TCF1KOvsWT_all_matrix_symbol.csv", header = T)
+head(resdata)
+```
+
+
+### Create Gene lists
+
+To perform the over-representation analysis, we need a list of background genes and a list of significant genes. For our background dataset we will use all genes in our `resdata` results table. For the significant gene list we will use genes with p-adjusted values less than 0.05 and absolute log2FC of 1.
+
+#### first lets prep background gene set  
+
+```{r prep for pathway}
+# we want the log2 fold change
+original_gene_list <- resdata$log2FoldChange
+head(original_gene_list)
+```
+
+
+```{r}
+# name the vector
+names(original_gene_list) <- resdata$input_id
+head(original_gene_list)
+```
+
+```{r}
+#original_gene_list
+```
+
+```{r}
+# omit any NA values
+background_gene_list<-na.omit(original_gene_list)
+```
+
+```{r}
+# sort the list in decreasing order (required for clusterProfiler)
+background_gene_list = sort(background_gene_list, decreasing = TRUE)
+```
+
+```{r}
+head(background_gene_list)
+```
+
+#### now lets prep significant gene set 
+
+```{r}
+# Extract significant results (padj < 0.05) using subset()
+sig_genes_df = subset(resdata, padj < 0.05)
+
+# From significant results, we want to filter on log2fold change
+sig_genes <- sig_genes_df$log2FoldChange
+
+# Name the vector 
+names(sig_genes) <- sig_genes_df$input_id
+
+# omit NA values
+sig_genes <- na.omit(sig_genes)
+
+# filter on min log2fold change (log2FoldChange > 1)
+sig_genes <- names(sig_genes)[abs(sig_genes) > 1]
+```
+
+```{r}
+head(sig_genes)
+```
+
+
+## Creating enrichGO object 
+
+1. There are ontology options: [“BP”, “MF”, “CC”]. 
+The `ont` argument can accept either "BP" (Biological Process), "MF" (Molecular Function), and "CC" (Cellular Component) subontologies, or "ALL" for all three.
+
+2. There are keytypes options: This is the source of the annotation (gene ids). The options vary for each annotation. In the example of org.Mm.eg.db, the options are:
+
+```{r}
+keytypes(org.Mm.eg.db)
+```
+
+3.The different organisms with annotation databases available to use with for the `OrgDb` argument can be found below: 
+![Org databases](img/orgdb_annotation_databases.png){width=50%, height=50%}
+
+
+
+```{r}
+#go_enrich <- enrichGO(gene = sig genes,
+                      #universe = background genes,
+                      #OrgDb = organism Db, 
+                      #keyType = 'ENSEMBL',
+                      #readable = T,
+                      #ont = "BP",
+                      #pvalueCutoff = 0.05, 
+                      #qvalueCutoff = 0.05)
+```
+
+This next part will take a few minutes to run!
+
+```{r, include=FALSE}
+#go_enrich <- enrichGO(gene = sig_genes,
+                      #universe = names(background_gene_list),
+                      #OrgDb = org.Mm.eg.db,
+                      #keyType = 'ENSEMBL',
+                      #readable = T,
+                      #ont = "BP",
+                      #pvalueCutoff = 0.05,
+                      #qvalueCutoff = 0.05)
+```
+
+
+
+```{r}
+#saveRDS(go_enrich, file = "enrichGO_cd8.rds")
+
+go_enrich <- readRDS("enrichGO_cd8.rds")
+```
+
+
+```{r}
+## Output results from GO analysis to a table
+cluster_summary <- data.frame(go_enrich)
+
+write.csv(cluster_summary, "clusterProfiler_TCF7ko.csv")
+
+head(cluster_summary)
+```
+
+### Visualizing clusterProfiler results 
+
+`clusterProfiler` has a variety of options for viewing the over-represented GO terms.
+
+Bar plot is the most widely used method to visualize enriched terms. It depicts the enrichment scores (e.g. p values) and gene count or ratio as bar height and color. Users can specify the number of terms (most significant) or selected terms to display via the showCategory parameter.
+
+
+```{r}
+barplot <- barplot(go_enrich, 
+                   showCategory = 10,
+                   title = "GO Biological Pathways",
+                   font.size = 8)
+
+barplot
+```
+
+Dot plot is similar to bar plot with the capability to encode another score as dot size. Go ahead and convert the figure into a dotplot to display the top 10 GO terms by gene ratio (# genes related to GO term / total number of sig genes).
+
+```{r}
+?dotplot
+#from enrichplot library
+```
+
+
+```{r}
+dot <- dotplot(go_enrich, 
+               showCategory = 10, 
+               font.size = 8)
+dot
+```
+
+We can also visualize enriched GO terms as a directed acyclic graph: 
+
+```{r, fig.height=8, fig.width=8}
+pathway <- goplot(go_enrich, showCategory = 10)
+pathway
+```
+
+
+## Gene Concept Network 
+
+Both the `barplot()` and `dotplot()` only displayed most significant terms, but some users may want to know which genes are involved in these significant terms. 
+
+In order to consider the potentially biological complexities in which a gene may belong to multiple categories, we can use the `cnetplot()` function. The `cnetplot()` depicts the linkages of genes and biological concepts (e.g. GO terms or KEGG pathways) as a network. 
+
+```{r, network2, fig.height=8, fig.width=8}
+cnetplot(go_enrich, 
+         showCategory = 5, 
+         categorySize="pvalue", 
+         foldChange=background_gene_list, 
+         vertex.label.font=6, 
+         cex_label_gene = 0.5, 
+         cex_label_category= 0.8)
+```
+
+
+
+```{r, fig.height=8, fig.width=8}
+cnetplot(go_enrich, 
+         showCategory = 5, 
+         categorySize="pvalue", 
+         foldChange=background_gene_list, 
+         vertex.label.font=6, 
+         cex_label_category = 0.5,
+         node_label="category")
+```
+
+>	Select which labels to be displayed. Options include 'category', 'gene', 'all'(the default) and 'none'.
+
+```{r, fig.height=8, fig.width=8}
+library(ggplot2)
+plot_color <- cnetplot(go_enrich, 
+                       showCategory = 5, 
+                       categorySize="pvalue", 
+                       foldChange=background_gene_list, 
+                       vertex.label.font=6, 
+                       cex_label_gene = 0.5,
+                       cex_label_category= 0.8) + 
+  scale_color_gradient2(name='fold change', low='darkgreen', high='firebrick')
+
+plot_color
+```
+
+
+```{r, fig.height=4, fig.width=6}
+cnetplot(go_enrich, 
+         showCategory = 5, 
+         categorySize="pvalue", 
+         foldChange= background_gene_list, 
+         circular = TRUE, 
+         colorEdge = TRUE,
+         cex_label_gene = 0.35, 
+         vertex.label.font=6)
+```
+
+Circular plots can be quite powerful, if the list was smaller, here things get a bit crowded - overall makes it hard to interpret. Moral of the story, just because you can make it doesn't mean you should! 
+
+
+```{r}
+tree_cd8 <- pairwise_termsim(go_enrich)
+treeplot(tree_cd8)
+```
+
+
+
+## KEGG Pathway Enrichment
+
+For KEGG pathway enrichment using the gseKEGG() function, we need to convert id types. We can use the bitr function for this (included in clusterProfiler). It is normal for this call to produce some messages / warnings.
+
+```{r, warning=FALSE}
+# Convert gene IDs for enrichKEGG function
+# We will lose some genes here because not all IDs will be converted
+ids<-bitr(names(original_gene_list), 
+          fromType = "ENSEMBL", 
+          toType = "ENTREZID", 
+          OrgDb="org.Mm.eg.db") 
+
+# remove duplicate IDS (here I use "ENSEMBL", but it should be whatever was selected as keyType)
+
+dedup_ids = ids[!duplicated(ids[c("ENSEMBL")]),]
+```
+
+
+```{r}
+# Create a new dataframe df2 which has only the genes which were successfully mapped using the bitr function above
+df2 = resdata[resdata$input_id %in% dedup_ids$ENSEMBL,]
+```
+
+
+```{r}
+# Create a new column in df2 with the corresponding ENTREZ IDs
+df2 <- merge(resdata, dedup_ids, by.x = "input_id", by.y = "ENSEMBL")
+
+str(df2)
+```
+
+
+```{r}
+# Create a vector of the gene universe
+kegg_gene_list <- df2$log2FoldChange
+```
+
+```{r}
+# Name vector with ENTREZ ids
+names(kegg_gene_list) <- df2$ENTREZID
+```
+
+```{r}
+head(kegg_gene_list)
+```
+
+```{r}
+# omit any NA values 
+kegg_gene_list<-na.omit(kegg_gene_list)
+```
+
+
+```{r}
+# sort the list in decreasing order (required for clusterProfiler)
+kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
+```
+
+We just created the background list, similar to what we did above. Now, we will move on to create the significant list. 
+
+```{r}
+# Extract significant results from df2
+kegg_sig_genes_df = subset(df2, padj < 0.05)
+```
+
+```{r}
+# From significant results, we want to filter on log2fold change
+kegg_sig_genes <- kegg_sig_genes_df$log2FoldChange
+```
+
+```{r}
+# Name the vector with the ENTREZID
+names(kegg_sig_genes) <- kegg_sig_genes_df$ENTREZID
+```
+
+```{r}
+head(kegg_sig_genes)
+```
+
+```{r}
+# omit NA values
+kegg_sig_genes <- na.omit(kegg_sig_genes)
+```
+
+
+```{r}
+# filter on log2fold change 
+kegg_sig_genes <- names(kegg_sig_genes)[abs(kegg_sig_genes) > 1]
+```
+
+BTW, the clusterProfiler package provides `search_kegg_organism()` function to help searching supported organisms. 
+
+```{r}
+sal_ent <- search_kegg_organism('Salmonella enterica', by='scientific_name')
+dim(sal_ent)
+```
+
+```{r}
+#sal_ent
+```
+
+### Creating an enrichKEGG object
+
++ organism KEGG Organism Code: The full list is here: https://www.genome.jp/kegg/catalog/org_list.html (need the 3 letter code). I define this as kegg_organism first, because it is used again below when making the pathview plots.
+
++ keyType one of ‘kegg’, ‘ncbi-geneid’, ‘ncib-proteinid’ or ‘uniprot’.
+
+```{r, include=FALSE}
+kegg_organism = "mmu"
+kk <- enrichKEGG(gene=kegg_sig_genes,
+                 universe=names(kegg_gene_list),
+                 organism=kegg_organism, 
+                 pvalueCutoff = 0.05, 
+                 keyType = "ncbi-geneid")
+```
+
+
+```{r}
+head(kk)
+```
+
+
+```{r}
+saveRDS(kk, file = "enrichKEGG_cd8.rds")
+
+kk <- readRDS("enrichKEGG_cd8.rds")
+```
+
+
+
+```{r, include=FALSE}
+## GSEA using gene sets from KEGG pathways
+#gseaKEGG <- gseKEGG(geneList = kegg_gene_list, 
+                    #organism = "mmu", 
+                    #nPerm = 1000, # default number permutations
+                    #minGSSize = 120, # minimum gene set size (# genes in set) 
+                    #pvalueCutoff = 0.05, # padj cutoff value
+                    #verbose = FALSE)
+
+## Extract the GSEA results
+#gseaKEGG_results <- gseaKEGG@result
+```
+
+
+```{r}
+#saveRDS(gseaKEGG_results, file = "gseaKEGG_results.rds")
+
+gseaKEGG_results <- readRDS("gseaKEGG_results.rds")
+```
+
+
+### Visualize enriched KEGG pathways
+
+To view the KEGG pathway, users can use the browseKEGG function, which will open a web browser and highlight enriched genes.
+
+```{r}
+#browseKEGG(kk, 'mmu05202')
+```
+
+
+```{r, fig.height=8, fig.width=11}
+library("pathview")
+mmu05152 <- pathview(gene.data  = kegg_gene_list,
+                     pathway.id = "mmu05152",
+                     species    = "mmu",
+                     limit      = list(gene=max(abs(kegg_gene_list)), cpd=1))
+
+knitr::include_graphics("mmu05152.pathview.png")
+```
+
+
+
+#### Session info 
+
+```{r}
+sessionInfo()
+```
+
+
