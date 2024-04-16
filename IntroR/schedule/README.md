@@ -61,6 +61,15 @@
 ***
 
 
+## Thursday, April 16th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [GSEA](../lessons/10_GSEA.md) | 
+
+***
+
+
 ## Assignments Due 
 
 ### HW#10 - Alignment & Counting (150 points)
