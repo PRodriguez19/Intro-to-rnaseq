@@ -69,6 +69,14 @@
 
 ***
 
+## Thursday, April 18th 
+
+| Time |  Topic  |  
+|:-----------:|:----------| 
+| 60 mins | [Multi-panel-figure](../lessons/11_multi_panel_figure.md) | 
+
+***
+
 
 ## Assignments Due 
 
