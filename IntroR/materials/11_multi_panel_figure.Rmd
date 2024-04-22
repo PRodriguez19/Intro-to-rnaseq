@@ -1,0 +1,258 @@
+---
+title: "Multi-figure panel"
+author: "Princess Rodriguez"
+date: "4/17/2024"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The primary purpose of today's lesson is to learn how to combine multiple figures into a single multi-panel figure using `patchwork` and `cowplot`.  
+
+### Why learn to combine figures? 
+
+Combining multiple figures is advantageous when preparing results for conference presentations (via poster) or publication. In addition, most scientific journals place limits on the number of figures permitted per publication, ranging from 3-7 figures typically. 
+
+### Prepping the data 
+
+Before using `patchwork` or `cowplot` it requires the objects to be saved as `ggplot` object. Remember to use `as.ggplot` when required (ex. for pheatmap). 
+
+```{r}
+#saveRDS()
+#readRDS()
+```
+
+### Load Libraries 
+
+```{r, warning=FALSE, message=FALSE}
+library(patchwork)
+library(cowplot)
+library(ggplot2)
+library(pheatmap)
+library(dplyr)
+library(tidyr)
+library(pheatmap)
+library(ggplotify)
+```
+
+This is the final class in this course. So at this point, we have created quite a few plots. These plots were saved as R objects (`.rds`). To load the data into R, we will use the `readRDS()` function. 
+
+```{r, message=FALSE}
+#load the RDS 
+boxplots <- readRDS("boxplot_grid.RDS")
+volcano <- readRDS("volcano.RDS")
+gsea_plot1 <- readRDS("gsea_plot1.RDS")
+gsea_plot2 <- readRDS("gsea_plot2.RDS")
+pca <- readRDS("pca.RDS")
+heatmap <- readRDS("heatmap.RDS")
+cor_heatmap <- readRDS("cor_heatmap.RDS")
+```
+
+An alternative is to use the script shown below to load every RDS file in the location specified: 
+```{r}
+# Select the folder containing the RDS files
+#folder_path <- file.path("/Users/princess/Desktop/R_tutorials/multi_panel_figure")
+
+# Get a list of all RDS files in the folder
+#rds_files <- list.files(path = folder_path, pattern = "\\.RDS$", full.names = TRUE)
+
+# Create an empty list to store the loaded objects
+#loaded_data <- list()
+
+# Loop through each RDS file and load its content
+#for (file in rds_files) {
+  # Extract the object name from the file name
+  #object_name <- tools::file_path_sans_ext(basename(file))
+  # Load the RDS file and assign it to the corresponding object name
+  #loaded_data[[object_name]] <- readRDS(file)
+#}
+
+# Now you can access your loaded objects like loaded_data$boxplot_ccl5, loaded_data$boxplot_actn1, etc.
+```
+
+
+```{r, warning=FALSE}
+#view objects
+volcano
+```
+
+
+## What is `patchwork`? 
+
+>The goal of patchwork is to make it ridiculously simple to combine separate `ggplots` into the same graphic. As such it tries to solve the same problem as gridExtra::grid.arrange() and `cowplot::plot_grid` but using an application programming interface (API) that incites exploration and iteration, and scales to arbitrily complex layouts. ---Thomas Lin Pederson, Patchwork documentation. 
+
+### Place two plots horizontally 
+
+```{r, fig.height=4, fig.width=8, warning=FALSE}
+pca + cor_heatmap
+```
+
+### Place multiple plots in one grid 
+
+We can continue to add plots using the `+` symbol, and `patchwork` will try to form a grid, proceeding from left to right row-wise. Let's see this in action. 
+
+
+```{r, fig.height=8, fig.width=8,warning=FALSE}
+pca + cor_heatmap + volcano + boxplots
+```
+
+
+The plot layout can be controlled further with additional operators. The `|` symbol is used to place plots side by side, while the `/` symbol is used to stack plots vertically.  
+
+So for example using the `|` parameter: 
+
+```{r, fig.height=4, fig.width=8}
+pca | cor_heatmap
+```
+
+
+And for vertical layout we would use: 
+```{r, fig.height=6, fig.width=4}
+pca / cor_heatmap
+```
+
+### Another way to place three plots vertically 
+
+```{r, fig.height=6, fig.width=4, warning=FALSE}
+pca + cor_heatmap + volcano + plot_layout(ncol = 1)
+```
+
+## Adjust sizes of plots 
+```{r, fig.height=6, fig.width=8, warning=FALSE}
+cor_heatmap + volcano + plot_layout(ncol = 2,
+                                    widths = c(1,.5),
+                                    heights = c(1,.5))
+```
+
+
+### Use of Nested Layouts
+```{r, warning=FALSE, fig.height=6, fig.width=8}
+boxplots + {
+  volcano + {
+    cor_heatmap + 
+      pca +
+      plot_layout(ncol = 1)
+  }
+} + 
+  plot_layout(ncol=1)
+```
+
+
+Using `patchwork` symbols: 
+Create an image where the pca, correlation heatmap, and volcano plot are side by side in row1. Underneath add a second row and put the boxplots. 
+
+row 1: pca, cor_heatmap, volcano
+row 2: boxplots
+
+```{r, warning=FALSE, fig.width=16, fig.height=8}
+pca | cor_heatmap | volcano / boxplots
+```
+
+
+```{r, warning=FALSE, fig.width=16, fig.height=8}
+(pca + cor_heatmap + volcano) / boxplots
+```
+
+Now lets add row3 for our heatmap: 
+
+```{r, warning=FALSE, fig.width=16, fig.height=10}
+(pca + cor_heatmap + volcano) / boxplots / heatmap
+```
+
+Now finally, lets add the GSEA plot 1 and 2 to row 3. 
+
+```{r, warning=FALSE, fig.width=16, fig.height=12}
+(pca + cor_heatmap + volcano) / boxplots / (heatmap | gsea_plot1 | gsea_plot2)
+
+ggsave("Figure_patchwork.pdf", height=6, width=8, dpi=300, units="in", scale = 2)
+```
+
+Not terrible, but we are seeing issues with sizing. Let's try again. 
+
+
+## What is `cowplot`? 
+
+> The `cowplot` package provides various features that help with creating publication-quality figures, such as a set of themes, functions to align plots and arrange them into complex compound figures, and functions that make it easy to annotate plots and or mix plots with images. The package was originally written for internal use in the Wilke lab, hence the name (Claus O. Wilke’s plot package). --- cowplot 1.1.1
+
+Cowplot also has some notable features including label customization, unique plot arrangements, and image drawing. 
+
+### Using cowplot to arrange figures
+
+The main function to combine figures is `plot_grid()`. Let's check out the help documentation using `?plot_grid()`. 
+
+```{r}
+?plot_grid()
+```
+
+
+```{r, warning=FALSE, fig.height=4, fig.width=16}
+# FigABC
+
+FigABC <- plot_grid(pca, cor_heatmap, volcano, 
+                    labels = "AUTO",
+                    ncol = 3) 
+
+FigABC
+```
+
+
+This figure isn't bad already. 
+
+```{r, fig.height=4, fig.width=16}
+# FigD
+
+FigD <- plot_grid(boxplots, labels = "D") 
+
+FigD
+```
+
+
+
+```{r}
+gsea_plot1 <- as.ggplot(gsea_plot1)
+
+gsea_plot1
+```
+
+```{r}
+gsea_plot2 <- as.ggplot(gsea_plot2)
+
+gsea_plot2
+```
+
+Go ahead and add the final row with the heatmap, gsea_plot1, and gsea_plot2. Label accordingly. 
+
+```{r, fig.height=4, fig.width=12}
+# FigEFG
+
+FigEFG <- plot_grid(heatmap, gsea_plot1, gsea_plot2,
+                   labels = c("E", "F", "G"),
+                   nrow = 1) 
+
+FigEFG
+```
+
+
+Then move on to create the final figure. 
+```{r, fig.height=11, fig.width=16}
+# final figure
+
+Final_figure <- plot_grid(FigABC, FigD, FigEFG, nrow = 3) 
+
+ggsave("Final_figure.pdf", height=6, width=8, dpi=300, units="in", scale = 2)
+```
+
+```{r, fig.height=11, fig.width=16}
+Final_figure
+```
+
+
+
